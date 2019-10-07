@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-class Grille<T>: MonoBehaviour
+class Grille<T>
 {
     //initialisation d'un vecteur ainsi qu'une matrice
     private T[] vecteur;

@@ -2,15 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
-public class GridManager : MonoBehaviour
+// Classe à ajouter sur chacun de vos sous-projets pour afficher quelque chose à l'écran
+class GridManager
 {
     private GameObject tileReference;
     private int ligne, colonne;
     private float espacement = 1.1f;
-    public Sprite sprite;
     private Grille<int> grille;
 
     public GridManager(Grille<int> grille)
@@ -28,7 +27,7 @@ public class GridManager : MonoBehaviour
             for (int j = 0; j < this.colonne; j++)
             {
                 Vector2 pos = new Vector2(posX + (j * espacement - (this.colonne - 1) * espacement / 2), posY + (i * -espacement - (this.ligne - 1) * -espacement / 2));
-                GameObject tile = Instantiate(tileReference, pos, tileReference.transform.rotation, parent);
+                GameObject tile = UnityEngine.Object.Instantiate(tileReference, pos, tileReference.transform.rotation, parent);
                 tile.name = "Case" + i + "_" + j;
                 afficher(i, j, tile);
             }
@@ -47,6 +46,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    // Fonction à modifier selon vos besoins
     private void afficher(int i, int j, GameObject tile)
     {
         if(this.grille.getVal(i, j) != -1) 

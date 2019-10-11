@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GridManager : MonoBehaviour
+public class GridManager
 {
     private GameObject tileReference;
     private int ligne, colonne;
@@ -28,7 +28,7 @@ public class GridManager : MonoBehaviour
             for (int j = 0; j < this.colonne; j++)
             {
                 Vector2 pos = new Vector2(posX + (j * espacement - (this.colonne - 1) * espacement / 2), posY + (i * -espacement - (this.ligne - 1) * -espacement / 2));
-                GameObject tile = Instantiate(tileReference, pos, tileReference.transform.rotation, parent);
+                GameObject tile = UnityEngine.Object.Instantiate(tileReference, pos, tileReference.transform.rotation, parent);
                 tile.name = "Case" + i + "_" + j;
                 afficher(i, j, tile);
             }

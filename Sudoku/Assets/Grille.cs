@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 
 public class Grille<T>
 {
@@ -60,8 +58,7 @@ public class Grille<T>
         }
         return row;
     }
-
-    //get ou set une valeur dans la matrice ou le vecteur
+    
     public void initVal(T val)
     {
         for (int i = 0; i < this.rows; i++)

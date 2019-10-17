@@ -4,9 +4,9 @@ class Case
 {
     private Boolean affichable;
     private int valeur;
-    private Grille<Case> grille;
+    private GrilleSudoku grille;
 
-    public Case(int valeur, Grille<Case> grille)
+    public Case(int valeur, GrilleSudoku grille)
     {
         affichable = false;
         this.valeur = valeur;
@@ -28,6 +28,15 @@ class Case
         affichable = cond;
     }
 
+    public void setValeur(int val)
+    {
+        if (val > 0 && val < 10)
+        {
+            valeur = val;
+            affichable = true;
+        }
+    }
+
     public Boolean verifValeur(int val, int i, int j)
     {
         if (verifLigne(val, i) && verifColonne(val, j) && verifCarre(val, i, j))
@@ -37,19 +46,14 @@ class Case
         return false;
     }
 
-    public void setValeur(int val)
-    {
-        if (val > 0 && val < 10) valeur = val;
-    }
-
-    public void setGrille(Grille<Case> g)
+    public void setGrille(GrilleSudoku g)
     {
         grille = g;
     }
 
     private Boolean verifLigne(int var, int nbLigne)
     {
-        for(int n = 0; n<9; n++)
+        for(int n = 0; n < 9; n++)
         {
             if (grille.getVal(nbLigne, n).getValeur() == var) return false;
         }
@@ -69,62 +73,23 @@ class Case
     {
         if (i < 3)
         {
-            if (j < 3)
-            {
-                return 1;
-            }
-            else
-            {
-                if (j < 6)
-                {
-                    return 4;
-                }
-                else
-                {
-                    return 7;
-                }
-            }
+            if (j < 3) return 1;
+            if (j < 6) return 4;
+            if (j < 9) return 7;
         }
-        else
+        if (i < 6)
         {
-            if (i < 6)
-            {
-                if (j < 3)
-                {
-                    return 2;
-                }
-                else
-                {
-                    if (j < 6)
-                    {
-                        return 5;
-                    }
-                    else
-                    {
-                        return 8;
-                    }
-                }
-            }
-            else
-            {
-                if (j < 3)
-                {
-                    return 3;
-                }
-                else
-                {
-                    if (j < 6)
-                    {
-                        return 6;
-                    }
-                    else
-                    {
-                        if (j < 9) return 9;
-                        else return -1;
-                    }
-                }
-            }
+            if (j < 3) return 2;
+            if (j < 6) return 5;
+            if (j < 9) return 8;
         }
+        if (i < 9)
+        {
+            if (j < 3) return 3;
+            if (j < 6) return 6;
+            if (j < 9) return 9;
+        }
+        return -1;
     }
 
     private Boolean verifCarre(int var, int i, int j)
@@ -139,7 +104,7 @@ class Case
         switch (nCarre)
         {
             case 1:
-                for(int i = 0; i<3; i++)
+                for(int i = 0; i < 3; i++)
                 {
                     for (int j = 0; j < 3; j++)
                     {

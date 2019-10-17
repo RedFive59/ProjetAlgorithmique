@@ -9,9 +9,9 @@ class GridManager
     private GameObject tileReference;
     private int ligne, colonne;
     private float espacement = 1.1f;
-    private Grille<Case> grille;
+    private GrilleSudoku grille;
 
-    public GridManager(Grille<Case> grille)
+    public GridManager(GrilleSudoku grille)
     {
         tileReference = GameObject.Find("TilePrefab");
         this.grille = grille;
@@ -47,10 +47,15 @@ class GridManager
     
     private void afficher(int i, int j, GameObject tile)
     {
-        if(this.grille.getVal(i, j).getValeur() != 0) 
+        if(this.grille.getVal(i, j).getAffichable())
+        {
             tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
-        else
+            tile.GetComponent<SpriteRenderer>().color = Color.white;
+            tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.black;
+        }
+        else {
             tile.GetComponent<SpriteRenderer>().color = Color.gray;
             tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.gray;
+        }
     }
 }

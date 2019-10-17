@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-class Grille<T>
+public class Grille<T>
 {
     //initialisation d'un vecteur ainsi qu'une matrice
     private T[] vecteur;
     private T[,] matrice;
     //permet de retrouver facilement les dimentions d'une grille
-    private int rows, cols;
+    protected int rows, cols;
     //bool qui permet de savoir si la grille est une matrice ou un vecteur
     private bool isMat = false;
 
@@ -28,13 +28,13 @@ class Grille<T>
     }
 
     //ajoute une valeur val de type T a l'indice n dans le vecteur
-    public void ajoutVect(int n, T val)
+    public void setVal(int n, T val)
     {
         this.vecteur[n] = val;
     }
 
     //ajoute une valeur val de type T aux indices n et m dans la matrice
-    public void ajoutMat(int n, int m, T val)
+    public void setVal(int n, int m, T val)
     {
         this.matrice[n, m] = val;
     }
@@ -45,7 +45,7 @@ class Grille<T>
         T[] col = new T[this.rows];
         for (int i = 0; i < this.rows; i++)
         {
-            col[i] = this.matrice[i, m - 1];
+            col[i] = this.matrice[i, m];
         }
         return col;
     }
@@ -56,13 +56,13 @@ class Grille<T>
         T[] row = new T[this.cols];
         for (int i = 0; i < this.cols; i++)
         {
-            row[i] = this.matrice[n - 1, i];
+            row[i] = this.matrice[n, i];
         }
         return row;
     }
 
     //get ou set une valeur dans la matrice ou le vecteur
-    public void setVal(T val)
+    public void initVal(T val)
     {
         for (int i = 0; i < this.rows; i++)
         {
@@ -70,12 +70,12 @@ class Grille<T>
             {
                 for (int j = 0; j < this.cols; j++)
                 {
-                    this.ajoutMat(i, j, val);
+                    this.setVal(i, j, val);
                 }
             }
             else
             {
-                this.ajoutVect(i, val);
+                this.setVal(i, val);
             }
         }
     }

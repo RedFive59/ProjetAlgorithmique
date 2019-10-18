@@ -4,13 +4,13 @@ public class Joueur
 {
 	//Attributs
 	private String nom;
-	private sealed int id;
+	private int id;
 	private static int nbJoueurs = 1;
-	private int bourse;
+	private Mise bourse;
 	private Main main;
     private Mise mise;
     //Constructeurs
-	public Joueur(String nom, int bourse, Main main) {
+	public Joueur(String nom, Mise bourse, Main main) {
         this.id = nbJoueurs;
         nbJoueurs++;
         this.nom = nom;
@@ -18,7 +18,7 @@ public class Joueur
         this.main = main;
         this.mise = new Mise(this.id);
     }
-    public Joueur(String nom, int bourse)
+    public Joueur(String nom, Mise bourse)
     {
         this.id = nbJoueurs;
         nbJoueurs++;
@@ -35,7 +35,7 @@ public class Joueur
     {
         this.nom = nom;
     }
-    public void setBourse(int bourse)//Attribut un nouveau montant pour la bourse;
+    public void setBourse(Mise bourse)//Attribut un nouveau montant pour la bourse;
     {
         this.bourse = bourse;
     }
@@ -55,9 +55,9 @@ public class Joueur
     {
         return this.id;
     }
-    public int getBourse()//Retourne le montant de la bourse du joueur;
+    public Mise getBourse()//Retourne le montant de la bourse du joueur;
     {
-        return this.nom;
+        return this.bourse;
     }
     public Main getMain()//Retourne la Main du joueur;
     {
@@ -69,7 +69,7 @@ public class Joueur
     }
     public bool equals(Joueur j)//Retourne true si les joueurs ont des attributs identiques;
     {
-        if ((this.nom == j.getNom) && (this.id == j.getID) && (this.bourse == j.getBourse) && (this.main.equals(j.getMain)) && (this.mise.equals(j.getMise)))
+        if ((this.nom == j.getNom()) && (this.id == j.getID()) && (this.bourse == j.getBourse()) && (this.main.equals(j.getMain())) && (this.mise.equals(j.getMise())))
             return true;
         return false;
     }
@@ -79,8 +79,8 @@ public class Joueur
            return true;
         return false;
     }
-
-    /* A faire:
-     * -Miser
-     * */
+    public void miser(Jeton j)//Prend le jeton j de la bourse pour le mettre dans la mise;
+    {
+        this.bourse.transferer(mise,j);
+    }
 }

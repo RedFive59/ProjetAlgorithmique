@@ -1,18 +1,12 @@
 ﻿using System;
-
 namespace Poker
 {
 	class Program
 	{
-		static void DireBonjour(String nom)
-		{
-			Console.WriteLine("Bonjour " + nom);
-		}
-
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
-			DireBonjour("Antoine");
+            Jeton j = new Jeton(Jeton.Valeur.BLANC);
+            if ((int)Jeton.Valeur.BLANC == 1) Console.WriteLine("J'ai réussi BURY !!!");
 		}
 	}
 }

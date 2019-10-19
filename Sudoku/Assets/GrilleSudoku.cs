@@ -264,4 +264,22 @@ class GrilleSudoku : Grille<Case>
             }
         }
     }
+    
+    public void remplirMauvaixSudoku()
+    {
+        int[] array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        List<int> list = new List<int>();
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                if (list.Count == 0) list.AddRange(array);
+                int rand = UnityEngine.Random.Range(0, list.Count);
+                int val = list[rand];
+                list.RemoveAt(rand);
+                this.getVal(i, j).setValeur(val);
+                this.getVal(i, j).setChangeable(false);
+            }
+        }
+    }
 }

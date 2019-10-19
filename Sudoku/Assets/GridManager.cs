@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 class GridManager
@@ -28,9 +29,11 @@ class GridManager
                 Vector2 pos = new Vector2(posX + (j * espacement - (this.colonne - 1) * espacement / 2), posY + (i * -espacement - (this.ligne - 1) * -espacement / 2));
                 GameObject tile = UnityEngine.Object.Instantiate(tileReference, pos, tileReference.transform.rotation, parent);
                 tile.name = "Case" + i + "_" + j;
+                Debug.Log(tile.GetComponent<Button>().onClick.GetPersistentEventCount());
                 afficher(i, j, tile);
             }
         }
+        tileReference.SetActive(false);
     }
 
     public void UpdateGrid()
@@ -47,16 +50,16 @@ class GridManager
     
     private void afficher(int i, int j, GameObject tile)
     {
-        Color blue = new Color(0, 0, 240, 200);
-        Color white = new Color(255, 255, 255, 200);
-        tile.GetComponent<SpriteRenderer>().color = Color.gray;
+        Color blue = new Color(40, 100, 180, 255);
+        Color white = new Color(205, 205, 205, 255);
+        //tile.GetComponent<Image>().color = Color.gray;
         if (this.grille.getVal(i, j).getChangeable() == false)
         {
-            tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
-            tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = white;
+            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
+            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = white;
         }
         else {
-            tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = blue;
+            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = blue;
         }
     }
 }

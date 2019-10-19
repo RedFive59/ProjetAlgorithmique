@@ -1,21 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 
 class Case
 {
-    private Boolean affichable;
     private int valeur;
-    private GrilleSudoku grille;
-
-    public Case(int valeur, GrilleSudoku grille)
+    private Boolean changeable;
+    private List<int> listIndice;
+    public Case()
     {
-        affichable = false;
-        this.valeur = valeur;
-        this.grille = grille;
+        changeable = true;
+        listIndice = new List<int>();
     }
 
-    public Boolean getAffichable()
+    public Case(int valeur)
     {
-        return affichable;
+        changeable = true;
+        this.valeur = valeur;
+        listIndice = new List<int>();
+    }
+
+    public Boolean getChangeable()
+    {
+        return changeable;
+    }
+
+    public void setChangeable(Boolean cond)
+    {
+        changeable = cond;
     }
 
     public int getValeur()
@@ -23,171 +34,28 @@ class Case
         return valeur;
     }
 
-    public void setAffichable(Boolean cond)
-    {
-        affichable = cond;
-    }
-
     public void setValeur(int val)
     {
         if (val > 0 && val < 10)
         {
             valeur = val;
-            affichable = true;
         }
     }
 
-    public Boolean verifValeur(int val, int i, int j)
+    public void ajoutIndice(int i)
     {
-        if (verifLigne(val, i) && verifColonne(val, j) && verifCarre(val, i, j))
-        {
-            return true;
-        }
-        return false;
+        if (listIndice.Contains(i)) return;
+        listIndice.Add(i);
     }
 
-    public void setGrille(GrilleSudoku g)
+    public void retraitIndice(int i)
     {
-        grille = g;
+        if (listIndice.Contains(i)) listIndice.Remove(i);
     }
 
-    private Boolean verifLigne(int var, int nbLigne)
+    public void retraitIndices()
     {
-        for(int n = 0; n < 9; n++)
-        {
-            if (grille.getVal(nbLigne, n).getValeur() == var) return false;
-        }
-        return true;
-    }
-
-    private Boolean verifColonne(int var, int nbColonne)
-    {
-        for (int n = 0; n < 9; n++)
-        {
-            if (grille.getVal(n, nbColonne).getValeur() == var) return false;
-        }
-        return true;
-    }
-
-    private int numCarre(int i, int j)
-    {
-        if (i < 3)
-        {
-            if (j < 3) return 1;
-            if (j < 6) return 4;
-            if (j < 9) return 7;
-        }
-        if (i < 6)
-        {
-            if (j < 3) return 2;
-            if (j < 6) return 5;
-            if (j < 9) return 8;
-        }
-        if (i < 9)
-        {
-            if (j < 3) return 3;
-            if (j < 6) return 6;
-            if (j < 9) return 9;
-        }
-        return -1;
-    }
-
-    private Boolean verifCarre(int var, int i, int j)
-    {
-        var numCarre = this.numCarre(i, j);
-        if(numCarre != -1) return verifCarre(var, numCarre);
-        return false;
-    }
-
-    private Boolean verifCarre(int var, int nCarre)
-    {
-        switch (nCarre)
-        {
-            case 1:
-                for(int i = 0; i < 3; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        if (grille.getVal(i, j).getValeur() == var) return false;
-                    }
-                }
-                break;
-            case 2:
-                for (int i = 3; i < 6; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        if (grille.getVal(i, j).getValeur() == var) return false;
-                    }
-                }
-                break;
-            case 3:
-                for (int i = 6; i < 9; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        if (grille.getVal(i, j).getValeur() == var) return false;
-                    }
-                }
-                break;
-            case 4:
-                for (int i = 0; i < 3; i++)
-                {
-                    for (int j = 3; j < 6; j++)
-                    {
-                        if (grille.getVal(i, j).getValeur() == var) return false;
-                    }
-                }
-                break;
-            case 5:
-                for (int i = 3; i < 6; i++)
-                {
-                    for (int j = 3; j < 6; j++)
-                    {
-                        if (grille.getVal(i, j).getValeur() == var) return false;
-                    }
-                }
-                break;
-            case 6:
-                for (int i = 6; i < 9; i++)
-                {
-                    for (int j = 3; j < 6; j++)
-                    {
-                        if (grille.getVal(i, j).getValeur() == var) return false;
-                    }
-                }
-                break;
-            case 7:
-                for (int i = 0; i < 3; i++)
-                {
-                    for (int j = 6; j < 9; j++)
-                    {
-                        if (grille.getVal(i, j).getValeur() == var) return false;
-                    }
-                }
-                break;
-            case 8:
-                for (int i = 3; i < 6; i++)
-                {
-                    for (int j = 6; j < 9; j++)
-                    {
-                        if (grille.getVal(i, j).getValeur() == var) return false;
-                    }
-                }
-                break;
-            case 9:
-                for (int i = 6; i < 9; i++)
-                {
-                    for (int j = 6; j < 9; j++)
-                    {
-                        if (grille.getVal(i, j).getValeur() == var) return false;
-                    }
-                }
-                break;
-            default:
-                return false;
-        }
-        return true;
+        listIndice.Clear();
     }
 
     public override string ToString()

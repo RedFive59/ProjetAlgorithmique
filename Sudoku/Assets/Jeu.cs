@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Jeu : MonoBehaviour
 {
-    GridManager g;
-    Transform parent;
+    private GridManager g;
+    private Transform parent;
     private GrilleSudoku grille = null;
 
     void Start()
@@ -21,41 +22,32 @@ public class Jeu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            remplirSudokuVide();
+            remplirSudoku();
             g.UpdateGrid();
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            for (int i = 0; i<10; i++)
-            {
-                int a = (int)Random.Range(1,10);
-                Debug.Log(a);
-            }
+            grille.remplirGrilleAvecTrou();
+            g.UpdateGrid();
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Debug.Log("Grille correct ? : " + grille.verifGrille());
         }
     }
 
-    public void remplirSudokuVide()
+    public void remplirSudoku()
     {
         int[] array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         List<int> list = new List<int>();
-        int val = Random.Range(1, 10);
-        if (grille == null)
-        {
-            grille = new GrilleSudoku(9, 9);
-            grille.initVal(0);
-        }
         for (int i = 0; i < 9; i++)
         {
             for (int j = 0; j < 9; j++)
             {
-                //Problème de loop à check
-                do {
-                    if (list.Count == 0) list.AddRange(array);
-                    int rand = Random.Range(0, list.Count);
-                    val = list[rand];
-                    list.RemoveAt(rand);
-                    Debug.Log("grille[" + i + "," + j + "] = " + val);
-                } while (!grille.getVal(i, j).verifValeur(val, i, j));
+                if (list.Count == 0) list.AddRange(array);
+                int rand = UnityEngine.Random.Range(0, list.Count);
+                int val = list[rand];
+                list.RemoveAt(rand);
                 grille.getVal(i, j).setValeur(val);
             }
         }

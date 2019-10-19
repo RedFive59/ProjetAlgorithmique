@@ -47,15 +47,16 @@ class GridManager
     
     private void afficher(int i, int j, GameObject tile)
     {
-        if(this.grille.getVal(i, j).getAffichable())
+        Color blue = new Color(0, 0, 240, 200);
+        Color white = new Color(255, 255, 255, 200);
+        tile.GetComponent<SpriteRenderer>().color = Color.gray;
+        if (this.grille.getVal(i, j).getChangeable() == false)
         {
             tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
-            tile.GetComponent<SpriteRenderer>().color = Color.white;
-            tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.black;
+            tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = white;
         }
         else {
-            tile.GetComponent<SpriteRenderer>().color = Color.gray;
-            tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.gray;
+            tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().color = blue;
         }
     }
 }

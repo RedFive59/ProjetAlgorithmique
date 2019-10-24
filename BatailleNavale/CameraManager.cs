@@ -12,6 +12,7 @@ public class CameraManager : MonoBehaviour
         CameraM = Camera.main; //la camere est déclarée en tant que caméra principale de la scene
         CameraM.enabled = true; //la camera est active
         CameraM.orthographic = true; //camera est en mode orthographique
+        CameraM.transform.position= new Vector3(5f, -5f ,-10f); //deplace la camera aux coords données
         CameraM.orthographicSize = 5.8f; //déclare la taille (diagonale) du rectangle que couvre la camera
         //la position initiale n'est pas changée la caméra est centrée sur l'origine de la scène
     }

@@ -11,4 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Bingo/Bingo.unity
     guid: 950dbb55918be99429f99355b2fdf078
+  - enabled: 1
+    path: Assets/Poker/Scenes/Poker.unity
+    guid: 78d71aa5da77a7d4d82da7837f19c76c
+  - enabled: 1
+    path: Assets/BatailleNavale/Scenes/BatailleNavale.unity
+    guid: d9f30e3eca3c254439cf2e4fd8e05f06
+  - enabled: 1
+    path: Assets/Sudoku/Scenes/Sudoku.unity
+    guid: b7aab8d89af16464e9954f434f41749d
   m_configObjects: {}

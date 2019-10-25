@@ -5,14 +5,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-class GridManager
+class GridManagerSudoku
 {
     private GameObject tileReference;
     private int ligne, colonne;
     private float espacement = 1.1f;
     private GrilleSudoku grille;
 
-    public GridManager(GrilleSudoku grille)
+    public GridManagerSudoku(GrilleSudoku grille)
     {
         tileReference = GameObject.Find("TilePrefab");
         this.grille = grille;

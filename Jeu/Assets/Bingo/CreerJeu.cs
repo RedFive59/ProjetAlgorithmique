@@ -11,8 +11,8 @@ public class CreerJeu : MonoBehaviour
     private int ligne = 3, colonne = 9, nbgrilles = 4;
     private Cartons[] grilles;
     private Cartons[] grillesSelection;
-    private GridManager[] grid;
-    private GridManager gridTirage;
+    private GridManagerBingo[] grid;
+    private GridManagerBingo gridTirage;
 
     private Image fillImg;
 
@@ -110,7 +110,7 @@ public class CreerJeu : MonoBehaviour
 
         this.grilles = new Cartons[this.nbgrilles];
         this.grillesSelection = new Cartons[this.nbgrilles];
-        this.grid = new GridManager[this.nbgrilles];
+        this.grid = new GridManagerBingo[this.nbgrilles];
 
         this.tirage = new List<int>();
         this.tire = new List<int>();
@@ -121,7 +121,7 @@ public class CreerJeu : MonoBehaviour
     {
         Transform parent;
         for (int i = 0; i < 90; i++) this.tirage.Add(i + 1);
-        this.gridTirage = new GridManager();
+        this.gridTirage = new GridManagerBingo();
         parent = GameObject.Find("GridTirage").transform;
         this.gridTirage.GenerateVal(parent.position.x, parent.position.y, parent);
     }
@@ -139,7 +139,7 @@ public class CreerJeu : MonoBehaviour
                 this.grillesSelection[i] = new Cartons(this.ligne, this.colonne);
                 this.grillesSelection[i].copie(this.grilles[i]);
 
-                this.grid[i] = new GridManager(this.grilles[i], i);
+                this.grid[i] = new GridManagerBingo(this.grilles[i], i);
             }
         }
         while (!valCorrect(this.grilles) && (this.nbgrilles < 4));

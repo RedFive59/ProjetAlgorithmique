@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Jeu : MonoBehaviour
 {
-    private GridManager g;
+    private GridManagerSudoku g;
     private Transform parent;
     private GrilleSudoku grille = null;
     private int i;
@@ -15,7 +15,7 @@ public class Jeu : MonoBehaviour
     {
         grille = new GrilleSudoku(9, 9);
         grille.initVal(0);
-        g = new GridManager(grille);
+        g = new GridManagerSudoku(grille);
         parent = GameObject.Find("GridManager").transform;
         g.GenerateGrid(0f, 0f, parent);
     }

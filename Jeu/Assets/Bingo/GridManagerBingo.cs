@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GridManager
+public class GridManagerBingo
 {
     private GameObject tileReference;
     private int ligne, colonne;
@@ -14,7 +14,7 @@ public class GridManager
     private Grille<int> grille;
     private int ind;
 
-    public GridManager(Grille<int> grille, int ind)
+    public GridManagerBingo(Grille<int> grille, int ind)
     {
         tileReference = GameObject.Find("TilePrefab");
         this.grille = grille;
@@ -23,7 +23,7 @@ public class GridManager
         this.ind = ind;
     }
 
-    public GridManager()
+    public GridManagerBingo()
     {
         tileReference = GameObject.Find("TilePrefab");
     }

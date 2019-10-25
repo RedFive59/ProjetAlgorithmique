@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GridManager : MonoBehaviour
+public class GridManagerNavale : MonoBehaviour
 {
     private int rows = 11;
     private int cols = 11;
@@ -39,10 +39,10 @@ public class GridManager : MonoBehaviour
 
         for (int i = 0; i < rows; i++)
         {
-            col0.ajoutVect(i, i);
-            row0.ajoutVect(i, i+65); //convertit un entier en char
+            col0.setVal(i, i);
+            row0.setVal(i, i+65); //convertit un entier en char
             }
-        grille.setVal(0);
+        grille.initVal(0);
         ShowGrid(col0, row0, grille);
     }
 

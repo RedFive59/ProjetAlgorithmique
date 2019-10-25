@@ -43,6 +43,7 @@ public class CreerJeu : MonoBehaviour
             getTemps();
             initBingo();
             creerBingo();
+            tirer();
         }
     }
 
@@ -100,7 +101,7 @@ public class CreerJeu : MonoBehaviour
     private void afficherBINGO(GameObject parent)
     {
         Transform[] go = parent.GetComponentsInChildren<RectTransform>(true);
-        go[2].gameObject.SetActive(true);
+        go[3].gameObject.SetActive(true);
     }
 
     //initialise toutes les grilles ainsi que les listes

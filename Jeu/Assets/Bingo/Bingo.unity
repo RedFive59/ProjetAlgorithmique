@@ -1677,7 +1677,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 728305738}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed71d1200d04000459a709b60916d4c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 86c00f9f9ac90ac47bbc7ef5e94ff03d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &757403674
@@ -2996,7 +2996,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cb1ab06ecda97ad458b5cc3a666c7c20
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - WaterDiffuseMini: {fileID: 21300000, guid: 60bc4c07ebcd8d84183d6741861f5270, type: 3}
+  - WaterDiffuseMiniRed: {fileID: 21300000, guid: 85bdedfbd01dd72418ca4ff37dd845ea,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using System.Text.RegularExpressions;
 
 public class UIManager : MonoBehaviour
 {
-    private int tileSelected;
-    private string nameObject;
-
-    public void getNameObject()
-    {
-        nameObject = EventSystem.current.currentSelectedGameObject.name;
-    }
+    private int i, j;
 
     public void setTileSelected()
     {
+        string nom = EventSystem.current.currentSelectedGameObject.name;
+        string ind = Regex.Replace(nom, "[^0-9]", "");
+        i = ind[0] - 48;
+        j = ind[1] - 48;
     }
 
     public void generateNumberSelection()

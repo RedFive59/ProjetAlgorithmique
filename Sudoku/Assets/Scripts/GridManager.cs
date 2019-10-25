@@ -29,7 +29,6 @@ class GridManager
                 Vector2 pos = new Vector2(posX + (j * espacement - (this.colonne - 1) * espacement / 2), posY + (i * -espacement - (this.ligne - 1) * -espacement / 2));
                 GameObject tile = UnityEngine.Object.Instantiate(tileReference, pos, tileReference.transform.rotation, parent);
                 tile.name = "Case" + i + "_" + j;
-                Debug.Log(tile.GetComponent<Button>().onClick.GetPersistentEventCount());
                 afficher(i, j, tile);
             }
         }

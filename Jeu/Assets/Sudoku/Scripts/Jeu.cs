@@ -15,6 +15,7 @@ public class Jeu : MonoBehaviour
     {
         grille = new GrilleSudoku(9, 9);
         grille.initVal(0);
+        grille.remplirGrilleAvecTrou();
         g = new GridManagerSudoku(grille);
         parent = GameObject.Find("GridManager").transform;
         g.GenerateGrid(0f, 0f, parent);

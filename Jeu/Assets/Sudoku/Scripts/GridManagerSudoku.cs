@@ -56,9 +56,11 @@ class GridManagerSudoku
         {
             tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
             tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = white;
+            tile.transform.GetComponent<Button>().interactable = false;
         }
         else {
             tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = blue;
         }
+        if (this.grille.getVal(i, j).getValeur() == 0) tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GenShips : MonoBehaviour
 {
+    //TEXTURES BATEAUX
     public Sprite txtTp;
     public Sprite txtCtp;
     public Sprite txtSm;
@@ -14,44 +15,39 @@ public class GenShips : MonoBehaviour
     void Start()
     {
         GameObject Torpilleur = new GameObject("Torpilleur");
-        Torpilleur.transform.localScale=new Vector3(2,1,1);
-        Torpilleur.AddComponent<SpriteRenderer>().sprite = txtTp; ;
-        Torpilleur.AddComponent<BoxCollider2D>().autoTiling = true;
-        Torpilleur.GetComponent<BoxCollider2D>().size = new Vector2(2, 1);
-        Torpilleur.transform.parent = this.transform;
+        Torpilleur.transform.localScale=new Vector3(2,1,1);//set la taille en unité du bateau
+        Torpilleur.AddComponent<SpriteRenderer>().sprite = txtTp; ;//lie la texture correspondante au bateau
+        Torpilleur.AddComponent<BoxCollider2D>().autoTiling = true;//place un boxcollider 2d sur le bateau avec auto size
+        Torpilleur.transform.parent = this.transform;//attache le bateau au GO du script (GenShips)
 
         GameObject ContreTorpilleur = new GameObject("ContreTorpilleur");
         ContreTorpilleur.transform.localScale = new Vector3(3, 1, 1);
         ContreTorpilleur.AddComponent<SpriteRenderer>().sprite = txtCtp;
         ContreTorpilleur.AddComponent<BoxCollider2D>().autoTiling = true;
-        ContreTorpilleur.GetComponent<BoxCollider2D>().size = new Vector2(3, 1);
         ContreTorpilleur.transform.parent = this.transform;
 
         GameObject SousMarin = new GameObject("SousMarin");
         SousMarin.transform.localScale = new Vector3(3, 1, 1);
         SousMarin.AddComponent<SpriteRenderer>().sprite = txtSm;
         SousMarin.AddComponent<BoxCollider2D>().autoTiling = true;
-        SousMarin.GetComponent<BoxCollider2D>().size = new Vector2(3, 1);
         SousMarin.transform.parent = this.transform;
 
         GameObject Croiseur = new GameObject("Croiseur");
         Croiseur.transform.localScale = new Vector3(4, 1, 1);
         Croiseur.AddComponent<SpriteRenderer>().sprite = txtCs;
         Croiseur.AddComponent<BoxCollider2D>().autoTiling = true;
-        Croiseur.GetComponent<BoxCollider2D>().size = new Vector2(4, 1);
         Croiseur.transform.parent = this.transform;
 
         GameObject PorteAvion = new GameObject("PorteAvion");
         PorteAvion.transform.localScale = new Vector3(5, 1, 1);
         PorteAvion.AddComponent<SpriteRenderer>().sprite = txtPa;
         PorteAvion.AddComponent<BoxCollider2D>().autoTiling = true;
-        PorteAvion.GetComponent<BoxCollider2D>().size = new Vector2(5, 1);
         PorteAvion.transform.parent = this.transform;
     
         for(int i = 0; i < 5; i++)
         {
             Debug.Log(this.transform.GetChild(i).GetComponent<SpriteRenderer>());
-            this.transform.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
+            this.transform.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";//donne le bon shortlayer (ordre d'affichage) au rendu de chaque bateau
         }
     }
 

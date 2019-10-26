@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-class GrilleSudoku : Grille<Case>
+internal class GrilleSudoku : Grille<Case>
 {
     public GrilleSudoku(int n, int m) : base(n, m)
     {
@@ -42,7 +42,7 @@ class GrilleSudoku : Grille<Case>
         int val;
         for (int n = 0; n < 9; n++)
         {
-            val = this.getVal(nbLigne - 1, n).getValeur();
+            val = this.getVal(nbLigne - 1, n).valeur;
             if (list.Contains(val) || val < 1 || val > 9) return false;
             else list.Add(val);
         }
@@ -55,7 +55,7 @@ class GrilleSudoku : Grille<Case>
         int val;
         for (int n = 0; n < 9; n++)
         {
-            val = this.getVal(n, nbColonne - 1).getValeur();
+            val = this.getVal(n, nbColonne - 1).valeur;
             if (list.Contains(val) || val < 1 || val > 9) return false;
             else list.Add(val);
         }
@@ -96,7 +96,7 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 0; j < 3; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
+                        val = this.getVal(i, j).valeur;
                         if (list.Contains(val)) return false;
                         else list.Add(val);
                     }
@@ -107,7 +107,7 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 0; j < 3; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
+                        val = this.getVal(i, j).valeur;
                         if (list.Contains(val)) return false;
                         else list.Add(val);
                     }
@@ -118,7 +118,7 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 0; j < 3; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
+                        val = this.getVal(i, j).valeur;
                         if (list.Contains(val)) return false;
                         else list.Add(val);
                     }
@@ -129,7 +129,7 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 3; j < 6; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
+                        val = this.getVal(i, j).valeur;
                         if (list.Contains(val)) return false;
                         else list.Add(val);
                     }
@@ -140,7 +140,7 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 3; j < 6; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
+                        val = this.getVal(i, j).valeur;
                         if (list.Contains(val)) return false;
                         else list.Add(val);
                     }
@@ -151,7 +151,7 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 3; j < 6; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
+                        val = this.getVal(i, j).valeur;
                         if (list.Contains(val)) return false;
                         else list.Add(val);
                     }
@@ -162,7 +162,7 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 6; j < 9; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
+                        val = this.getVal(i, j).valeur;
                         if (list.Contains(val)) return false;
                         else list.Add(val);
                     }
@@ -173,7 +173,7 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 6; j < 9; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
+                        val = this.getVal(i, j).valeur;
                         if (list.Contains(val)) return false;
                         else list.Add(val);
                     }
@@ -184,7 +184,7 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 6; j < 9; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
+                        val = this.getVal(i, j).valeur;
                         if (list.Contains(val)) return false;
                         else list.Add(val);
                     }
@@ -216,7 +216,7 @@ class GrilleSudoku : Grille<Case>
         {
             for(int j=0; j<9; j++)
             {
-                this.getVal(i, j).setChangeable(false);
+                this.getVal(i, j).changeable = false;
                 this.getVal(i, j).setValeur(tab[i, j]);
             }
         }
@@ -258,7 +258,7 @@ class GrilleSudoku : Grille<Case>
             {
                 if (tabTrou[i, j] == 1)
                 {
-                    this.getVal(i, j).setChangeable(false);
+                    this.getVal(i, j).changeable = false;
                     this.getVal(i, j).setValeur(tab[i, j]);
                 }
             }
@@ -278,7 +278,7 @@ class GrilleSudoku : Grille<Case>
                 int val = list[rand];
                 list.RemoveAt(rand);
                 this.getVal(i, j).setValeur(val);
-                this.getVal(i, j).setChangeable(false);
+                this.getVal(i, j).changeable = false;
             }
         }
     }

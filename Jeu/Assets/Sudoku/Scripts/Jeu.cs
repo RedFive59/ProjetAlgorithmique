@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Jeu : MonoBehaviour
 {
-    private GridManagerSudoku g;
+    private UIManager UIManager;
     private Transform parent;
     private GrilleSudoku grille = null;
     private int i;
@@ -16,9 +16,10 @@ public class Jeu : MonoBehaviour
         grille = new GrilleSudoku(9, 9);
         grille.initVal(0);
         grille.remplirGrilleAvecTrou();
-        g = new GridManagerSudoku(grille);
+        UIManager = GameObject.Find("Jeu").GetComponent<UIManager>();
+        UIManager.Init();
         parent = GameObject.Find("GridManager").transform;
-        g.GenerateGrid(0f, 0f, parent);
+        UIManager.GenerateGrid(0f, 0f, parent);
     }
 
     private void Update()
@@ -27,17 +28,22 @@ public class Jeu : MonoBehaviour
         {
             Debug.Log("remplirMauvaixSudoku()");
             grille.remplirMauvaixSudoku();
-            g.UpdateGrid();
+            UIManager.UpdateGrid();
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("remplirGrilleAvecTrou()");
             grille.remplirGrilleAvecTrou();
-            g.UpdateGrid();
+            UIManager.UpdateGrid();
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log("Grille correct ? : " + grille.verifGrille());
         }
+    }
+
+    internal GrilleSudoku getGrille()
+    {
+        return grille;
     }
 }

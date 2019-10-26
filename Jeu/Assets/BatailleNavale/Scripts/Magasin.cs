@@ -10,10 +10,12 @@ public class Magasin : MonoBehaviour
     Color sgrey;//la couleur qui sera utilisée pour le panel
     RectTransform rect2;
     RectTransform rect3;
+    private int Magasinpos;
 
     // Start is called before the first frame update
     void Start()
     {
+        Magasinpos = 1;
         cvs2 = new GameObject("Canvas Panel");
         cvs2.layer = 9;
         cvs2.AddComponent<Canvas>();
@@ -21,9 +23,10 @@ public class Magasin : MonoBehaviour
         cvs2.AddComponent<GraphicRaycaster>();
 
         myCanvas2 = cvs2.GetComponent<Canvas>();
-        myCanvas2.renderMode = RenderMode.ScreenSpaceCamera; //canvas en mode resize sur la camera
+        //myCanvas2.renderMode = RenderMode.ScreenSpaceCamera; //canvas en mode resize sur la camera
+        myCanvas2.renderMode = RenderMode.WorldSpace;
         myCanvas2.transform.position = new Vector3(5f, -5f, 0);
-        myCanvas2.worldCamera = FindObjectOfType<Camera>(); //cherche la premiere camera dispo dans les GO 
+        //myCanvas2.worldCamera = FindObjectOfType<Camera>(); //cherche la premiere camera dispo dans les GO 
         myCanvas2.planeDistance = 10;
         myCanvas2.sortingLayerName = "PanelLayer";
         rect3 = myCanvas2.GetComponent<RectTransform>();
@@ -38,16 +41,37 @@ public class Magasin : MonoBehaviour
         cvs2.transform.SetParent(this.transform, false);
 
         rect2 = panel.GetComponent<RectTransform>();//recup le recttransform du panel
-        rect2.sizeDelta = new Vector2(44f, 528f);//resize le panel
-        rect2.localPosition = new Vector3(374f, 0, 0);
-        sgrey = Color.black;
-        sgrey.a = 0.6f;//set la transparence de la couleur de min 0 à max 1
+        rect2.sizeDelta = new Vector2(5.3f, 11.6f);//resize le panel
+        rect2.localPosition = new Vector3(6.1f, 0, 0);
+        sgrey.r = 140;//set la valeur du rvb rouge
+        sgrey.b = 140;//set la valeur du rvb bleu
+        sgrey.g = 140;//set la valeur du rvb vert
+        sgrey.a = 0.5f;//set la transparence de la couleur de min 0 à max 1
         I.color = sgrey;
+
+        panel.AddComponent<VerticalLayoutGroup>();
+        panel.AddComponent<Button>();
+        panel.GetComponent<Button>().onClick.AddListener(MoveMagasin);
+
+        void MoveMagasin()
+        {
+            if (Magasinpos == 0)
+            {
+                panel.transform.localPosition = new Vector3(6.1f, 0, 0);
+                Magasinpos = 1;
+            }
+            else { if (Magasinpos == 1)
+                {
+                    panel.transform.localPosition = new Vector3(10.43f, 0, 0);
+                    Magasinpos = 0;
+                }
+         }
+        }
 
         GameObject myText;
         Text text;
         RectTransform rectTransform;
-        myText = new GameObject();
+        myText = new GameObject("Magasin");
         myText.transform.parent = panel.transform;
         text = myText.AddComponent<Text>();
         text.color = Color.black;//couleur de texte noire
@@ -60,15 +84,10 @@ public class Magasin : MonoBehaviour
         // Text position
         rectTransform = text.GetComponent<RectTransform>();
         rectTransform.localPosition = new Vector3(0, 0, 0);
-        rectTransform.sizeDelta = new Vector2(1, 2);
+        rectTransform.sizeDelta = new Vector2(5, 2);
         rectTransform.localScale = new Vector3(0.5f, 0.5f, 1);
-        rectTransform.rotation = new Quaternion(1f,1f,1f,1f);
+        rectTransform.rotation = new Quaternion(0f,0f,0f,90f);
     }
-    /*
-        sgrey.r = 140;//set la valeur du rvb rouge
-        sgrey.b = 140;//set la valeur du rvb bleu
-        sgrey.g = 140;//set la valeur du rvb vert
-        */
     // Update is called once per frame
     void Update()
     {

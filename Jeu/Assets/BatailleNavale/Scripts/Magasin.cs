@@ -25,6 +25,7 @@ public class Magasin : MonoBehaviour
         myCanvas2.transform.position = new Vector3(5f, -5f, 0);
         myCanvas2.worldCamera = FindObjectOfType<Camera>(); //cherche la premiere camera dispo dans les GO 
         myCanvas2.planeDistance = 10;
+        myCanvas2.sortingLayerName = "PanelLayer";
         rect3 = myCanvas2.GetComponent<RectTransform>();
         rect3.sizeDelta = new Vector2(11f,11f);
 

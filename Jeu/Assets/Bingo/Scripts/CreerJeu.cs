@@ -20,16 +20,16 @@ public class CreerJeu : MonoBehaviour
     private List<int> tire;
 
     private float timer, tempsPioche = 5.0f;
-    private int modeJeu = 0;
+    private int modeJeu = 1;
 
     private bool fini = false;
     
-    //definie un objet physique tile
+    //definie des objets physique
     GameObject tile;
     GameObject scroll;
     GameObject ObjectMenuGagne;
 
-    //fonction lu au lancement du jeu
+    //Appel au moment ou le jeu est sur l'ecran
     void Awake()
     {
         this.tile = GameObject.Find(0 + ":Case" + 0 + "_" + 0);
@@ -47,14 +47,14 @@ public class CreerJeu : MonoBehaviour
         }
     }
 
-    //fonction lu à chaque image par seconde
+    //fonction mise à jour à chaque image par seconde
     private void Update()
     {
-        if(!fini)
+        if(!this.fini)
         {
             if (this.tirage.Count > 0)
             {
-                //timer de tempsPioche secondes
+                //timer de "tempsPioche" secondes
                 timer += Time.deltaTime;
                 this.fillImg.fillAmount = timer / tempsPioche;
                 if (timer > tempsPioche)
@@ -63,17 +63,22 @@ public class CreerJeu : MonoBehaviour
                     timer = timer - tempsPioche;
                 }
             }
-            //verifie si on selectionne une case
+            //vérifie si on selectionne une case
             select();
-            //appel le fonction pour verifier si on gagne
+            //appel la fonction pour verifier si on à gagné
             if (Input.GetKeyDown("g"))
             {
-                fini = gagne(this.modeJeu);
+                finDuJeu();
             }
         }
-        else
+    }
+
+    //verifie si le joueur à gagné lorsqu'il demande à verifier sa grille
+    public void finDuJeu()
+    {
+        if (gagne(this.modeJeu))
         {
-            //this.Gagne.SetActive(true);
+            this.fini = true;
             afficherBINGO(this.ObjectMenuGagne);
         }
     }
@@ -126,23 +131,22 @@ public class CreerJeu : MonoBehaviour
         this.gridTirage.GenerateVal(parent.position.x, parent.position.y, parent);
     }
 
-    //fonctione appeler pour creer le jeu de Bingo
+    //fonctione appelee pour creer le jeu de Bingo
     private void creerBingo()
     {
         Transform parent;
-        do
-        {
-            for (int i = 0; i < this.nbgrilles; i++)
-            {
-                this.grilles[i] = new Cartons(this.ligne, this.colonne);
-                this.grilles[i].initGrille();
-                this.grillesSelection[i] = new Cartons(this.ligne, this.colonne);
-                this.grillesSelection[i].copie(this.grilles[i]);
+        List<int> ordreLigne;
 
-                this.grid[i] = new GridManagerBingo(this.grilles[i], i);
-            }
+        for (int i = 0; i < this.nbgrilles; i++)
+        {
+            this.grilles[i] = new Cartons(this.ligne, this.colonne);
+            ordreLigne = genRandOrdreLigne();
+            this.grilles[i].initGrille(ordreLigne);
+            this.grillesSelection[i] = new Cartons(this.ligne, this.colonne);
+            this.grillesSelection[i].copie(this.grilles[i]);
+
+            this.grid[i] = new GridManagerBingo(this.grilles[i], i);
         }
-        while (!valCorrect(this.grilles) && (this.nbgrilles < 4));
 
         ajoutVal();
 
@@ -155,29 +159,13 @@ public class CreerJeu : MonoBehaviour
         initTirage();
     }
 
-    //verifie si le nombre de case vide est correct
-    public bool valCorrect(Cartons[] b)
+    //ordre aleatoire dans lequel on va remplir les lignes de la grille
+    private List<int> genRandOrdreLigne()
     {
-        int cpt;
-        int nbCaseFullCol = b.Length * 3 - 10;
-        if (nbCaseFullCol < 0) nbCaseFullCol = 0;
-        for (int i = 0; i < this.colonne; i++)
-        {
-            cpt = 0;
-            for (int j = 0; j < b.Length; j++)
-            {
-                for (int k = 0; k < this.ligne; k++)
-                {
-                    if (b[j].getVal(k, i) == -1)
-                    {
-                        cpt++;
-                    }
-                }
-            }
-            if ((cpt < nbCaseFullCol) || (cpt > nbCaseFullCol + 4)) return false;
-        }
+        List<int> ordreLigne = new List<int>();
+        for (int i = 0; i < this.ligne; i++) ordreLigne.Add(i);
 
-        return true;
+        return ordreLigne;
     }
 
     //ajoute les valeurs dans les grilles
@@ -322,7 +310,6 @@ public class CreerJeu : MonoBehaviour
                     {
                         if (this.tire.Contains(val))
                         {
-                            Debug.Log(val);
                             cpt++;
                         }
                         else

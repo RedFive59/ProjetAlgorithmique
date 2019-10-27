@@ -10,6 +10,7 @@ public class Magasin : MonoBehaviour
     private RectTransform rect2;
     private RectTransform rect3;
     private int Magasinpos;//var qui dit si le magasin est ouvert ou fermé
+    private Text text;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +37,7 @@ public class Magasin : MonoBehaviour
         panel.AddComponent<CanvasRenderer>();
         Image I = panel.AddComponent<Image>();//récupération du pseudo rendu du panel
 
-        cvs2.transform.parent = this.transform;//range le GO cvs2 dans le GO du script
+        cvs2.transform.SetParent(this.transform, false);//range le GO cvs2 dans le GO du script
 
         rect2 = panel.GetComponent<RectTransform>();//recup le recttransform du panel
         rect2.sizeDelta = new Vector2(6.127f, 11.6f);//resize le panel
@@ -68,34 +69,16 @@ public class Magasin : MonoBehaviour
         I2.color = sgrey;
         //fin couleur
 
-        void MoveMagasin()//fonction qui répond à l'action du bouton du panel2
-        {
-            if (Magasinpos == 0)//si les panneaux sont rangés, déplace les deux panneaux pour l'ouverture
-            {
-                panel.transform.localPosition = new Vector3(5.686f, 0, 0);
-                panel2.transform.localPosition = new Vector3(3.122499f, 0, 0);
-                Magasinpos = 1;
-            }
-            else { if (Magasinpos == 1)//si les panneaux sont ouverts, déplace les deux panneaux pour la fermeture
-                    {
-                    panel.transform.localPosition = new Vector3(10.43f, 0, 0);
-                    panel2.transform.localPosition = new Vector3(7.8665f, 0, 0);
-                    Magasinpos = 0;
-                    }
-                }
-        }
-
         //TEXT/////////////////////////
         // Text titre du Magasin
         GameObject myText;
-        Text text;
         RectTransform rectTransform;
         myText = new GameObject("Magasin");
         myText.transform.parent = panel2.transform;//attache le text au panel2
         text = myText.AddComponent<Text>();
         text.color = Color.black;//couleur de texte noire
         text.font = (Font)Resources.GetBuiltinResource<Font>("Arial.ttf");//utilise la police Arial pour afficher le texte
-        text.text = myText.name;
+        text.text = "Magasin (fermer)";
         text.fontSize = 1;//taille police
         text.alignment = TextAnchor.MiddleCenter;//attache le text au centre de sa box, ici le panel2
         
@@ -103,13 +86,35 @@ public class Magasin : MonoBehaviour
         // Text position
         rectTransform = text.GetComponent<RectTransform>();
         rectTransform.localPosition = new Vector3(0, 0, 0);
-        rectTransform.sizeDelta = new Vector2(5, 2);
+        rectTransform.sizeDelta = new Vector2(9, 2);
         rectTransform.localScale = new Vector3(0.5f, 0.5f, 1);
         //rectTransform.rotation = new Quaternion(0f,0f,0f,90f);
         rectTransform.Rotate(new Vector3(0, 0, 90f));//permet de place le text à la verticale (rotation z à 90 degrés)
-        //TEXT/////////////////////////
+                                                     //TEXT/////////////////////////
+
+        void MoveMagasin()//fonction qui répond à l'action du bouton du panel2
+        {
+            if (Magasinpos == 0)//si les panneaux sont rangés, déplace les deux panneaux pour l'ouverture
+            {
+                panel.transform.localPosition = new Vector3(5.686f, 0, 0);
+                panel2.transform.localPosition = new Vector3(3.122499f, 0, 0);
+                text.text = "Magasin (fermer)";
+                Magasinpos = 1;
+            }
+            else
+            {
+                if (Magasinpos == 1)//si les panneaux sont ouverts, déplace les deux panneaux pour la fermeture
+                {
+                    panel.transform.localPosition = new Vector3(10.43f, 0, 0);
+                    panel2.transform.localPosition = new Vector3(7.8665f, 0, 0);
+                    text.text = "Magasin (ouvrir)";
+                    Magasinpos = 0;
+                }
+            }
+        }
     }
 
+ 
     // Update is called once per frame
     void Update()
     {

@@ -19,35 +19,41 @@ public class GenShips : MonoBehaviour
         Torpilleur.AddComponent<SpriteRenderer>().sprite = txtTp; ;//lie la texture correspondante au bateau
         Torpilleur.AddComponent<BoxCollider2D>().autoTiling = true;//place un boxcollider 2d sur le bateau avec auto size
         Torpilleur.transform.parent = this.transform;//attache le bateau au GO du script (GenShips)
+        Torpilleur.AddComponent<Draggable>();
 
         GameObject ContreTorpilleur = new GameObject("ContreTorpilleur");
         ContreTorpilleur.transform.localScale = new Vector3(3, 1, 1);
         ContreTorpilleur.AddComponent<SpriteRenderer>().sprite = txtCtp;
         ContreTorpilleur.AddComponent<BoxCollider2D>().autoTiling = true;
         ContreTorpilleur.transform.parent = this.transform;
+        ContreTorpilleur.AddComponent<Draggable>();
 
         GameObject SousMarin = new GameObject("SousMarin");
         SousMarin.transform.localScale = new Vector3(3, 1, 1);
         SousMarin.AddComponent<SpriteRenderer>().sprite = txtSm;
         SousMarin.AddComponent<BoxCollider2D>().autoTiling = true;
         SousMarin.transform.parent = this.transform;
+        SousMarin.AddComponent<Draggable>();
 
         GameObject Croiseur = new GameObject("Croiseur");
         Croiseur.transform.localScale = new Vector3(4, 1, 1);
         Croiseur.AddComponent<SpriteRenderer>().sprite = txtCs;
         Croiseur.AddComponent<BoxCollider2D>().autoTiling = true;
         Croiseur.transform.parent = this.transform;
+        Croiseur.AddComponent<Draggable>();
 
         GameObject PorteAvion = new GameObject("PorteAvion");
         PorteAvion.transform.localScale = new Vector3(5, 1, 1);
         PorteAvion.AddComponent<SpriteRenderer>().sprite = txtPa;
         PorteAvion.AddComponent<BoxCollider2D>().autoTiling = true;
         PorteAvion.transform.parent = this.transform;
-    
-        for(int i = 0; i < 5; i++)
+        PorteAvion.AddComponent<Draggable>();
+
+        for (int i = 0; i < 5; i++)
         {
             Debug.Log(this.transform.GetChild(i).GetComponent<SpriteRenderer>());
             this.transform.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";//donne le bon shortlayer (ordre d'affichage) au rendu de chaque bateau
+            this.transform.GetChild(i).transform.position = new Vector3(12f, -10 + i*2, 0);
         }
     }
 

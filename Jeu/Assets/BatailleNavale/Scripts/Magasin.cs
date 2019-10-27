@@ -40,8 +40,8 @@ public class Magasin : MonoBehaviour
         cvs2.transform.SetParent(this.transform, false);//range le GO cvs2 dans le GO du script
 
         rect2 = panel.GetComponent<RectTransform>();//recup le recttransform du panel
-        rect2.sizeDelta = new Vector2(6.127f, 11.6f);//resize le panel
-        rect2.localPosition = new Vector3(5.686f, 0, 0);
+        rect2.sizeDelta = new Vector2(6.532f, 11.6f);//resize le panel
+        rect2.localPosition = new Vector3(7.026f, 0, 0);
 
         sgrey.r = 180;//set la valeur du rvb rouge
         sgrey.b = 180;//set la valeur du rvb bleu
@@ -57,7 +57,7 @@ public class Magasin : MonoBehaviour
         panel2.AddComponent<CanvasRenderer>();
         panel2.AddComponent<RectTransform>();
         panel2.GetComponent<RectTransform>().sizeDelta = new Vector2(1f, 11.6f);
-        panel2.GetComponent<RectTransform>().localPosition = new Vector3(3.122499f, 0, 0);
+        panel2.GetComponent<RectTransform>().localPosition = new Vector3(4.26f, 0, 0);
         panel2.AddComponent<Button>().onClick.AddListener(MoveMagasin);
         //fin positionnement
         //début change la couleur du panel
@@ -96,8 +96,8 @@ public class Magasin : MonoBehaviour
         {
             if (Magasinpos == 0)//si les panneaux sont rangés, déplace les deux panneaux pour l'ouverture
             {
-                panel.transform.localPosition = new Vector3(5.686f, 0, 0);
-                panel2.transform.localPosition = new Vector3(3.122499f, 0, 0);
+                panel.transform.localPosition = new Vector3(7.026f, 0, 0);
+                panel2.transform.localPosition = new Vector3(4.26f, 0, 0);
                 text.text = "Magasin (fermer)";
                 Magasinpos = 1;
             }
@@ -105,8 +105,8 @@ public class Magasin : MonoBehaviour
             {
                 if (Magasinpos == 1)//si les panneaux sont ouverts, déplace les deux panneaux pour la fermeture
                 {
-                    panel.transform.localPosition = new Vector3(10.43f, 0, 0);
-                    panel2.transform.localPosition = new Vector3(7.8665f, 0, 0);
+                    panel.transform.localPosition = new Vector3(11.466f, 0, 0);
+                    panel2.transform.localPosition = new Vector3(8.7f, 0, 0);
                     text.text = "Magasin (ouvrir)";
                     Magasinpos = 0;
                 }

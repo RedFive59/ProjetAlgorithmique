@@ -8,8 +8,6 @@ public class Jeu : MonoBehaviour
     private UIManager UIManager;
     private Transform parent;
     private GrilleSudoku grille = null;
-    private int i;
-    private int j;
 
     void Start()
     {
@@ -24,21 +22,20 @@ public class Jeu : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if(Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log("remplirMauvaixSudoku()");
-            grille.remplirMauvaixSudoku();
-            UIManager.UpdateGrid();
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("remplirGrilleAvecTrou()");
-            grille.remplirGrilleAvecTrou();
+            Debug.Log("remplirGrille()");
+            grille.remplirGrille();
             UIManager.UpdateGrid();
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log("Grille correct ? : " + grille.verifGrille());
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Debug.Log("UpdateGrid()");
+            UIManager.UpdateGrid();
         }
     }
 

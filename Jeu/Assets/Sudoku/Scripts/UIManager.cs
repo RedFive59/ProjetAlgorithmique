@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     private int ligne, colonne;
     private float espacement = 1.1f;
     private GrilleSudoku grille;
-    private int i, j;
+    private int i = -1, j = -1;
 
     public void Init()
     {
@@ -53,31 +53,43 @@ public class UIManager : MonoBehaviour
     private void afficher(int i, int j, GameObject tile)
     {
         Case selectedCase = grille.getVal(i, j);
-        Color blue = new Color(40, 100, 180, 255);
-        Color white = new Color(205, 205, 205, 255);
-        Color selectedColor = new Color(120, 150, 170);
-        Color defaultColor = new Color(35, 35, 35, 255);
+        Color blue = new Color32(0, 110, 255, 255);
+        Color white = new Color32(205, 205, 205, 255);
+        Color goodValue = new Color32(80, 170, 255, 255);
+        Color badValue = new Color32(170, 20, 20, 255);
+        Color unchangeableCase = new Color32(0, 0, 0, 255);
         if (selectedCase.changeable == false)
         {
             tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
-            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = white;
             tile.GetComponent<Button>().interactable = false;
-        }
-        else
-        {
-            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = blue;
-        }
-        if (selectedCase.valeur == 0)
-        {
-            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
-        }
-        if (selectedCase.selected)
-        {
-            tile.GetComponent<Image>().color = Color.blue;
-        }
-        else
-        {
-            tile.GetComponent<Image>().color = Color.white;
+            tile.GetComponent<Image>().color = unchangeableCase;
+        } else {
+            if (selectedCase.valeur == 0)
+            {
+                // Valeur de la case à 0
+                tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+            }
+            else
+            {
+                Color32 textColor = goodValue;
+                //Debug.Log("grille.verifLigne(" + i + ") = " + grille.verifLigne(i));
+                //Debug.Log("grille.verifColonne(" + j + ") = " + grille.verifColonne(j));
+                //Debug.Log("grille.verifCarre(grille.numCarre(" + i + ", " + j + ")) = " + grille.verifCarre(grille.numCarre(i, j)));
+                if (!grille.verifLigne(i) || !grille.verifColonne(j) || !grille.verifCarre(grille.numCarre(i, j))) textColor = badValue;
+                // Valeur de la case entre 1 et 9
+                tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
+                tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = textColor;
+            }
+            if (selectedCase.selected)
+            {
+                // Case sélectionnée
+                tile.GetComponent<Image>().color = blue;
+            }
+            else
+            {
+                // Case non sélectionnée
+                tile.GetComponent<Image>().color = white;
+            }
         }
     }
 
@@ -95,12 +107,12 @@ public class UIManager : MonoBehaviour
     public void generateNumberSelection()
     {
         GameObject buttonReference = GameObject.Find("ButtonPrefab");
-        for (int i = 1; i < 10; i++)
+        for (int n = 1; n < 10; n++)
         {
             GameObject tile = UnityEngine.Object.Instantiate(buttonReference, buttonReference.transform.position, buttonReference.transform.rotation, GameObject.Find("ButtonManager").transform);
-            tile.name = "Bouton_"+ i;
-            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = i.ToString();
-            tile.transform.position = new Vector3((float)(tile.transform.position.x + 1.1*(i-1)), tile.transform.position.y);
+            tile.name = "Bouton_"+ n;
+            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = n.ToString();
+            tile.transform.position = new Vector3((float)(tile.transform.position.x + 1.1*(n-1)), tile.transform.position.y);
         }
         buttonReference.SetActive(false);
     }
@@ -113,6 +125,20 @@ public class UIManager : MonoBehaviour
             {
                 if (k != i || l != j) if (grille.getVal(k, l).selected) grille.getVal(k, l).selected = false;
             }
+        }
+    }
+
+    public void buttonClick()
+    {
+        string nom = EventSystem.current.currentSelectedGameObject.name;
+        string ind = Regex.Replace(nom, "[^0-9]", "");
+        int buttonVal = ind[0] - 48;
+        if (i != -1 && j != -1)
+        {
+            //Debug.Log("Avant appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
+            grille.getVal(i, j).setValeur(buttonVal);
+            //Debug.Log("Après appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
+            UpdateGrid();
         }
     }
 }

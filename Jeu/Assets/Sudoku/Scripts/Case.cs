@@ -3,9 +3,11 @@ using System.Collections.Generic;
 
 class Case
 {
-    private int valeur;
-    private Boolean changeable;
     private List<int> listIndice;
+    public int valeur;
+    public Boolean changeable;
+    public Boolean selected = false;
+
     public Case()
     {
         changeable = true;
@@ -17,21 +19,6 @@ class Case
         changeable = true;
         this.valeur = valeur;
         listIndice = new List<int>();
-    }
-
-    public Boolean getChangeable()
-    {
-        return changeable;
-    }
-
-    public void setChangeable(Boolean cond)
-    {
-        changeable = cond;
-    }
-
-    public int getValeur()
-    {
-        return valeur;
     }
 
     public void setValeur(int val)
@@ -60,6 +47,6 @@ class Case
 
     public override string ToString()
     {
-        return "" + this.getValeur();
+        return "" + this.valeur;
     }
 }

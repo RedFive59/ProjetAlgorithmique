@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-class GrilleSudoku : Grille<Case>
+internal class GrilleSudoku : Grille<Case>
 {
     public GrilleSudoku(int n, int m) : base(n, m)
     {
@@ -27,42 +27,52 @@ class GrilleSudoku : Grille<Case>
 
     public Boolean verifGrille()
     {
-        for (int i = 1; i < 10; i++)
+        for (int i = 0; i < 9; i++)
         {
             if (!verifLigne(i) ||
             !verifColonne(i) ||
-            !verifCarre(i)) return false;
+            !verifCarre(i+1) ||
+            !verifZeros())
+            {
+                return false;
+            }
         }
         return true;
     }
 
-    private Boolean verifLigne(int nbLigne)
+    public Boolean verifLigne(int nbLigne)
     {
         List<int> list = new List<int>();
         int val;
         for (int n = 0; n < 9; n++)
         {
-            val = this.getVal(nbLigne - 1, n).getValeur();
-            if (list.Contains(val) || val < 1 || val > 9) return false;
-            else list.Add(val);
+            val = this.getVal(nbLigne, n).valeur;
+            if(val != 0)
+            {
+                if (list.Contains(val)) return false;
+                else list.Add(val);
+            }
         }
         return true;
     }
 
-    private Boolean verifColonne(int nbColonne)
+    public Boolean verifColonne(int nbColonne)
     {
         List<int> list = new List<int>();
         int val;
         for (int n = 0; n < 9; n++)
         {
-            val = this.getVal(n, nbColonne - 1).getValeur();
-            if (list.Contains(val) || val < 1 || val > 9) return false;
-            else list.Add(val);
+            val = this.getVal(n, nbColonne).valeur;
+            if (val != 0)
+            {
+                if (list.Contains(val)) return false;
+                else list.Add(val);
+            }
         }
         return true;
     }
 
-    private int numCarre(int i, int j)
+    public int numCarre(int i, int j)
     {
         if (i < 3)
         {
@@ -85,7 +95,7 @@ class GrilleSudoku : Grille<Case>
         return -1;
     }
 
-    private Boolean verifCarre(int nCarre)
+    public Boolean verifCarre(int nCarre)
     {
         List<int> list = new List<int>();
         int val;
@@ -96,9 +106,12 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 0; j < 3; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
-                        if (list.Contains(val)) return false;
-                        else list.Add(val);
+                        val = this.getVal(i, j).valeur;
+                        if (val != 0)
+                        {
+                            if (list.Contains(val)) return false;
+                            else list.Add(val);
+                        }
                     }
                 }
                 break;
@@ -107,9 +120,12 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 0; j < 3; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
-                        if (list.Contains(val)) return false;
-                        else list.Add(val);
+                        val = this.getVal(i, j).valeur;
+                        if (val != 0)
+                        {
+                            if (list.Contains(val)) return false;
+                            else list.Add(val);
+                        }
                     }
                 }
                 break;
@@ -118,9 +134,12 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 0; j < 3; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
-                        if (list.Contains(val)) return false;
-                        else list.Add(val);
+                        val = this.getVal(i, j).valeur;
+                        if (val != 0)
+                        {
+                            if (list.Contains(val)) return false;
+                            else list.Add(val);
+                        }
                     }
                 }
                 break;
@@ -129,9 +148,12 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 3; j < 6; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
-                        if (list.Contains(val)) return false;
-                        else list.Add(val);
+                        val = this.getVal(i, j).valeur;
+                        if (val != 0)
+                        {
+                            if (list.Contains(val)) return false;
+                            else list.Add(val);
+                        }
                     }
                 }
                 break;
@@ -140,9 +162,12 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 3; j < 6; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
-                        if (list.Contains(val)) return false;
-                        else list.Add(val);
+                        val = this.getVal(i, j).valeur;
+                        if (val != 0)
+                        {
+                            if (list.Contains(val)) return false;
+                            else list.Add(val);
+                        }
                     }
                 }
                 break;
@@ -151,9 +176,12 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 3; j < 6; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
-                        if (list.Contains(val)) return false;
-                        else list.Add(val);
+                        val = this.getVal(i, j).valeur;
+                        if (val != 0)
+                        {
+                            if (list.Contains(val)) return false;
+                            else list.Add(val);
+                        }
                     }
                 }
                 break;
@@ -162,9 +190,12 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 6; j < 9; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
-                        if (list.Contains(val)) return false;
-                        else list.Add(val);
+                        val = this.getVal(i, j).valeur;
+                        if (val != 0)
+                        {
+                            if (list.Contains(val)) return false;
+                            else list.Add(val);
+                        }
                     }
                 }
                 break;
@@ -173,9 +204,12 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 6; j < 9; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
-                        if (list.Contains(val)) return false;
-                        else list.Add(val);
+                        val = this.getVal(i, j).valeur;
+                        if (val != 0)
+                        {
+                            if (list.Contains(val)) return false;
+                            else list.Add(val);
+                        }
                     }
                 }
                 break;
@@ -184,15 +218,26 @@ class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 6; j < 9; j++)
                     {
-                        val = this.getVal(i, j).getValeur();
-                        if (list.Contains(val)) return false;
-                        else list.Add(val);
+                        val = this.getVal(i, j).valeur;
+                        if (val != 0)
+                        {
+                            if (list.Contains(val)) return false;
+                            else list.Add(val);
+                        }
                     }
                 }
                 break;
             default:
                 return false;
         }
+        return true;
+    }
+
+    public Boolean verifZeros()
+    {
+        for (int i = 0; i < 9; i++)
+            for (int j = 0; j < 9; j++)
+                if (this.getVal(i, j).valeur == 0) return false;
         return true;
     }
 
@@ -216,7 +261,7 @@ class GrilleSudoku : Grille<Case>
         {
             for(int j=0; j<9; j++)
             {
-                this.getVal(i, j).setChangeable(false);
+                this.getVal(i, j).changeable = false;
                 this.getVal(i, j).setValeur(tab[i, j]);
             }
         }
@@ -258,27 +303,9 @@ class GrilleSudoku : Grille<Case>
             {
                 if (tabTrou[i, j] == 1)
                 {
-                    this.getVal(i, j).setChangeable(false);
+                    this.getVal(i, j).changeable = false;
                     this.getVal(i, j).setValeur(tab[i, j]);
                 }
-            }
-        }
-    }
-    
-    public void remplirMauvaixSudoku()
-    {
-        int[] array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        List<int> list = new List<int>();
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                if (list.Count == 0) list.AddRange(array);
-                int rand = UnityEngine.Random.Range(0, list.Count);
-                int val = list[rand];
-                list.RemoveAt(rand);
-                this.getVal(i, j).setValeur(val);
-                this.getVal(i, j).setChangeable(false);
             }
         }
     }

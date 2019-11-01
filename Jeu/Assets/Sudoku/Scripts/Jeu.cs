@@ -5,38 +5,42 @@ using UnityEngine;
 
 public class Jeu : MonoBehaviour
 {
-    private GridManagerSudoku g;
+    private UIManager UIManager;
     private Transform parent;
     private GrilleSudoku grille = null;
-    private int i;
-    private int j;
 
     void Start()
     {
         grille = new GrilleSudoku(9, 9);
         grille.initVal(0);
-        g = new GridManagerSudoku(grille);
+        grille.remplirGrilleAvecTrou();
+        UIManager = GameObject.Find("Jeu").GetComponent<UIManager>();
+        UIManager.Init();
         parent = GameObject.Find("GridManager").transform;
-        g.GenerateGrid(0f, 0f, parent);
+        UIManager.GenerateGrid(0f, 0f, parent);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if(Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log("remplirMauvaixSudoku()");
-            grille.remplirMauvaixSudoku();
-            g.UpdateGrid();
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("remplirGrilleAvecTrou()");
-            grille.remplirGrilleAvecTrou();
-            g.UpdateGrid();
+            Debug.Log("remplirGrille()");
+            grille.remplirGrille();
+            UIManager.UpdateGrid();
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log("Grille correct ? : " + grille.verifGrille());
         }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Debug.Log("UpdateGrid()");
+            UIManager.UpdateGrid();
+        }
+    }
+
+    internal GrilleSudoku getGrille()
+    {
+        return grille;
     }
 }

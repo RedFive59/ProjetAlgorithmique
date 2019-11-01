@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     private float espacement = 1.1f;
     private GrilleSudoku grille;
     private int i = -1, j = -1;
+    public GameObject finishCanvas;
 
     public void Init()
     {
@@ -139,6 +140,29 @@ public class UIManager : MonoBehaviour
             grille.getVal(i, j).setValeur(buttonVal);
             //Debug.Log("Après appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
             UpdateGrid();
+            if (grille.verifGrille()) finishGame();
         }
+    }
+
+    public void eraseValue()
+    {
+        if (i != -1 && j != -1)
+        {
+            grille.getVal(i, j).valeur = 0;
+            UpdateGrid();
+        }
+    }
+
+    public void finishGame()
+    {
+        for(int n = 1; n < 10; n++)
+        {
+            GameObject.Find("Bouton_" + n).GetComponent<Button>().interactable = false;
+        }
+        for (int k = 0; k < 9; k++)
+            for (int l = 0; l < 9; l++)
+                GameObject.Find("Case" + k + "_" + l).GetComponent<Button>().interactable = false;
+        GameObject.Find("Eraser").GetComponent<Button>().interactable = false;
+        finishCanvas.SetActive(true);
     }
 }

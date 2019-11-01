@@ -27,6 +27,7 @@ public class Jeu : MonoBehaviour
             Debug.Log("remplirGrille()");
             grille.remplirGrille();
             UIManager.UpdateGrid();
+            UIManager.finishGame();
         }
         if (Input.GetKeyDown(KeyCode.C))
         {

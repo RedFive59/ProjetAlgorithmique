@@ -7,11 +7,8 @@ public class FileWork : MonoBehaviour
 {
     void Start()
     {
-        /*
-        GameData g = new GameData{};
-        string json = JsonUtility.ToJson(g);
-        Debug.Log(json);
-        */
+        GameData g = new GameData();
+        SaveGameData(g);
         LoadGameData();
     }
 
@@ -22,15 +19,16 @@ public class FileWork : MonoBehaviour
     }
 
 
-    private void LoadGameData()
+    private GameData LoadGameData()
     {
-        string gameDataFileName = "Sudoku/JSON_Work/Saves/file.json";
+        GameData loadedData = null;
+        string gameDataFileName = "Sudoku/JSON_Work/Saves/saveFile.json";
         string filePath = Path.Combine(Application.dataPath, gameDataFileName);
 
         if (File.Exists(filePath))
         {
             string dataAsJson = File.ReadAllText(filePath);
-            GameData loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
+            loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
             string res = "[";
             string res2 = "[";
             for (int i = 0; i < loadedData.tab.Length; i++)
@@ -48,11 +46,19 @@ public class FileWork : MonoBehaviour
             Debug.Log("tab2 : " + res2);
         }
         else Debug.Log("Fichier introuvable");
+        return loadedData;
     }
 
-    private void SaveGameData()
+    private void SaveGameData(GameData g)
     {
-        string gameDataFileName = "JSON_Work/Saves/file.json";
+        string gameDataFileName = "Sudoku/JSON_Work/Saves/saveFile.json";
         string filePath = Path.Combine(Application.dataPath, gameDataFileName);
+
+        if (File.Exists(filePath))
+        {
+            string jsonText = JsonUtility.ToJson(g);
+            File.WriteAllText(filePath, jsonText);
+        }
+        else Debug.Log("Fichier introuvable / A créer");
     }
 }

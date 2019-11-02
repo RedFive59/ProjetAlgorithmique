@@ -14,8 +14,16 @@ public class FileWork : MonoBehaviour
 
     public class GameData
     {
-        public int[] tab = { 1, 2, 3, 4 };
-        public int[] tab2 = { 0, 1, 0, 1 };
+        public int[,] tab = {
+            { 1, 2, 3 },
+            { 4, 5, 6 },
+            { 7, 8, 9 }
+        };
+        public int[,] tab2 = {
+            { 0, 0, 1 },
+            { 1, 0, 1 },
+            { 0, 0, 0 }
+        };
     }
 
 
@@ -29,21 +37,36 @@ public class FileWork : MonoBehaviour
         {
             string dataAsJson = File.ReadAllText(filePath);
             loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
-            string res = "[";
-            string res2 = "[";
-            for (int i = 0; i < loadedData.tab.Length; i++)
+
+            int rowLength = loadedData.tab.GetLength(0);
+            int colLength = loadedData.tab.GetLength(1);
+
+            string res = "" , res2 = "";
+            res += "  [\n";
+            res2 += "  [\n";
+            for (int i = 0; i < rowLength; i++)
             {
-                if (i != loadedData.tab.Length - 1)
+                res += "\t[";
+                res2 += "\t[";
+                for (int j = 0; j < colLength; j++)
                 {
-                    res += loadedData.tab.GetValue(i) + ", ";
-                    res2 += loadedData.tab2.GetValue(i) + ", ";
-                } else {
-                    res += loadedData.tab.GetValue(i) + "]";
-                    res2 += loadedData.tab2.GetValue(i) + "]";
+                    if(j != colLength - 1)
+                    {
+                        res += loadedData.tab.GetValue(i, j) + ", ";
+                        res2 += loadedData.tab2.GetValue(i, j) + ", ";
+                    } else
+                    {
+                        res += loadedData.tab.GetValue(i, j) + "]";
+                        res2 += loadedData.tab2.GetValue(i, j) + "]";
+                    }
                 }
+                res += "\n";
+                res2 += "\n";
             }
-            Debug.Log("tab : " + res);
-            Debug.Log("tab2 : " + res2);
+            res += "  ]";
+            res2 += "  ]";
+
+            Debug.Log("Chargement effectué :\n" + res + "\n" + res2);
         }
         else Debug.Log("Fichier introuvable");
         return loadedData;

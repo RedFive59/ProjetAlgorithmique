@@ -24,20 +24,35 @@ public class FileWork : MonoBehaviour
 
     private void LoadGameData()
     {
-        string gameDataFileName = "JSON_Work/Saves/file.json";
+        string gameDataFileName = "Sudoku/JSON_Work/Saves/file.json";
         string filePath = Path.Combine(Application.dataPath, gameDataFileName);
 
         if (File.Exists(filePath))
         {
             string dataAsJson = File.ReadAllText(filePath);
             GameData loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
-            Debug.Log(dataAsJson);
-            for(int i = 0; i < loadedData.tab.Length; i++)
+            string res = "[";
+            string res2 = "[";
+            for (int i = 0; i < loadedData.tab.Length; i++)
             {
-                Debug.Log(loadedData.tab.GetValue(i));
-                Debug.Log(loadedData.tab2.GetValue(i));
+                if (i != loadedData.tab.Length - 1)
+                {
+                    res += loadedData.tab.GetValue(i) + ", ";
+                    res2 += loadedData.tab2.GetValue(i) + ", ";
+                } else {
+                    res += loadedData.tab.GetValue(i) + "]";
+                    res2 += loadedData.tab2.GetValue(i) + "]";
+                }
             }
+            Debug.Log("tab : " + res);
+            Debug.Log("tab2 : " + res2);
         }
         else Debug.Log("Fichier introuvable");
+    }
+
+    private void SaveGameData()
+    {
+        string gameDataFileName = "JSON_Work/Saves/file.json";
+        string filePath = Path.Combine(Application.dataPath, gameDataFileName);
     }
 }

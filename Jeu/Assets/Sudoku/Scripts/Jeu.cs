@@ -13,7 +13,8 @@ public class Jeu : MonoBehaviour
     {
         grille = new GrilleSudoku(9, 9);
         grille.initVal(0);
-        grille.remplirGrilleAvecTrou();
+        //grille.remplirGrilleAvecTrou();
+        grille.chargementGrille(1, "Easy");
         UIManager = GameObject.Find("Jeu").GetComponent<UIManager>();
         UIManager.Init();
         parent = GameObject.Find("GridManager").transform;

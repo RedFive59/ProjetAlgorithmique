@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
 
 internal class GrilleSudoku : Grille<Case>
 {
+
     public GrilleSudoku(int n, int m) : base(n, m)
     {
     }
@@ -311,5 +314,61 @@ internal class GrilleSudoku : Grille<Case>
                 }
             }
         }
+    }
+
+    private class GameData
+    {
+        public int[,] tab = {
+            { 1,2,3, 4,5,6, 7,8,9 },
+            { 0,0,0, 0,0,0, 0,0,0 },
+            { 0,0,0, 0,0,0, 0,0,0 },
+
+            { 0,0,0, 0,0,0, 0,0,0 },
+            { 0,0,0, 0,0,0, 0,0,0 },
+            { 0,0,0, 0,0,0, 0,0,0 },
+
+            { 0,0,0, 0,0,0, 0,0,0 },
+            { 0,0,0, 0,0,0, 0,0,0 },
+            { 0,0,0, 0,0,0, 0,0,0 }
+        };
+        public int[,] tabTrou = {
+            { 1,1,1, 1,1,1, 1,1,1 },
+            { 0,0,0, 0,0,0, 0,0,0 },
+            { 0,0,0, 0,0,0, 0,0,0 },
+
+            { 0,0,0, 0,0,0, 0,0,0 },
+            { 0,0,0, 0,0,0, 0,0,0 },
+            { 0,0,0, 0,0,0, 0,0,0 },
+
+            { 0,0,0, 0,0,0, 0,0,0 },
+            { 0,0,0, 0,0,0, 0,0,0 },
+            { 0,0,0, 0,0,0, 0,0,0 }
+        };
+    }
+
+    public void chargementGrille(int num, string difficulte)
+    {
+        string directoryPath = "Sudoku/Levels/" + difficulte + "/" + num + ".json";
+        string filePath = Path.Combine(Application.dataPath, directoryPath);
+
+        if (File.Exists(filePath))
+        {
+            string dataAsJson = File.ReadAllText(filePath);
+            GameData loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
+
+            Debug.Log(dataAsJson);
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (loadedData.tabTrou[i, j] == 1)
+                    {
+                        this.getVal(i, j).changeable = false;
+                        this.getVal(i, j).setValeur(loadedData.tab[i, j]);
+                    }
+                }
+            }
+        }
+        else Debug.Log("Chargement impossible\nFichier " + filePath + " introuvable");
     }
 }

@@ -79,8 +79,9 @@ public class FileWork : MonoBehaviour
 
         if (File.Exists(filePath))
         {
-            string jsonText = JsonUtility.ToJson(g);
+            string jsonText = JsonUtility.ToJson(g, true);
             File.WriteAllText(filePath, jsonText);
+            Debug.Log("Sauvegarde effectué");
         }
         else Debug.Log("Fichier introuvable / A créer");
     }

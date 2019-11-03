@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using SimpleJSON;
 
 public class FileWork : MonoBehaviour
 {
-    void Start()
-    {
-        GameData g = new GameData();
-        SaveGameData(g);
-        LoadGameData();
-    }
-
+    JSONNode node;
     public class GameData
     {
         public int[,] tab = {
@@ -24,8 +19,22 @@ public class FileWork : MonoBehaviour
             { 1, 0, 1 },
             { 0, 0, 0 }
         };
+        public int[,] getTab()
+        {
+            return tab;
+        }
+        public int[,] getTab2()
+        {
+            return tab2;
+        }
     }
 
+    void Start()
+    {
+        GameData g = new GameData();
+        SaveGameData(g);
+        //LoadGameData();
+    }
 
     private GameData LoadGameData()
     {
@@ -80,9 +89,10 @@ public class FileWork : MonoBehaviour
         if (File.Exists(filePath))
         {
             string jsonText = JsonUtility.ToJson(g, true);
+            Debug.Log(jsonText);
             File.WriteAllText(filePath, jsonText);
             Debug.Log("Sauvegarde effectué");
         }
-        else Debug.Log("Fichier introuvable / A créer");
+        else Debug.Log("Fichier introuvable");
     }
 }

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+using SimpleJSON;
 
 internal class GrilleSudoku : Grille<Case>
 {
+
     public GrilleSudoku(int n, int m) : base(n, m)
     {
     }
@@ -241,75 +245,56 @@ internal class GrilleSudoku : Grille<Case>
         return true;
     }
 
-    public void remplirGrille()
+    public void remplirGrille(int num, string difficulte)
     {
-        int[,] tab = new int[,] {
-        {7,6,3, 9,1,2, 4,8,5},
-        {2,8,9, 3,5,4, 1,7,6},
-        {4,5,1, 7,6,8, 3,2,9},
+        string directoryPath = "Sudoku/Levels/" + difficulte + "/" + num + ".json";
+        string filePath = Path.Combine(Application.dataPath, directoryPath);
 
-        {5,7,8, 6,3,1, 2,9,4},
-        {6,3,4, 5,2,9, 8,1,7},
-        {9,1,2, 8,4,7, 6,5,3},
-
-        {8,2,6, 4,7,5, 9,3,1},
-        {1,4,7, 2,9,3, 5,6,8},
-        {3,9,5, 1,8,6, 7,4,2}
-        };
-
-        for(int i=0; i<9; i++)
+        if (File.Exists(filePath))
         {
-            for(int j=0; j<9; j++)
+            string dataAsJson = File.ReadAllText(filePath);
+            var loadedData = JSON.Parse(dataAsJson);
+
+            for (int i = 0; i < 9; i++)
             {
-                if(this.getVal(i, j).valeur == 0)
+                for (int j = 0; j < 9; j++)
                 {
-                    this.getVal(i, j).changeable = true;
-                    this.getVal(i, j).setValeur(tab[i, j]);
+                    if(i != 0 || j != 0)
+                    {
+                        if (this.getVal(i, j).valeur == 0)
+                        {
+                            this.getVal(i, j).changeable = true;
+                            this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
+                        }
+                    }
                 }
             }
         }
+        else Debug.Log("Chargement impossible\nFichier " + filePath + " introuvable");
     }
 
-    public void remplirGrilleAvecTrou()
+    public void chargementGrille(int num, string difficulte)
     {
-        int[,] tab = new int[,] {
-        {7,6,3, 9,1,2, 4,8,5},
-        {2,8,9, 3,5,4, 1,7,6},
-        {4,5,1, 7,6,8, 3,2,9},
+        string directoryPath = "Sudoku/Levels/" + difficulte + "/" + num + ".json";
+        string filePath = Path.Combine(Application.dataPath, directoryPath);
 
-        {5,7,8, 6,3,1, 2,9,4},
-        {6,3,4, 5,2,9, 8,1,7},
-        {9,1,2, 8,4,7, 6,5,3},
-
-        {8,2,6, 4,7,5, 9,3,1},
-        {1,4,7, 2,9,3, 5,6,8},
-        {3,9,5, 1,8,6, 7,4,2}
-        };
-
-        int[,] tabTrou = new int[,] {
-        {0,1,0, 0,1,0, 1,0,1},
-        {1,0,1, 0,0,0, 0,0,1},
-        {0,1,0, 0,0,1, 0,0,0},
-
-        {0,1,0, 1,1,0, 0,1,0},
-        {1,0,0, 1,0,1, 1,0,0},
-        {0,1,1, 0,0,1, 1,0,0},
-
-        {0,0,0, 1,1,0, 1,0,0},
-        {1,0,1, 0,0,0, 0,0,1},
-        {0,0,1, 0,0,0, 1,0,0}
-        };
-
-        for (int i = 0; i < 9; i++)
+        if (File.Exists(filePath))
         {
-            for (int j = 0; j < 9; j++)
+            string dataAsJson = File.ReadAllText(filePath);
+            var loadedData = JSON.Parse(dataAsJson);
+            
+            for (int i = 0; i < 9; i++)
             {
-                if (tabTrou[i, j] == 1)
+                for (int j = 0; j < 9; j++)
                 {
-                    this.getVal(i, j).changeable = false;
-                    this.getVal(i, j).setValeur(tab[i, j]);
+                    if (loadedData["tabTrou"][i][j] == 1)
+                    {
+                        this.getVal(i, j).changeable = false;
+                        this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
+                    }
                 }
             }
         }
+        else Debug.Log("Chargement impossible\nFichier " + filePath + " introuvable");
     }
 }

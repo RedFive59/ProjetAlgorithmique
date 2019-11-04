@@ -33,15 +33,6 @@ public class Jeu : MonoBehaviour
             UIManager.UpdateGrid();
             if(grille.verifGrille()) UIManager.finishGame();
         }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Debug.Log("Grille correct ? : " + grille.verifGrille());
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            Debug.Log("UpdateGrid()");
-            UIManager.UpdateGrid();
-        }
     }
 
     internal GrilleSudoku getGrille()

@@ -29,7 +29,7 @@ public class Jeu : MonoBehaviour
             Debug.Log("remplirGrille()");
             grille.remplirGrille(numGrille, difficulte);
             UIManager.UpdateGrid();
-            UIManager.finishGame();
+            if(grille.verifGrille()) UIManager.finishGame();
         }
         if (Input.GetKeyDown(KeyCode.C))
         {

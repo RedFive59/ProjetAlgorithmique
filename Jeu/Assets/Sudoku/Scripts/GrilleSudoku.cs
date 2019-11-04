@@ -259,10 +259,13 @@ internal class GrilleSudoku : Grille<Case>
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (this.getVal(i, j).valeur == 0)
+                    if(i != 0 || j != 0)
                     {
-                        this.getVal(i, j).changeable = true;
-                        this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
+                        if (this.getVal(i, j).valeur == 0)
+                        {
+                            this.getVal(i, j).changeable = true;
+                            this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
+                        }
                     }
                 }
             }

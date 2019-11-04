@@ -8,7 +8,7 @@ using TMPro;
 
 public class CreerJeu : MonoBehaviour
 {
-    private int ligne = 3, colonne = 9, nbgrilles = 4;
+    private int ligne = 3, colonne = 9, nbgrilles = 6, jetons = 0, gain = 0;
     private Cartons[] grilles;
     private Cartons[] grillesSelection;
     private GridManagerBingo[] grid;
@@ -19,8 +19,8 @@ public class CreerJeu : MonoBehaviour
     private List<int> tirage;
     private List<int> tire;
 
-    private float timer, tempsPioche = 5.0f;
-    private int modeJeu = 1;
+    private float timer, waitTime = 5.0f;
+    private int modeJeu = 0;
 
     private bool fini = false;
     
@@ -39,8 +39,14 @@ public class CreerJeu : MonoBehaviour
         if (!this.tile)
         {
             this.fillImg = GameObject.Find("WaitBar").GetComponent<Image>();
+
+            getNbJetons();
             getNbGrille();
             getTemps();
+            getModeDeJeu();
+
+            getGain();
+
             initBingo();
             creerBingo();
             tirer();
@@ -56,11 +62,11 @@ public class CreerJeu : MonoBehaviour
             {
                 //timer de "tempsPioche" secondes
                 timer += Time.deltaTime;
-                this.fillImg.fillAmount = timer / tempsPioche;
-                if (timer > tempsPioche)
+                this.fillImg.fillAmount = timer / waitTime;
+                if (timer > waitTime)
                 {
                     tirer();
-                    timer = timer - tempsPioche;
+                    timer = timer - waitTime;
                 }
             }
             //vérifie si on selectionne une case
@@ -79,34 +85,67 @@ public class CreerJeu : MonoBehaviour
         if (gagne(this.modeJeu))
         {
             this.fini = true;
+            Debug.Log(this.ObjectMenuGagne);
             afficherBINGO(this.ObjectMenuGagne);
+            setGain();
         }
     }
 
     //recupere le nombre de grille
     private void getNbGrille()
     {
-        GameObject value = GameObject.Find("ValueScroll");
-        string text = value.transform.GetComponent<TextMeshProUGUI>().text;
-        int nb = text[0] - 48;
-        this.nbgrilles = nb;
+        this.nbgrilles = PlayerStats.NbGrilles;
     }
 
     //recupere le temps d'attente
     private void getTemps()
     {
-        GameObject value = GameObject.Find("VariableAttente");
-        string text = value.transform.GetComponent<TextMeshProUGUI>().text;
-        int nb = text[0] - 48;
-        if (nb == 1) nb = 10;
-        this.tempsPioche = (float)nb;
+        this.waitTime = PlayerStats.WaitTime;
     }
 
-    //si le joueur a gagne le petit menu pour rejouer ou revenir au menu affiche
+    //recupere le mode de jeu
+    private void getModeDeJeu()
+    {
+        this.modeJeu = PlayerStats.GameMode;
+    }
+
+    //recupere le nombre de jetons
+    private void getNbJetons()
+    {
+        this.jetons = PlayerStats.Jetons;
+    }
+
     private void afficherBINGO(GameObject parent)
     {
         Transform[] go = parent.GetComponentsInChildren<RectTransform>(true);
-        go[3].gameObject.SetActive(true);
+        go[1].gameObject.SetActive(true);
+    }
+
+    //calcul le gain possible a la fin du jeu
+    private void getGain()
+    {
+        this.gain = 5 * (6 - this.nbgrilles);
+        switch(this.modeJeu)
+        {
+            case 0:
+                this.gain += 10;
+                break;
+            case 1:
+                this.gain += 50;
+                break;
+            case 2:
+                this.gain += 100;
+                break;
+        }
+    }
+
+    //ajoute le gain aux jetons
+    private void setGain()
+    {
+        this.jetons += this.gain;
+        PlayerStats.Jetons = this.jetons;
+        GameObject value = GameObject.Find("Jetons");
+        value.transform.GetComponent<TextMeshProUGUI>().text = this.jetons.ToString();
     }
 
     //initialise toutes les grilles ainsi que les listes
@@ -136,7 +175,6 @@ public class CreerJeu : MonoBehaviour
     {
         Transform parent;
         List<int> ordreLigne;
-
         for (int i = 0; i < this.nbgrilles; i++)
         {
             this.grilles[i] = new Cartons(this.ligne, this.colonne);
@@ -147,7 +185,7 @@ public class CreerJeu : MonoBehaviour
 
             this.grid[i] = new GridManagerBingo(this.grilles[i], i);
         }
-
+        
         ajoutVal();
 
         for (int i = 0; i < nbgrilles; i++)
@@ -177,7 +215,7 @@ public class CreerJeu : MonoBehaviour
         {
             copieValCol(vals, i);
             genRand(vals, 9 + i * 10, i * 10);
-            trieVal(vals);
+            //trieVal(vals);
             setValCol(vals, i);
         }
     }
@@ -214,18 +252,56 @@ public class CreerJeu : MonoBehaviour
     private void genRand(int[] t, int max, int min)
     {
         int ind;
+        List<int> valLibre = new List<int>();
+        if (min == 0) min = 1;
+        for(int i = min; i < max + 1; i++)
+        {
+            valLibre.Add(i);
+        }
+
+        if (this.ligne * this.nbgrilles - (nbCaseVide(t)) > 9)
+        {
+            int nbcase = this.ligne * this.nbgrilles - (nbCaseVide(t)) - 9;
+            bool fini = false;
+            
+            do
+            {
+                if (nbcase != 0)
+                {
+                    ind = Random.Range(0, this.ligne * this.nbgrilles);
+
+                    if (t[ind] != -1)
+                    {
+                        t[ind] = -1;
+                        nbcase--;
+                    }
+                }
+                else
+                    fini = true;
+
+            } while (!fini);
+        }
         for (int i = 0; i < t.Length; i++)
         {
             //ne rempli que si la case peut l'etre (-1 correspond à une case vide)
             if (t[i] != -1)
             {
-                do
-                {
-                    ind = Random.Range(min, max);
-                } while (estdans(ind, t));
-                t[i] = ind;
+                ind = Random.Range(0, valLibre.Count);
+                t[i] = valLibre[ind];
+                valLibre.RemoveAt(ind);
             }
         }
+    }
+
+    //compte le nombre de case vide
+    private int nbCaseVide(int[] t)
+    {
+        int cpt = 0;
+        foreach (int i in t)
+        {
+            if (i == -1) cpt++;
+        }
+        return cpt;
     }
 
     //rempli la colonne col des grilles avec les valeurs dans vals
@@ -288,6 +364,8 @@ public class CreerJeu : MonoBehaviour
             case 0:
                 return verifLigne();
             case 1:
+                return verif2Ligne();
+            case 2:
                 return verifCarton();
             default:
                 return false;
@@ -299,7 +377,8 @@ public class CreerJeu : MonoBehaviour
     {
         int cpt = 0;
         int val;
-        for (int i = 0; i < nbgrilles; i++)
+        
+        for (int i = 0; i < this.nbgrilles; i++)
         {
             for (int j = 0; j < this.ligne; j++)
             {
@@ -325,12 +404,51 @@ public class CreerJeu : MonoBehaviour
         return false;
     }
 
+    //mode de jeu 2, verifie si 2 lignes est corrects
+    private bool verif2Ligne()
+    {
+        int cpt = 0;
+        int surgrilles = 0;
+        int val;
+        
+        for (int i = 0; i < this.nbgrilles; i++)
+        {
+            for (int j = 0; j < this.ligne; j++)
+            {
+                for (int k = 0; k < this.colonne; k++)
+                {
+                    val = this.grillesSelection[i].getVal(j, k);
+                    if (val != -1)
+                    {
+                        if (this.tire.Contains(val))
+                        {
+                            cpt++;
+                        }
+                        else
+                        {
+                            cpt = 0;
+                            break;
+                        }
+                    }
+                }
+                if (cpt != 0)
+                {
+                    surgrilles++;
+                    if (surgrilles == 2)
+                        return true;
+                }
+            }
+        }
+        Debug.Log(surgrilles);
+        return false;
+    }
+
     //mode de jeu 2, verifie si un carton est correct
     private bool verifCarton()
     {
         int cpt = 0;
         int val;
-        for (int i = 0; i < nbgrilles; i++)
+        for (int i = 0; i < this.nbgrilles; i++)
         {
             for (int j = 0; j < this.ligne; j++)
             {

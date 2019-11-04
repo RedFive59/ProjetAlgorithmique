@@ -45,8 +45,27 @@ class Case
         listIndice.Clear();
     }
 
+    public bool indiceIn(int i)
+    {
+        if (listIndice.Contains(i)) return true;
+        return false;
+    }
+
+    public string indicesToString()
+    {
+        string res = "";
+        for(int i = 1; i<10; i++)
+        {
+            if (indiceIn(i)) res += (i + " ");
+            else res += "   ";
+            if (i % 3 == 0 && i != 9) res += "\n";
+        }
+        return res;
+    }
+
     public override string ToString()
     {
-        return "" + this.valeur;
+        if(valeur != 0) return "" + this.valeur;
+        return "";
     }
 }

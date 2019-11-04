@@ -14,10 +14,28 @@ public class UIManager : MonoBehaviour
     private GrilleSudoku grille;
     private int i = -1, j = -1;
     public GameObject finishCanvas;
+    private bool notesActivated = false;
 
     public void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+            buttonClick(1);
+        if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+            buttonClick(2);
+        if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+            buttonClick(3);
+        if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
+            buttonClick(4);
+        if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
+            buttonClick(5);
+        if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
+            buttonClick(6);
+        if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
+            buttonClick(7);
+        if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
+            buttonClick(8);
+        if (Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9))
+            buttonClick(9);
     }
 
     public void Init()
@@ -69,21 +87,15 @@ public class UIManager : MonoBehaviour
             tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
             tile.GetComponent<Button>().interactable = false;
             tile.GetComponent<Image>().color = unchangeableCase;
-        } else {
-            if (selectedCase.valeur == 0)
-            {
-                // Valeur de la case à 0
-                tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
-            }
-            else
+        } else
+        {
+            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = grille.getVal(i, j).ToString();
+            tile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = grille.getVal(i, j).indicesToString();
+            if (selectedCase.valeur != 0)
             {
                 Color32 textColor = goodValue;
-                //Debug.Log("grille.verifLigne(" + i + ") = " + grille.verifLigne(i));
-                //Debug.Log("grille.verifColonne(" + j + ") = " + grille.verifColonne(j));
-                //Debug.Log("grille.verifCarre(grille.numCarre(" + i + ", " + j + ")) = " + grille.verifCarre(grille.numCarre(i, j)));
                 if (!grille.verifLigne(i) || !grille.verifColonne(j) || !grille.verifCarre(grille.numCarre(i, j))) textColor = badValue;
                 // Valeur de la case entre 1 et 9
-                tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
                 tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = textColor;
             }
             if (selectedCase.selected)
@@ -141,11 +153,22 @@ public class UIManager : MonoBehaviour
         int buttonVal = ind[0] - 48;
         if (i != -1 && j != -1)
         {
-            //Debug.Log("Avant appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
-            grille.getVal(i, j).setValeur(buttonVal);
-            //Debug.Log("Après appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
-            UpdateGrid();
-            if (grille.verifGrille()) finishGame();
+            if (!notesActivated)
+            {
+                //Debug.Log("Avant appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
+                grille.getVal(i, j).setValeur(buttonVal);
+                grille.getVal(i, j).retraitIndices();
+                //Debug.Log("Après appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
+                UpdateGrid();
+                if (grille.verifGrille()) finishGame();
+            } else
+            {
+                if(grille.getVal(i, j).valeur == 0)
+                {
+                    appuiIndice(buttonVal);
+                    UpdateGrid();
+                }
+            }
         }
     }
 
@@ -154,9 +177,17 @@ public class UIManager : MonoBehaviour
         if (i != -1 && j != -1)
         {
             grille.getVal(i, j).setValeur(num);
+            grille.getVal(i, j).retraitIndices();
             UpdateGrid();
             if (grille.verifGrille()) finishGame();
         }
+    }
+
+    public void appuiIndice(int num)
+    {
+        Case c = grille.getVal(i, j);
+        if (!c.indiceIn(num)) c.ajoutIndice(num);
+        else c.retraitIndice(num);
     }
 
     public void eraseValue()
@@ -164,7 +195,30 @@ public class UIManager : MonoBehaviour
         if (i != -1 && j != -1)
         {
             grille.getVal(i, j).valeur = 0;
+            grille.getVal(i, j).retraitIndices();
             UpdateGrid();
+        }
+    }
+
+    public void indiceSwitch()
+    {
+        GameObject notesButton = GameObject.Find("Notes");
+        Color unactive = new Color32(255, 255, 255, 255);
+        Color active = new Color32(80, 150, 255, 255);
+        if (notesButton)
+        {
+            if (notesActivated)
+            {
+                //Debug.Log("Mode indice désactivé");
+                notesActivated = false;
+                notesButton.GetComponent<Image>().color = unactive;
+            }
+            else
+            {
+                //Debug.Log("Mode indice activé");
+                notesActivated = true;
+                notesButton.GetComponent<Image>().color = active;
+            }
         }
     }
 
@@ -178,6 +232,7 @@ public class UIManager : MonoBehaviour
             for (int l = 0; l < 9; l++)
                 GameObject.Find("Case" + k + "_" + l).GetComponent<Button>().interactable = false;
         GameObject.Find("Eraser").GetComponent<Button>().interactable = false;
+        GameObject.Find("Notes").GetComponent<Button>().interactable = false;
         finishCanvas.SetActive(true);
     }
 }

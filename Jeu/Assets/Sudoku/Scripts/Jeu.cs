@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Jeu : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class Jeu : MonoBehaviour
     {
         grille = new GrilleSudoku(9, 9);
         grille.initVal(0);
+        GameObject.Find("Infos").GetComponent<TextMeshProUGUI>().text = "Difficulty : " + difficulte + "           Level : " + numGrille;
         grille.chargementGrille(numGrille, difficulte);
         UIManager = GameObject.Find("Jeu").GetComponent<UIManager>();
         UIManager.Init();

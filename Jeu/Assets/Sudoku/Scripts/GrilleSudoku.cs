@@ -265,6 +265,7 @@ internal class GrilleSudoku : Grille<Case>
                         {
                             this.getVal(i, j).changeable = true;
                             this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
+                            this.getVal(i, j).retraitIndices();
                         }
                     }
                 }

@@ -249,7 +249,7 @@ internal class GrilleSudoku : Grille<Case>
     {
         if (!verifGrille())
         {
-            string directoryPath = "Sudoku/Levels/" + difficulte + "/" + num + ".json";
+            string directoryPath = "StreamingAssets/SudokuLevels/" + difficulte + "/" + num + ".json";
             string filePath = Path.Combine(Application.dataPath, directoryPath);
 
             if (File.Exists(filePath))
@@ -276,7 +276,7 @@ internal class GrilleSudoku : Grille<Case>
 
     public void chargementGrille(string num, string difficulte)
     {
-        string directoryPath = "Sudoku/Levels/" + difficulte + "/" + num + ".json";
+        string directoryPath = "StreamingAssets/SudokuLevels/" + difficulte + "/" + num + ".json";
         string filePath = Path.Combine(Application.dataPath, directoryPath);
 
         if (File.Exists(filePath))

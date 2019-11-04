@@ -15,6 +15,7 @@ public class Jeu : MonoBehaviour
 
     void Start()
     {
+        Resources.LoadAll("SudokuLevels");
         string[] level = SelectionNiveauAleatoire();
         difficulte = level[0];
         numGrille = level[1];
@@ -56,7 +57,7 @@ public class Jeu : MonoBehaviour
                 break;
         }
         int cpt = 0;
-        string directoryPath = Path.Combine(Application.dataPath, ("Sudoku/Levels/" + res[0] + "/"));
+        string directoryPath = Path.Combine(Application.dataPath, ("StreamingAssets/SudokuLevels/" + res[0] + "/"));
         var info = new DirectoryInfo(directoryPath);
         var fileInfo = info.GetFiles();
         foreach (FileInfo f in fileInfo) if(f.Extension == ".json") cpt++;

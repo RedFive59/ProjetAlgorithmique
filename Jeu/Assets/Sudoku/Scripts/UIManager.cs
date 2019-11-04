@@ -15,6 +15,11 @@ public class UIManager : MonoBehaviour
     private int i = -1, j = -1;
     public GameObject finishCanvas;
 
+    public void Update()
+    {
+        
+    }
+
     public void Init()
     {
         tileReference = GameObject.Find("TilePrefab");
@@ -139,6 +144,16 @@ public class UIManager : MonoBehaviour
             //Debug.Log("Avant appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
             grille.getVal(i, j).setValeur(buttonVal);
             //Debug.Log("Après appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
+            UpdateGrid();
+            if (grille.verifGrille()) finishGame();
+        }
+    }
+
+    public void buttonClick(int num)
+    {
+        if (i != -1 && j != -1)
+        {
+            grille.getVal(i, j).setValeur(num);
             UpdateGrid();
             if (grille.verifGrille()) finishGame();
         }

@@ -20,4 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Sudoku/Scenes/Sudoku.unity
     guid: b7aab8d89af16464e9954f434f41749d
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: f51627024100d5f4d9217f1f9de12cfd,
+      type: 2}

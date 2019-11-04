@@ -2124,7 +2124,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2120254568}
-        m_MethodName: indiceSwitch
+        m_MethodName: notesSwitch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

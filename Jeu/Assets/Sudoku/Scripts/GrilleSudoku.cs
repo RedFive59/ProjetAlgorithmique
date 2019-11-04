@@ -247,31 +247,34 @@ internal class GrilleSudoku : Grille<Case>
 
     public void remplirGrille(int num, string difficulte)
     {
-        string directoryPath = "Sudoku/Levels/" + difficulte + "/" + num + ".json";
-        string filePath = Path.Combine(Application.dataPath, directoryPath);
-
-        if (File.Exists(filePath))
+        if (!verifGrille())
         {
-            string dataAsJson = File.ReadAllText(filePath);
-            var loadedData = JSON.Parse(dataAsJson);
+            string directoryPath = "Sudoku/Levels/" + difficulte + "/" + num + ".json";
+            string filePath = Path.Combine(Application.dataPath, directoryPath);
 
-            for (int i = 0; i < 9; i++)
+            if (File.Exists(filePath))
             {
-                for (int j = 0; j < 9; j++)
+                string dataAsJson = File.ReadAllText(filePath);
+                var loadedData = JSON.Parse(dataAsJson);
+
+                for (int i = 0; i < 9; i++)
                 {
-                    if(i != 0 || j != 0)
+                    for (int j = 0; j < 9; j++)
                     {
-                        if (this.getVal(i, j).valeur == 0)
+                        if (i != 0 || j != 0)
                         {
-                            this.getVal(i, j).changeable = true;
-                            this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
-                            this.getVal(i, j).retraitIndices();
+                            if (this.getVal(i, j).valeur == 0)
+                            {
+                                this.getVal(i, j).changeable = true;
+                                this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
+                                this.getVal(i, j).retraitIndices();
+                            }
                         }
                     }
                 }
             }
+            else Debug.Log("Chargement impossible\nFichier " + filePath + " introuvable");
         }
-        else Debug.Log("Chargement impossible\nFichier " + filePath + " introuvable");
     }
 
     public void chargementGrille(int num, string difficulte)

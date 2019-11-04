@@ -18,6 +18,10 @@ public class UIManager : MonoBehaviour
 
     public void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.KeypadPeriod))
+            eraseValue();
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+            notesSwitch();
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
             buttonClick(1);
         if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
@@ -155,10 +159,8 @@ public class UIManager : MonoBehaviour
         {
             if (!notesActivated)
             {
-                //Debug.Log("Avant appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
                 grille.getVal(i, j).setValeur(buttonVal);
                 grille.getVal(i, j).retraitIndices();
-                //Debug.Log("Après appui du bouton " + buttonVal + ", la case " + i + " " + j + " vaut " + grille.getVal(i, j).valeur);
                 UpdateGrid();
                 if (grille.verifGrille()) finishGame();
             } else
@@ -176,10 +178,20 @@ public class UIManager : MonoBehaviour
     {
         if (i != -1 && j != -1)
         {
-            grille.getVal(i, j).setValeur(num);
-            grille.getVal(i, j).retraitIndices();
-            UpdateGrid();
-            if (grille.verifGrille()) finishGame();
+            if (!notesActivated)
+            {
+                grille.getVal(i, j).setValeur(num);
+                grille.getVal(i, j).retraitIndices();
+                UpdateGrid();
+                if (grille.verifGrille()) finishGame();
+            } else
+            {
+                if (grille.getVal(i, j).valeur == 0)
+                {
+                    appuiIndice(num);
+                    UpdateGrid();
+                }
+            }
         }
     }
 
@@ -200,7 +212,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void indiceSwitch()
+    public void notesSwitch()
     {
         GameObject notesButton = GameObject.Find("Notes");
         Color unactive = new Color32(255, 255, 255, 255);

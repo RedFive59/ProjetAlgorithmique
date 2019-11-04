@@ -245,7 +245,7 @@ internal class GrilleSudoku : Grille<Case>
         return true;
     }
 
-    public void remplirGrille(int num, string difficulte)
+    public void remplirGrille(string num, string difficulte)
     {
         if (!verifGrille())
         {
@@ -261,14 +261,11 @@ internal class GrilleSudoku : Grille<Case>
                 {
                     for (int j = 0; j < 9; j++)
                     {
-                        if (i != 0 || j != 0)
+                        if (this.getVal(i, j).valeur == 0)
                         {
-                            if (this.getVal(i, j).valeur == 0)
-                            {
-                                this.getVal(i, j).changeable = true;
-                                this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
-                                this.getVal(i, j).retraitIndices();
-                            }
+                            this.getVal(i, j).changeable = true;
+                            this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
+                            this.getVal(i, j).retraitIndices();
                         }
                     }
                 }
@@ -277,7 +274,7 @@ internal class GrilleSudoku : Grille<Case>
         }
     }
 
-    public void chargementGrille(int num, string difficulte)
+    public void chargementGrille(string num, string difficulte)
     {
         string directoryPath = "Sudoku/Levels/" + difficulte + "/" + num + ".json";
         string filePath = Path.Combine(Application.dataPath, directoryPath);

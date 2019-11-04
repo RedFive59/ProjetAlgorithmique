@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using SimpleJSON;
 
 internal class GrilleSudoku : Grille<Case>
 {
@@ -244,106 +245,29 @@ internal class GrilleSudoku : Grille<Case>
         return true;
     }
 
-    public void remplirGrille()
+    public void remplirGrille(int num, string difficulte)
     {
-        int[,] tab = new int[,] {
-        {7,6,3, 9,1,2, 4,8,5},
-        {2,8,9, 3,5,4, 1,7,6},
-        {4,5,1, 7,6,8, 3,2,9},
+        string directoryPath = "Sudoku/Levels/" + difficulte + "/" + num + ".json";
+        string filePath = Path.Combine(Application.dataPath, directoryPath);
 
-        {5,7,8, 6,3,1, 2,9,4},
-        {6,3,4, 5,2,9, 8,1,7},
-        {9,1,2, 8,4,7, 6,5,3},
-
-        {8,2,6, 4,7,5, 9,3,1},
-        {1,4,7, 2,9,3, 5,6,8},
-        {3,9,5, 1,8,6, 7,4,2}
-        };
-
-        for(int i=0; i<9; i++)
+        if (File.Exists(filePath))
         {
-            for(int j=0; j<9; j++)
+            string dataAsJson = File.ReadAllText(filePath);
+            var loadedData = JSON.Parse(dataAsJson);
+
+            for (int i = 0; i < 9; i++)
             {
-                if(this.getVal(i, j).valeur == 0)
+                for (int j = 0; j < 9; j++)
                 {
-                    this.getVal(i, j).changeable = true;
-                    this.getVal(i, j).setValeur(tab[i, j]);
+                    if (this.getVal(i, j).valeur == 0)
+                    {
+                        this.getVal(i, j).changeable = true;
+                        this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
+                    }
                 }
             }
         }
-    }
-
-    public void remplirGrilleAvecTrou()
-    {
-        int[,] tab = new int[,] {
-        {7,6,3, 9,1,2, 4,8,5},
-        {2,8,9, 3,5,4, 1,7,6},
-        {4,5,1, 7,6,8, 3,2,9},
-
-        {5,7,8, 6,3,1, 2,9,4},
-        {6,3,4, 5,2,9, 8,1,7},
-        {9,1,2, 8,4,7, 6,5,3},
-
-        {8,2,6, 4,7,5, 9,3,1},
-        {1,4,7, 2,9,3, 5,6,8},
-        {3,9,5, 1,8,6, 7,4,2}
-        };
-
-        int[,] tabTrou = new int[,] {
-        {0,1,0, 0,1,0, 1,0,1},
-        {1,0,1, 0,0,0, 0,0,1},
-        {0,1,0, 0,0,1, 0,0,0},
-
-        {0,1,0, 1,1,0, 0,1,0},
-        {1,0,0, 1,0,1, 1,0,0},
-        {0,1,1, 0,0,1, 1,0,0},
-
-        {0,0,0, 1,1,0, 1,0,0},
-        {1,0,1, 0,0,0, 0,0,1},
-        {0,0,1, 0,0,0, 1,0,0}
-        };
-
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                if (tabTrou[i, j] == 1)
-                {
-                    this.getVal(i, j).changeable = false;
-                    this.getVal(i, j).setValeur(tab[i, j]);
-                }
-            }
-        }
-    }
-
-    private class GameData
-    {
-        public int[,] tab = {
-            { 1,2,3, 4,5,6, 7,8,9 },
-            { 0,0,0, 0,0,0, 0,0,0 },
-            { 0,0,0, 0,0,0, 0,0,0 },
-
-            { 0,0,0, 0,0,0, 0,0,0 },
-            { 0,0,0, 0,0,0, 0,0,0 },
-            { 0,0,0, 0,0,0, 0,0,0 },
-
-            { 0,0,0, 0,0,0, 0,0,0 },
-            { 0,0,0, 0,0,0, 0,0,0 },
-            { 0,0,0, 0,0,0, 0,0,0 }
-        };
-        public int[,] tabTrou = {
-            { 1,1,1, 1,1,1, 1,1,1 },
-            { 0,0,0, 0,0,0, 0,0,0 },
-            { 0,0,0, 0,0,0, 0,0,0 },
-
-            { 0,0,0, 0,0,0, 0,0,0 },
-            { 0,0,0, 0,0,0, 0,0,0 },
-            { 0,0,0, 0,0,0, 0,0,0 },
-
-            { 0,0,0, 0,0,0, 0,0,0 },
-            { 0,0,0, 0,0,0, 0,0,0 },
-            { 0,0,0, 0,0,0, 0,0,0 }
-        };
+        else Debug.Log("Chargement impossible\nFichier " + filePath + " introuvable");
     }
 
     public void chargementGrille(int num, string difficulte)
@@ -354,17 +278,16 @@ internal class GrilleSudoku : Grille<Case>
         if (File.Exists(filePath))
         {
             string dataAsJson = File.ReadAllText(filePath);
-            GameData loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
-
-            Debug.Log(dataAsJson);
+            var loadedData = JSON.Parse(dataAsJson);
+            
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (loadedData.tabTrou[i, j] == 1)
+                    if (loadedData["tabTrou"][i][j] == 1)
                     {
                         this.getVal(i, j).changeable = false;
-                        this.getVal(i, j).setValeur(loadedData.tab[i, j]);
+                        this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
                     }
                 }
             }

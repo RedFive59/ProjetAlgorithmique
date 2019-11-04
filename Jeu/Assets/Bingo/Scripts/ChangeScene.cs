@@ -7,6 +7,7 @@ public class ChangeScene : MonoBehaviour
 {
     public void ReturnToMain()
     {
+        PlayerStats.Jetons = 0;
         SceneManager.LoadScene(0);
     }
 

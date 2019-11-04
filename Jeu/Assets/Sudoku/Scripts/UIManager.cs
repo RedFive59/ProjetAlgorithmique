@@ -233,6 +233,7 @@ public class UIManager : MonoBehaviour
                 GameObject.Find("Case" + k + "_" + l).GetComponent<Button>().interactable = false;
         GameObject.Find("Eraser").GetComponent<Button>().interactable = false;
         GameObject.Find("Notes").GetComponent<Button>().interactable = false;
+        GameObject.Find("Infos").SetActive(false);
         finishCanvas.SetActive(true);
     }
 }

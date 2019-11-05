@@ -44,10 +44,10 @@ public class GridManagerNavale : MonoBehaviour
 
             for (int i = 0; i < rows - 1; i++)
             {
-                col0.ajoutVect(i, i);
-                row0.ajoutVect(i, i + 65); //convertit un entier en char
+                col0.setVal(i, i);
+                row0.setVal(i, i + 65); //convertit un entier en char
             }
-            grille.setVal(0);
+            grille.initVal(0);
             ShowGrid(pos, col0, row0, grille);
         }
 

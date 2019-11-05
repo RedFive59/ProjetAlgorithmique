@@ -10,8 +10,8 @@ public class GridManagerNavale : MonoBehaviour
     private Grille<int> col0; //vecteur qui contiendra la colonne des chiffres (juste visuel) 
     private Grille<int> row0; //vecteur qui contiendra la ligne des lettres (juste visuel)
     private Grille<int> grille; //matrice qui contiendra les valeurs de l'eau/bateau, libre/raté/touché
-    public Sprite WaterDiffuseMini; //var texture des cases d'eau
-    public Sprite Cadre; //var textures cases chiffres et lettres
+    //public Sprite WaterDiffuseMini; //var texture des cases d'eau !!! OUT
+    //public Sprite Cadre; //var textures cases chiffres et lettres !!! OUT
     Canvas myCanvas;
     GameObject cvs;
     CanvasScaler CS;
@@ -44,10 +44,10 @@ public class GridManagerNavale : MonoBehaviour
 
             for (int i = 0; i < rows - 1; i++)
             {
-                col0.setVal(i, i);
-                row0.setVal(i, i + 65); //convertit un entier en char
+                col0.ajoutVect(i, i);
+                row0.ajoutVect(i, i + 65); //convertit un entier en char
             }
-            grille.initVal(0);
+            grille.setVal(0);
             ShowGrid(pos, col0, row0, grille);
         }
 
@@ -70,7 +70,7 @@ public class GridManagerNavale : MonoBehaviour
         {
             GameObject t = new GameObject("X:" + i + "Y:" + j);
             t.transform.position = new Vector3(pos+i,pos-9-j-1);
-            t.AddComponent<SpriteRenderer>().sprite = Cadre;//lie la texture cadre aux sprites Chiffres
+            t.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/cadre");//lie la texture cadre aux sprites Chiffres
             GenText(pos, i, j-1, v);//appelle la fonction qui genere le texte de cette case
     }
 
@@ -78,7 +78,7 @@ public class GridManagerNavale : MonoBehaviour
     {
         GameObject t = new GameObject("X:" + i + "Y:" + j);
         t.transform.position = new Vector3(pos+i+1,pos+j);
-        t.AddComponent<SpriteRenderer>().sprite = Cadre;//lie la texture cadre aux sprites Lettres
+        t.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/cadre");//lie la texture cadre aux sprites Lettres
         GenText(pos, i+1, j, v);//appelle la fonction qui genere le texte de ces cases
     }
 
@@ -86,9 +86,9 @@ public class GridManagerNavale : MonoBehaviour
         {
             GameObject t = new GameObject("X:" + i + "Y:" + j);//creer un gameObject sprite avec un nom donné
             t.transform.position = new Vector3(pos+i, pos-j);//place le gameObject dans la scene
-            t.AddComponent<SpriteRenderer>().sprite = WaterDiffuseMini;//creer et attache un rendu au sprite et lui attribut la texture de l'eau
-            BoxCollider2D b = new BoxCollider2D();//creer un collider rectangulaire 2D
-            t.AddComponent<BoxCollider2D>().autoTiling = b;//attache le collider précédent au sprite en le resizant automatiquement au sprite auquel il est attaché
+            t.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/WaterDiffuseMini2");//creer et attache un rendu au sprite et lui attribut la texture de l'eau
+            t.AddComponent<BoxCollider2D>().autoTiling=true;//attache un collider 2D au sprite en le resizant automatiquement au sprite auquel il est attaché
+            t.GetComponent<BoxCollider2D>().isTrigger = true;//test debug
             t.AddComponent<Selection>();//attache au sprite le script selection
             t.transform.parent = this.transform;//range les cases d'eau dans l'objet auquel le script est lié (GridHodler)
     }

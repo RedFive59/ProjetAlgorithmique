@@ -20,4 +20,12 @@ public class Selection : MonoBehaviour
     {
         this.GetComponent<SpriteRenderer>().color = startColor; //la souris sort du sprite il reprend sa couleur d'origine
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        this.GetComponent<SpriteRenderer>().color = Color.green;
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        this.GetComponent<SpriteRenderer>().color = Color.green;
+    }
 }

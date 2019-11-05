@@ -4,24 +4,26 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
-    private int nbJetons;
+    private void Start()
+    {
+        updateScore();
+        updateSettings();
+    }
 
     public void NumberOfGrid(float value)
     {
         int nouv = (int)(value*6);
         if (nouv != 6) nouv++;
         PlayerStats.NbGrilles = nouv;
-        updateJetons();
     }
 
-    public void updateJetons()
+    public void updateScore()
     {
-        GameObject credits = GameObject.Find("Jetons");
-        GameObject credits2 = GameObject.Find("JetonsMenu");
-        this.nbJetons = PlayerStats.Jetons;
+        GameObject scoreDisp = GameObject.Find("ScoreDisp");
+        GameObject score = GameObject.Find("Score");
 
-        credits.transform.GetComponent<TextMeshProUGUI>().text = (this.nbJetons - PlayerStats.NbGrilles*5).ToString();
-        credits2.transform.GetComponent<TextMeshProUGUI>().text = (this.nbJetons - PlayerStats.NbGrilles * 5).ToString();
+        scoreDisp.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
+        score.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
     }
 
     public void getTempsAttente(float value)
@@ -43,21 +45,28 @@ public class SettingsMenu : MonoBehaviour
         int nouv = (int)(value * 3);
         if (nouv != 3) nouv++;
         PlayerStats.GameMode = nouv - 1;
-        setModeDeJeu();
     }
 
-    public void setModeDeJeu()
+    public void updateSettings()
     {
-        GameObject value = GameObject.Find("ModeDeJeu");
+        float temp;
+        GameObject score = GameObject.Find("Score");
+        GameObject scoreDisp = GameObject.Find("ScoreDisp");
 
-        value.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.GameMode.ToString();
-    }
+        Scrollbar gamemode = GameObject.Find("GameMode").transform.GetComponent<Scrollbar>();
+        Scrollbar nbGrilles = GameObject.Find("NbGrilles").transform.GetComponent<Scrollbar>();
 
-    public void setJetons(GameObject go)
-    {
-        TMP_InputField input = go.transform.GetComponent<TMP_InputField>();
-        PlayerStats.Jetons = int.Parse(input.text);
-        if(PlayerStats.Jetons > 0)
-            updateJetons();
+        Slider waitTime = GameObject.Find("WaitTime").transform.GetComponent<Slider>();
+
+        score.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
+        scoreDisp.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
+        
+        temp = (float)(PlayerStats.GameMode - 0) / (2 - 0);
+        gamemode.value = temp;
+
+        temp = (float)(PlayerStats.NbGrilles - 1) / (6 - 1);
+        nbGrilles.value = temp;
+
+        waitTime.value = PlayerStats.WaitTime;
     }
 }

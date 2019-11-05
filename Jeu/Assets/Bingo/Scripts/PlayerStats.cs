@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class PlayerStats
 {
-    private static int nbGrilles = 1, waitTime = 5, jetons = 0, gameMode = 0;
+    private static int nbGrilles = 1, waitTime = 5, score = 0, gameMode = 0;
 
     public static int NbGrilles
     {
@@ -30,15 +30,15 @@ public static class PlayerStats
         }
     }
 
-    public static int Jetons
+    public static int Score
     {
         get
         {
-            return jetons;
+            return score;
         }
         set
         {
-            jetons = value;
+            score = value;
         }
     }
 
@@ -52,6 +52,21 @@ public static class PlayerStats
         {
             gameMode = value;
         }
+    }
+
+    public static void reset()
+    {
+        nbGrilles = 1;
+        waitTime = 5;
+        score = 0;
+        gameMode = 0;
+    }
+
+    public static void initial()
+    {
+        nbGrilles = 1;
+        waitTime = 5;
+        gameMode = 0;
     }
 }
 

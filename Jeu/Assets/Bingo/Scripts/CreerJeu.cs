@@ -8,7 +8,7 @@ using TMPro;
 
 public class CreerJeu : MonoBehaviour
 {
-    private int ligne = 3, colonne = 9, nbgrilles = 6, jetons = 0, gain = 0;
+    private int ligne = 3, colonne = 9, nbgrilles = 1, score = 0, modeJeu = 0;
     private Cartons[] grilles;
     private Cartons[] grillesSelection;
     private GridManagerBingo[] grid;
@@ -20,7 +20,6 @@ public class CreerJeu : MonoBehaviour
     private List<int> tire;
 
     private float timer, waitTime = 5.0f;
-    private int modeJeu = 0;
 
     private bool fini = false;
     
@@ -40,16 +39,12 @@ public class CreerJeu : MonoBehaviour
         {
             this.fillImg = GameObject.Find("WaitBar").GetComponent<Image>();
 
-            getNbJetons();
+            getScore();
             getNbGrille();
             getTemps();
             getModeDeJeu();
-
-            getGain();
-
             initBingo();
             creerBingo();
-            tirer();
         }
     }
 
@@ -85,9 +80,8 @@ public class CreerJeu : MonoBehaviour
         if (gagne(this.modeJeu))
         {
             this.fini = true;
-            Debug.Log(this.ObjectMenuGagne);
             afficherBINGO(this.ObjectMenuGagne);
-            setGain();
+            updateScore();
         }
     }
 
@@ -109,10 +103,10 @@ public class CreerJeu : MonoBehaviour
         this.modeJeu = PlayerStats.GameMode;
     }
 
-    //recupere le nombre de jetons
-    private void getNbJetons()
+    //recupere le score
+    private void getScore()
     {
-        this.jetons = PlayerStats.Jetons;
+        this.score = PlayerStats.Score;
     }
 
     private void afficherBINGO(GameObject parent)
@@ -121,31 +115,14 @@ public class CreerJeu : MonoBehaviour
         go[1].gameObject.SetActive(true);
     }
 
-    //calcul le gain possible a la fin du jeu
-    private void getGain()
+    //Ajoute le nouveau score
+    private void updateScore()
     {
-        this.gain = 5 * (6 - this.nbgrilles);
-        switch(this.modeJeu)
-        {
-            case 0:
-                this.gain += 10;
-                break;
-            case 1:
-                this.gain += 50;
-                break;
-            case 2:
-                this.gain += 100;
-                break;
-        }
-    }
+        this.score += (this.modeJeu + 5) * 20 / this.nbgrilles;
 
-    //ajoute le gain aux jetons
-    private void setGain()
-    {
-        this.jetons += this.gain;
-        PlayerStats.Jetons = this.jetons;
-        GameObject value = GameObject.Find("Jetons");
-        value.transform.GetComponent<TextMeshProUGUI>().text = this.jetons.ToString();
+        PlayerStats.Score = this.score;
+        GameObject score = GameObject.Find("Score");
+        score.transform.GetComponent<TextMeshProUGUI>().text = this.score.ToString();
     }
 
     //initialise toutes les grilles ainsi que les listes
@@ -439,7 +416,6 @@ public class CreerJeu : MonoBehaviour
                 }
             }
         }
-        Debug.Log(surgrilles);
         return false;
     }
 

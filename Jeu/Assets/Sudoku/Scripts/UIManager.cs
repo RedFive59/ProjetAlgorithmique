@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     public GameObject finishCanvas;
     private bool notesActivated = false;
     public string tempsFin;
+    private int cpt1 = 0, cpt2 = 0, cpt3 = 0, cpt4 = 0, cpt5 = 0, cpt6 = 0, cpt7 = 0, cpt8 = 0, cpt9 = 0;
 
     public void Update()
     {
@@ -69,10 +70,65 @@ public class UIManager : MonoBehaviour
 
     public void UpdateGrid()
     {
+        cpt1 = 0; cpt2 = 0; cpt3 = 0; cpt4 = 0; cpt5 = 0; cpt6 = 0; cpt7 = 0; cpt8 = 0; cpt9 = 0;
         for (int i = 0; i < this.ligne; i++)
         {
             for (int j = 0; j < this.colonne; j++)
             {
+                if (grille.getVal(i, j).valeur != 0)
+                {
+                    switch (grille.getVal(i, j).valeur)
+                    {
+                        case 1:
+                            cpt1++;
+                            break;
+                        case 2:
+                            cpt2++;
+                            break;
+                        case 3:
+                            cpt3++;
+                            break;
+                        case 4:
+                            cpt4++;
+                            break;
+                        case 5:
+                            cpt5++;
+                            break;
+                        case 6:
+                            cpt6++;
+                            break;
+                        case 7:
+                            cpt7++;
+                            break;
+                        case 8:
+                            cpt8++;
+                            break;
+                        case 9:
+                            cpt9++;
+                            break;
+                        default:
+                            break;
+                    }
+                    if (cpt1 == 9) switchBouton(1, false);
+                    else switchBouton(1, true);
+                    if (cpt2 == 9) switchBouton(2, false);
+                    else switchBouton(2, true);
+                    if (cpt3 == 9) switchBouton(3, false);
+                    else switchBouton(3, true);
+                    if (cpt4 == 9) switchBouton(4, false);
+                    else switchBouton(4, true);
+                    if (cpt5 == 9) switchBouton(5, false);
+                    else switchBouton(5, true);
+                    if (cpt6 == 9) switchBouton(6, false);
+                    else switchBouton(6, true);
+                    if (cpt7 == 9) switchBouton(7, false);
+                    else switchBouton(7, true);
+                    if (cpt8 == 9) switchBouton(8, false);
+                    else switchBouton(8, true);
+                    if (cpt9 == 9) switchBouton(9, false);
+                    else switchBouton(9, true);
+                    //Debug.Log(cpt1 + " " + cpt2 + " " + cpt3 + " " + cpt4 + " " + cpt5 + " " + cpt6 + " " + cpt7 + " " + cpt8 + " " + cpt9);
+                }
                 GameObject tile = GameObject.Find("Case" + i + "_" + j);
                 afficher(i, j, tile);
             }
@@ -114,6 +170,12 @@ public class UIManager : MonoBehaviour
                 tile.GetComponent<Image>().color = white;
             }
         }
+    }
+
+    private void switchBouton(int num, bool activated)
+    {
+        if(!activated) GameObject.Find("Bouton_" + num).GetComponent<Button>().interactable = false;
+        else GameObject.Find("Bouton_" + num).GetComponent<Button>().interactable = true;
     }
 
     public void setTileSelected()
@@ -177,7 +239,7 @@ public class UIManager : MonoBehaviour
 
     public void buttonClick(int num)
     {
-        if (i != -1 && j != -1)
+        if (i != -1 && j != -1 && GameObject.Find("Bouton_" + num).GetComponent<Button>().IsInteractable())
         {
             if (!notesActivated)
             {

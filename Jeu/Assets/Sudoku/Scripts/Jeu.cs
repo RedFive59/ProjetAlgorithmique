@@ -10,8 +10,11 @@ public class Jeu : MonoBehaviour
     private UIManager UIManager;
     private Transform parent;
     private GrilleSudoku grille = null;
-    string numGrille;
-    string difficulte;
+    private string numGrille;
+    private string difficulte;
+    private float temps = 0;
+    private string affichageTemps = "00:00";
+    private GameObject infos;
 
     void Start()
     {
@@ -21,7 +24,8 @@ public class Jeu : MonoBehaviour
         numGrille = level[1];
         grille = new GrilleSudoku(9, 9);
         grille.initVal(0);
-        GameObject.Find("Infos").GetComponent<TextMeshProUGUI>().text = "Difficulty : " + difficulte + "           Level : " + numGrille;
+        infos = GameObject.Find("Infos");
+        infos.GetComponent<TextMeshProUGUI>().text = "Difficulty : " + difficulte + "           Level : " + numGrille + "\nTimer : " + affichageTemps;
         grille.chargementGrille(numGrille, difficulte);
         UIManager = GameObject.Find("Jeu").GetComponent<UIManager>();
         UIManager.Init();
@@ -31,12 +35,31 @@ public class Jeu : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A))
+        if (GameObject.Find("Infos"))
         {
-            Debug.Log("remplirGrille()");
-            grille.remplirGrille(numGrille, difficulte);
-            UIManager.UpdateGrid();
-            if(grille.verifGrille()) UIManager.finishGame();
+            int secondes, minutes;
+            temps += Time.deltaTime;
+            secondes = (int)temps % 60;
+            minutes = (int)temps / 60;
+            if (secondes < 10)
+            {
+                if (minutes < 10) affichageTemps = "0" + minutes + ":0" + secondes;
+                else affichageTemps = minutes + ":0" + secondes;
+            }
+            else
+            {
+                if (minutes < 10) affichageTemps = "0" + minutes + ":" + secondes;
+                else affichageTemps = minutes + ":" + secondes;
+            }
+            UIManager.tempsFin = affichageTemps;
+            GameObject.Find("Infos").GetComponent<TextMeshProUGUI>().text = "Difficulty : " + difficulte + "           Level : " + numGrille + "\nTimer : " + affichageTemps;
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Debug.Log("remplirGrille()");
+                grille.remplirGrille(numGrille, difficulte);
+                UIManager.UpdateGrid();
+                if (grille.verifGrille()) UIManager.finishGame();
+            }
         }
     }
 

@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     private int i = -1, j = -1;
     public GameObject finishCanvas;
     private bool notesActivated = false;
+    public string tempsFin;
 
     public void Update()
     {
@@ -247,5 +248,6 @@ public class UIManager : MonoBehaviour
         GameObject.Find("Notes").GetComponent<Button>().interactable = false;
         GameObject.Find("Infos").SetActive(false);
         finishCanvas.SetActive(true);
+        finishCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text += " in " + tempsFin;
     }
 }

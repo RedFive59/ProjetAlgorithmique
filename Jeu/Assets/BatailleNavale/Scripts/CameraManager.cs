@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    Camera CameraM; //Declare une variable de type camera et récupère la camera à laquelle le script est attaché
-
     // Start is called before the first frame update
     void Start()
     {
-        CameraM = Camera.main; //la camere est déclarée en tant que caméra principale de la scene
+        Camera CameraM=this.GetComponent<Camera>();//Declare une variable de type camera et récupère la camera à laquelle le script est attaché
+        CameraM.backgroundColor = Color.black;
         CameraM.enabled = true; //la camera est active
         CameraM.orthographic = true; //camera est en mode orthographique
-        CameraM.transform.position= new Vector3(5f, -5f ,-10f); //deplace la camera aux coords données
         CameraM.orthographicSize = 5.8f; //déclare la taille (diagonale) du rectangle que couvre la camera
         //la position initiale n'est pas changée la caméra est centrée sur l'origine de la scène
     }

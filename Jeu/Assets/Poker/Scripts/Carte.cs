@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Couleur 
+public enum Couleur//Enumération correspondant à la couleur d'une carte
 {
     Trefle = 0,
     Carreau = 1,
     Coeur = 2,
     Pique = 3
 };
-public enum Valeur
+public enum Valeur//Enumération correspondant à la valeur d'une carte
 {
     Deux = 0,
     Trois = 1,
@@ -28,26 +28,33 @@ public enum Valeur
 
 public class Carte : MonoBehaviour
 { 
-    public Sprite cardFace;
-    public Sprite cardBack;
-    private SpriteRenderer sr;
-    public bool isFaceUp;
-    private Poker poker;
-    private Couleur couleur = Couleur.Trefle;
-    private Valeur valeur = Valeur.Deux;
+    //Attributs
+    public Sprite cardFace;//Texture de la carte
+    private Couleur couleur = Couleur.Trefle;//Couleur de la carte
+    private Valeur valeur = Valeur.Deux;//Valeur de la carte
+
     // Start is called before the first frame update
     void Start()
     {
+        assignationTextureIdentite();
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+    public void assignationTextureIdentite()//Permet d'affecter les bonnes textures et les bonnes valeurs/couleurs aux cartes
+    {
         List<string> deck = Poker.generatedDeck();
-        this.poker = FindObjectOfType<Poker>();
+        Poker poker = FindObjectOfType<Poker>();
         int i = 0;
         this.couleur = 0;
         this.valeur = 0;
-        foreach(string card in deck)
+        foreach (string card in deck)
         {
-            if(this.name == card)
+            if (this.name == card)
             {
-                this.cardFace = this.poker.cardFaces[i];
+                this.cardFace = poker.cardFaces[i];
                 for (int j = 0; j <= 12; j++)
                 {
                     for (int k = 0; k <= 3; k++)
@@ -56,26 +63,12 @@ public class Carte : MonoBehaviour
                         {
                             this.valeur += k;
                             this.couleur += j;
-                            //print(this.name + " = " +this.valeur + " de " + this.couleur);
                         }
                     }
                 }
             }
             i++;
         }
-        this.sr = GetComponent<SpriteRenderer>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (this.isFaceUp)
-        {
-            this.sr.sprite = cardFace;
-        }
-        else
-        {
-            this.sr.sprite = cardBack;
-        }
+        GetComponent<SpriteRenderer>().sprite = this.cardFace;
     }
 }

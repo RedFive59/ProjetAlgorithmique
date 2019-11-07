@@ -20,7 +20,10 @@ public class Jeu : MonoBehaviour
     {
         Resources.LoadAll("SudokuLevels");
         string[] level = SelectionNiveauAleatoire();
-        difficulte = level[0];
+        GameObject diffManager = GameObject.Find("DifficultyManager");
+        difficulte = diffManager.GetComponent<sceneManager>().difficulty;
+        Destroy(diffManager);
+        //difficulte = level[0];
         numGrille = level[1];
         grille = new GrilleSudoku(9, 9);
         grille.initVal(0);

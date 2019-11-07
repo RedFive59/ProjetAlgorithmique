@@ -21,9 +21,15 @@ public class Jeu : MonoBehaviour
         Resources.LoadAll("SudokuLevels");
         string[] level = SelectionNiveauAleatoire();
         GameObject diffManager = GameObject.Find("DifficultyManager");
-        difficulte = diffManager.GetComponent<sceneManager>().difficulty;
-        Destroy(diffManager);
-        //difficulte = level[0];
+        if (diffManager)
+        {
+            difficulte = diffManager.GetComponent<sceneManager>().difficulty;
+            Destroy(diffManager);
+        }
+        else
+        {
+            difficulte = level[0];
+        }
         numGrille = level[1];
         grille = new GrilleSudoku(9, 9);
         grille.initVal(0);
@@ -34,6 +40,7 @@ public class Jeu : MonoBehaviour
         UIManager.Init();
         parent = GameObject.Find("GridManager").transform;
         UIManager.GenerateGrid(0f, 0f, parent);
+        grille.sauvegardeGrille(numGrille, difficulte);
     }
 
     private void Update()

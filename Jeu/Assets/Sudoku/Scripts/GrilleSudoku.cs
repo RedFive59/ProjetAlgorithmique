@@ -274,6 +274,22 @@ internal class GrilleSudoku : Grille<Case>
         }
     }
 
+    public void sauvegardeGrille(string num, string difficulte)
+    {
+        string directoryPath = "Saves/sauvegardeSudoku.json";
+        string filePath = Path.Combine(Application.dataPath, directoryPath);
+        string save = "{\n";
+
+        if (File.Exists(filePath))
+        {
+            save += "\t\"num\": " + num + ",\n";
+            save += "\t\"difficulte\": \"" + difficulte + "\",\n";
+            save += this.ToString();
+            File.WriteAllText(filePath, save);
+        }
+        else Debug.Log("Sauvegarde impossible\nFichier " + filePath + " introuvable");
+    }
+
     public void chargementGrille(string num, string difficulte)
     {
         string directoryPath = "StreamingAssets/SudokuLevels/" + difficulte + "/" + num + ".json";
@@ -297,5 +313,50 @@ internal class GrilleSudoku : Grille<Case>
             }
         }
         else Debug.Log("Chargement impossible\nFichier " + filePath + " introuvable");
+    }
+
+    public override string ToString()
+    {
+        string res = "\t\"tab\": [\n";
+        for (int i = 0; i < 9; i++)
+        {
+            res += "\t\t[";
+            for (int j = 0; j < 9; j++)
+            {
+                if (j != 0 && j % 3 == 0) res += " ";
+                if(j != 8) res += this.getVal(i, j).valeur + ",";
+                else res += this.getVal(i, j).valeur;
+            }
+            if (i != 8)
+            {
+                res += "],\n";
+                if (i != 0 && (i + 1) % 3 == 0) res += "\n";
+            }
+            else res += "]\n";
+        }
+        res += "\n\t],\n" +
+            "\t\"tabTrou\": [\n";
+        for (int i = 0; i < 9; i++)
+        {
+            res += "\t\t[";
+            for (int j = 0; j < 9; j++)
+            {
+                if (j != 0 && j % 3 == 0) res += " ";
+                if (j != 8)
+                    if(this.getVal(i, j).valeur != 0) res += "1" + ",";
+                    else res += "0" + ",";
+                else
+                    if (this.getVal(i, j).valeur != 0) res += "1";
+                    else res += "0";
+            }
+            if (i != 8)
+            {
+                res += "],\n";
+                if (i != 0 && (i + 1) % 3 == 0) res += "\n";
+            }
+            else res += "]\n";
+        }
+        res += "\t]\n}";
+        return res;
     }
 }

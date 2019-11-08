@@ -4,18 +4,11 @@ using UnityEngine;
 
 public class GenShips : MonoBehaviour
 {
-    //!!! OUT
-    //TEXTURES BATEAUX
-    //public Sprite txtTp;
-    //public Sprite txtCtp;
-    //public Sprite txtSm;
-    //public Sprite txtCs;
-    //public Sprite txtPa;
-    // !!! OUT
-
+private GenVisualManager GVM;
     // Start is called before the first frame update
     void Start()
     {
+        GVM = GameObject.FindObjectOfType<GenVisualManager>();
         GameObject Torpilleur = new GameObject("Torpilleur");
         Torpilleur.transform.localScale=new Vector3(2,1,1);//set la taille en unité du bateau
         Torpilleur.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/txtTp128"); ;//lie la texture correspondante au bateau
@@ -53,9 +46,30 @@ public class GenShips : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
-            Debug.Log(this.transform.GetChild(i).GetComponent<SpriteRenderer>());
             this.transform.GetChild(i).GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";//donne le bon shortlayer (ordre d'affichage) au rendu de chaque bateau
-            this.transform.GetChild(i).transform.position = new Vector3(12.5f, -10 + i*2, 0);
+            this.transform.GetChild(i).transform.position = new Vector3(GVM.getposGVM()+12.5f,GVM.getposGVM()+1+i*2, 0);
+        }
+    }
+
+    public void moveShip(int i, float x, float y, float z)
+    {
+        Vector3 V;
+            if (this.transform.GetChild(i).GetComponent<Draggable>().getMag())
+            {
+                V = this.transform.GetChild(i).localPosition;
+                this.transform.GetChild(i).localPosition = new Vector3(V.x + x, V.y + y, V.z + z);
+            }
+    }
+    public void moveShip(float x,float y,float z)
+    {
+        Vector3 V;
+        for(int i = 0; i< 5; i++)
+        {
+            if (this.transform.GetChild(i).GetComponent<Draggable>().getMag())
+            {
+                V = this.transform.GetChild(i).localPosition;
+                this.transform.GetChild(i).localPosition = new Vector3(V.x + x, V.y + y, V.z + z);
+            }
         }
     }
 
@@ -64,4 +78,5 @@ public class GenShips : MonoBehaviour
     {
         
     }
-}
+
+    }

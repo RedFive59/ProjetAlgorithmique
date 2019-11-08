@@ -5,34 +5,43 @@ using UnityEngine.UI;
 
 public class Magasin : MonoBehaviour
 {
+    private GenVisualManager GVM;
     private Canvas myCanvas2;
     private GameObject cvs2;
     private RectTransform rect2;
     private RectTransform rect3;
     private int Magasinpos;//var qui dit si le magasin est ouvert ou fermé
     private Text text;
+    private int pos;
+    private GameObject panel;
+    private GameObject panel2;
+    private GenShips Ships;
 
     // Start is called before the first frame update
     void Start()
     {
+        GVM = GameObject.FindObjectOfType<GenVisualManager>();
+        pos = GVM.getposGVM();
+        Ships = GameObject.FindObjectOfType<GenShips>();
         Magasinpos = 1;//ouvre le magasin au début de la scène
         cvs2 = new GameObject("Canvas Panel");
         cvs2.AddComponent<Canvas>();
-        cvs2.AddComponent<CanvasScaler>().dynamicPixelsPerUnit=50;//pixelisation du texte dans le canvas (plus élevé pour éviter la bouillie)
+        cvs2.AddComponent<CanvasScaler>().dynamicPixelsPerUnit = 50;//pixelisation du texte dans le canvas (plus élevé pour éviter la bouillie)
         cvs2.AddComponent<GraphicRaycaster>();
         Color sgrey;//la couleur qui sera utilisée pour le panel
 
         myCanvas2 = cvs2.GetComponent<Canvas>();
         //myCanvas2.renderMode = RenderMode.ScreenSpaceCamera; //canvas en mode resize sur la camera
         myCanvas2.renderMode = RenderMode.WorldSpace;//rend le canvas indépendant de la caméra ou de la résolution
-        myCanvas2.transform.position = new Vector3(5f, -5f, 0);
+        myCanvas2.worldCamera = GameObject.FindObjectOfType<Camera>();
+        myCanvas2.transform.position = new Vector3(pos + 4f, pos + 11f, 0);
         //myCanvas2.worldCamera = FindObjectOfType<Camera>(); //cherche la premiere camera dispo dans les GO 
         myCanvas2.planeDistance = 10;//"aucune idée de la traduction", a permit de faire repasser les panneaux devant la grille car la caméra était trop proche= fusion des éléments
         myCanvas2.sortingLayerName = "PanelLayer";//applique le bon sortingLayer sur le canvas
         rect3 = myCanvas2.GetComponent<RectTransform>();
-        rect3.sizeDelta = new Vector2(11f,11f);//resize le canvas largeur/hauteur
+        rect3.sizeDelta = new Vector2(1f, 1f);//resize le canvas largeur/hauteur
 
-        GameObject panel = new GameObject("Panel");
+        panel = new GameObject("Panel");
         panel.transform.parent = myCanvas2.transform;//range le panel dans son canvas
         panel.AddComponent<CanvasRenderer>();
         Image I = panel.AddComponent<Image>();//récupération du pseudo rendu du panel
@@ -49,16 +58,15 @@ public class Magasin : MonoBehaviour
         sgrey.a = 0.5f;//set la transparence de la couleur de min 0 à max 1
         I.color = sgrey;
 
-        panel.AddComponent<VerticalLayoutGroup>();
-
-        GameObject panel2 = new GameObject("PanelButton");
-        panel2.transform.parent = myCanvas2.transform;//range panel2 dans son canvas
+        panel2 = new GameObject("PanelButton");
+        panel2.transform.SetParent(myCanvas2.transform,false);//range panel2 dans son canvas
         //début positionnement du panel2
         panel2.AddComponent<CanvasRenderer>();
         panel2.AddComponent<RectTransform>();
         panel2.GetComponent<RectTransform>().sizeDelta = new Vector2(1f, 11.6f);
         panel2.GetComponent<RectTransform>().localPosition = new Vector3(4.26f, 0, 0);
         panel2.AddComponent<Button>().onClick.AddListener(MoveMagasin);
+  
         //fin positionnement
         //début change la couleur du panel
         Image I2 = panel2.AddComponent<Image>();//récupération du pseudo rendu du panel
@@ -81,7 +89,7 @@ public class Magasin : MonoBehaviour
         text.text = "Magasin (fermer)";
         text.fontSize = 1;//taille police
         text.alignment = TextAnchor.MiddleCenter;//attache le text au centre de sa box, ici le panel2
-        
+
 
         // Text position
         rectTransform = text.GetComponent<RectTransform>();
@@ -100,6 +108,7 @@ public class Magasin : MonoBehaviour
                 panel2.transform.localPosition = new Vector3(4.26f, 0, 0);
                 text.text = "Magasin (fermer)";
                 Magasinpos = 1;
+                Ships.moveShip(-4.5f, 0, 0);
             }
             else
             {
@@ -109,9 +118,33 @@ public class Magasin : MonoBehaviour
                     panel2.transform.localPosition = new Vector3(8.7f, 0, 0);
                     text.text = "Magasin (ouvrir)";
                     Magasinpos = 0;
+                    Ships.moveShip(4.5f, 0, 0);
                 }
             }
         }
+    }
+
+    public void setFermer()
+    {
+        panel.transform.localPosition = new Vector3(11.466f, 0, 0);
+        panel2.transform.localPosition = new Vector3(8.7f, 0, 0);
+        text.text = "Magasin (ouvrir)";
+        Magasinpos = 0;
+        Ships.moveShip(4.5f, 0, 0);
+    }
+
+    public void setOuvrir()
+    {
+        panel.transform.localPosition = new Vector3(7.026f, 0, 0);
+        panel2.transform.localPosition = new Vector3(4.26f, 0, 0);
+        text.text = "Magasin (fermer)";
+        Magasinpos = 1;
+        Ships.moveShip(-4.5f, 0, 0);
+    }
+
+    public int getMagasinpos()
+    {
+        return Magasinpos;
     }
 
  

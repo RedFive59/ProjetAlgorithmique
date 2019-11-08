@@ -10,16 +10,22 @@ public class Selection : MonoBehaviour
     void Start()
     {
         startColor = this.GetComponent<SpriteRenderer>().color;   //récupère la couleur original depuis le rendu du sprite auquel le script est attaché
-
     }
-    void OnMouseEnter()
+
+    private void OnMouseOver()
     {
         this.GetComponent<SpriteRenderer>().color = Color.red; //la souris est sur le sprite sa nouvelle couleur devient rouge
     }
+    /*void OnMouseEnter()
+    {
+        this.GetComponent<SpriteRenderer>().color = Color.red; //la souris est sur le sprite sa nouvelle couleur devient rouge
+    }
+    */
     void OnMouseExit()
     {
         this.GetComponent<SpriteRenderer>().color = startColor; //la souris sort du sprite il reprend sa couleur d'origine
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         this.GetComponent<SpriteRenderer>().color = Color.green;

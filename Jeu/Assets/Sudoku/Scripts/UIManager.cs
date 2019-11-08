@@ -70,6 +70,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateGrid()
     {
+        grille.sauvegardeGrille();
         cpt1 = 0; cpt2 = 0; cpt3 = 0; cpt4 = 0; cpt5 = 0; cpt6 = 0; cpt7 = 0; cpt8 = 0; cpt9 = 0;
         for (int i = 0; i < this.ligne; i++)
         {

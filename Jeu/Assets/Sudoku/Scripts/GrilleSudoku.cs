@@ -274,8 +274,11 @@ internal class GrilleSudoku : Grille<Case>
         }
     }
 
-    public void sauvegardeGrille(string num, string difficulte)
+    public void sauvegardeGrille()
     {
+        Jeu jeu = GameObject.Find("Jeu").GetComponent<Jeu>();
+        string num = jeu.numGrille;
+        string difficulte = jeu.difficulte;
         string directoryPath = "Saves/sauvegardeSudoku.json";
         string filePath = Path.Combine(Application.dataPath, directoryPath);
         string save = "{\n";
@@ -334,7 +337,7 @@ internal class GrilleSudoku : Grille<Case>
             }
             else res += "]\n";
         }
-        res += "\n\t],\n" +
+        res += "\t],\n" +
             "\t\"tabTrou\": [\n";
         for (int i = 0; i < 9; i++)
         {

@@ -10,8 +10,8 @@ public class Jeu : MonoBehaviour
     private UIManager UIManager;
     private Transform parent;
     private GrilleSudoku grille = null;
-    private string numGrille;
-    private string difficulte;
+    public string numGrille;
+    public string difficulte;
     private float temps = 0;
     private string affichageTemps = "00:00";
     private GameObject infos;
@@ -40,7 +40,7 @@ public class Jeu : MonoBehaviour
         UIManager.Init();
         parent = GameObject.Find("GridManager").transform;
         UIManager.GenerateGrid(0f, 0f, parent);
-        grille.sauvegardeGrille(numGrille, difficulte);
+        grille.sauvegardeGrille();
     }
 
     private void Update()

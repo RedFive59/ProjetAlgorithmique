@@ -118,109 +118,48 @@ public class Draggable : MonoBehaviour
         return -1;
     }
 
+    private void resetPos()
+    {
+        magv = true;
+        if (rotv)
+        {
+            changeRot();
+        }
+        this.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
+        this.transform.localPosition = OriginalPos;
+        moveShip(4.5f, 0, 0);
+    }
     private void checkPos()
     {
         GS = GameObject.FindObjectOfType<GenShips>();
         if ((this.transform.localPosition.x < 0) || (this.transform.localPosition.x > 9) || (this.transform.localPosition.y < 6) || (this.transform.localPosition.y > 15))
         {
-                magv = true;
-            if (rotv)
-            {
-                changeRot();
-            }
-            this.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
-            this.transform.localPosition = OriginalPos;
-                moveShip(4.5f, 0, 0);
+            resetPos();
             return;
             }
 
-        if ((getTaille() == 2) || (getTaille() == 4)) //Torpilleur Croiseur
-        {
-            if ((this.transform.localPosition.x < 0 + (int)(getTaille() / 2))&& (this.transform.localPosition.x > 0) && (rotv == false))
+            if ((this.transform.localPosition.x <= 0 + (int)(getTaille() / 2)-1)&& (rotv == false))
             {
-                moveShip(1, 0, 0);
-                if (getTaille() / 2 == 2)
-                {
-                    moveShip(2, 0, 0);
-                }
-            }
-            if ((this.transform.localPosition.x > 9 - (int)(getTaille() / 2))&&(this.transform.localPosition.x < 9) && (rotv == false))
-            {
-                moveShip(-1, 0, 0);
-                if (getTaille() / 2 == 2)
-                {
-                    moveShip(-2, 0, 0);
-                }
-            }
-            if ((this.transform.localPosition.y < 6 + (int)(getTaille() / 2))&& (this.transform.localPosition.y > 6) && (rotv == false))
-            {
-                moveShip(0, 1, 0);
-                if (getTaille() / 2 == 2)
-                {
-                    moveShip(0, 2, 0);
-                }
-            }
-            if ((this.transform.localPosition.y > 15 - (int)(getTaille() / 2))&& (this.transform.localPosition.y < 15) && (rotv == false))
-            {
-                moveShip(0, -1, 0);
-                if (getTaille() / 2 == 2)
-                {
-                    moveShip(0,-2, 0);
-                }
-            }
-            if ((this.transform.localPosition.x < 0 + (int)(getTaille() / 2))&& (this.transform.localPosition.x > 0) && (rotv == true))
-            {
-                moveShip(1, 0, 0);
-            }
-            if ((this.transform.localPosition.x > 9 - (int)(getTaille() / 2))&& (this.transform.localPosition.x < 9) && (rotv == true))
-            {
-                moveShip(-1, 0, 0);
-            }
-            if ((this.transform.localPosition.y < 6 + (int)(getTaille() / 2))&& (this.transform.localPosition.y > 6) && (rotv == true))
-            {
-                moveShip(0, +1, 0);
-            }
-            if ((this.transform.localPosition.y > 15 - (int)(getTaille() / 2))&& (this.transform.localPosition.y < 15) && (rotv == true))
-            {
-                moveShip(0, -1, 0);
-            }
+            resetPos();
+            return;
         }
-        if ((getTaille() == 3) || (getTaille() == 5)) //ContreTorpilleur SousMarin PorteAvion
+        if ((this.transform.localPosition.x >= 9 - (int)(getTaille() / 2) + 1) && (rotv == false))
         {
-            if ((this.transform.localPosition.x < 0 + (int)(getTaille() / 2))&& (this.transform.localPosition.x > 0) && (rotv == false))
-            {
-                moveShip(1, 0, 0);
-            }
-            if ((this.transform.localPosition.x > 9 - (int)(getTaille() / 2))&& (this.transform.localPosition.x < 9) && (rotv == false))
-            {
-                moveShip(-1, 0, 0);
-            }
-            if ((this.transform.localPosition.y < 6 + (int)(getTaille() / 2))&& (this.transform.localPosition.y > 6) && (rotv == false))
-            {
-                moveShip(0, +1, 0);
-            }
-            if ((this.transform.localPosition.y > 15 - (int)(getTaille() / 2))&& (this.transform.localPosition.y < 15) && (rotv == false))
-            {
-                moveShip(0, -1, 0);
-            }
-            if ((this.transform.localPosition.x < 0 + (int)(getTaille() / 2))&& (this.transform.localPosition.x > 0) && (rotv == true))
-            {
-                moveShip(1, 0, 0);
-            }
-            if ((this.transform.localPosition.x > 9 - (int)(getTaille() / 2))&& (this.transform.localPosition.x < 9) && (rotv == true))
-            {
-                moveShip(-1, 0, 0);
-            }
-            if ((this.transform.localPosition.y < 6 + (int)(getTaille() / 2))&& (this.transform.localPosition.y > 6) && (rotv == true))
-            {
-                moveShip(0, +1, 0);
-            }
-            if ((this.transform.localPosition.y > 15 - (int)(getTaille() / 2))&& (this.transform.localPosition.y < 15) && (rotv == true))
-            {
-                moveShip(0, -1, 0);
-            }
+            resetPos();
+            return;
+        }
+        if ((this.transform.localPosition.y <= 6 + (int)(getTaille() / 2) - 1) && (rotv == true))
+        {
+            resetPos();
+            return;
+        }
+        if ((this.transform.localPosition.y >= 15 - (int)(getTaille() / 2) + 1) && (rotv == true))
+        {
+            resetPos();
+            return;
         }
     }
+
 
     private Vector3 cutVector(Vector3 V)
     {

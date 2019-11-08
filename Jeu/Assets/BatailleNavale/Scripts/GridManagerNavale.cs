@@ -7,6 +7,7 @@ public class GridManagerNavale : MonoBehaviour
 {
     private int rows = 11;
     private int cols = 11;
+    private GenVisualManager GVM;
     private Grille<int> col0; //vecteur qui contiendra la colonne des chiffres (juste visuel) 
     private Grille<int> row0; //vecteur qui contiendra la ligne des lettres (juste visuel)
     private Grille<int> grille; //matrice qui contiendra les valeurs de l'eau/bateau, libre/raté/touché
@@ -19,12 +20,13 @@ public class GridManagerNavale : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenGrille(0);
+        GVM = GameObject.FindObjectOfType<GenVisualManager>();
+        GenGrille(GVM.getposGVM());
     }
         void GenGrille(int pos)
         {
         //Camera//
-        GameObject Camera0 = new GameObject("Camera : " + pos);
+        GameObject Camera0 = new GameObject("Camera : "+pos);
         Camera0.AddComponent<Camera>();
         Camera Cam = Camera0.GetComponent<Camera>();
         Cam.transform.position = new Vector3(pos+5.5f,pos+6f,-10f);

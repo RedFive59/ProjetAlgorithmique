@@ -8,16 +8,17 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    private GameObject tileReference;
-    private int ligne, colonne;
-    private float espacement = 1.1f;
-    private GrilleSudoku grille;
-    private int i = -1, j = -1;
-    public GameObject finishCanvas;
-    private bool notesActivated = false;
-    public string tempsFin;
+    private GameObject tileReference; // GameObject qui définit les cases
+    private int ligne, colonne; // Nombre de lignes et de colonnes
+    private float espacement = 1.1f; // Entier qui définit l'espacement entre 2 cases
+    private GrilleSudoku grille; // Référence à la grille
+    private int i = -1, j = -1; // Place de la case [i,j]
+    public GameObject finishCanvas; // GameObject a afficher en fin de partie
+    private bool notesActivated = false; // Défini l'activation des notes
+    public string tempsFin; // Chaine de caractères pour la fin du timer
     private int cpt1 = 0, cpt2 = 0, cpt3 = 0, cpt4 = 0, cpt5 = 0, cpt6 = 0, cpt7 = 0, cpt8 = 0, cpt9 = 0;
 
+    // Méthode permettant la détection d'entrées numériques sur le jeu
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.KeypadPeriod))
@@ -44,6 +45,7 @@ public class UIManager : MonoBehaviour
             buttonClick(9);
     }
 
+    // Méthode qui est appelé au start du script Jeu afin d'initialiser les objets
     public void Init()
     {
         tileReference = GameObject.Find("TilePrefab");
@@ -53,6 +55,7 @@ public class UIManager : MonoBehaviour
         generateNumberSelection();
     }
 
+    // Méthode qui permet la génération de toutes les cases de la grille centrale
     public void GenerateGrid(float posX, float posY, Transform parent)
     {
         for (int i = 0; i < this.ligne; i++)
@@ -68,6 +71,7 @@ public class UIManager : MonoBehaviour
         tileReference.SetActive(false);
     }
 
+    // Méthode qui permet de mettre à jour toutes la grille sur le jeu et de vérifier la possibilité de toucher aux boutons en bas ou pas
     public void UpdateGrid()
     {
         grille.sauvegardeGrille();
@@ -136,6 +140,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Méthode qui permet au jeu de définir différentes règles sur l'affichage afin d'être plus parlant pour l'utilisateur
     private void afficher(int i, int j, GameObject tile)
     {
         Case selectedCase = grille.getVal(i, j);
@@ -144,20 +149,20 @@ public class UIManager : MonoBehaviour
         Color goodValue = new Color32(80, 170, 255, 255);
         Color badValue = new Color32(170, 20, 20, 255);
         Color unchangeableCase = new Color32(0, 0, 0, 255);
-        if (selectedCase.changeable == false)
+        if (selectedCase.changeable == false) // Case prédéfinie, préremplie
         {
             tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
             tile.GetComponent<Button>().interactable = false;
             tile.GetComponent<Image>().color = unchangeableCase;
-        } else
+        } else // Case qui peut être remplie
         {
             tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = grille.getVal(i, j).ToString();
             tile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = grille.getVal(i, j).indicesToString();
             if (selectedCase.valeur != 0)
             {
-                Color32 textColor = goodValue;
-                if (!grille.verifLigne(i) || !grille.verifColonne(j) || !grille.verifCarre(grille.numCarre(i, j))) textColor = badValue;
                 // Valeur de la case entre 1 et 9
+                Color32 textColor = goodValue;
+                if (!grille.verifLigne(i) || !grille.verifColonne(j) || !grille.verifCarre(grille.numCarre(i, j))) textColor = badValue; // Changement de couleur si les cases sont mal remplies
                 tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = textColor;
             }
             if (selectedCase.selected)
@@ -173,12 +178,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Permet de changer l'état d'activité des boutons en bas de l'écran 
     private void switchBouton(int num, bool activated)
     {
         if(!activated) GameObject.Find("Bouton_" + num).GetComponent<Button>().interactable = false;
         else GameObject.Find("Bouton_" + num).GetComponent<Button>().interactable = true;
     }
 
+    // Méthode pour les cases du jeu, elle permet la sélection de ses cases
     public void setTileSelected()
     {
         string nom = EventSystem.current.currentSelectedGameObject.name;
@@ -190,6 +197,7 @@ public class UIManager : MonoBehaviour
         selectedCase.selected = true;
     }
 
+    // Permet de générer les boutons de 1 à 9 pour remplir la grille
     public void generateNumberSelection()
     {
         GameObject buttonReference = GameObject.Find("ButtonPrefab");
@@ -203,6 +211,7 @@ public class UIManager : MonoBehaviour
         buttonReference.SetActive(false);
     }
 
+    // Méthode de déselection des cases
     public void deselectOther(int i, int j)
     {
         for(int k = 0; k<9; k++)
@@ -214,6 +223,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Méthode qui définit quel valeur doit être ajouter ou modifier dans la case, sert pour les cliques
     public void buttonClick()
     {
         string nom = EventSystem.current.currentSelectedGameObject.name;
@@ -238,6 +248,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Méthode qui définit quel valeur doit être ajouter ou modifier dans la case, sert pour les touches du clavier
     public void buttonClick(int num)
     {
         if (i != -1 && j != -1 && GameObject.Find("Bouton_" + num).GetComponent<Button>().IsInteractable())
@@ -259,6 +270,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Méthode pour bouton afin de savoir quel bouton a été pressé
     public void appuiIndice(int num)
     {
         Case c = grille.getVal(i, j);
@@ -266,6 +278,7 @@ public class UIManager : MonoBehaviour
         else c.retraitIndice(num);
     }
 
+    // Permet de remplacer la valeur d'une case par 0 et de supprimer les indices / Clean de la case
     public void eraseValue()
     {
         if (i != -1 && j != -1)
@@ -276,6 +289,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Méthode qui sert à activer ou désactiver le système de notes dans le jeu
     public void notesSwitch()
     {
         GameObject notesButton = GameObject.Find("Notes");
@@ -298,6 +312,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Méthode qui permet de finaliser la partie
     public void finishGame()
     {
         for(int n = 1; n < 10; n++)

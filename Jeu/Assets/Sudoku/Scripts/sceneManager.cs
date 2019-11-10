@@ -5,13 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class sceneManager : MonoBehaviour
 {
-    public string difficulty;
+    public string difficulty; // Difficulté que l'utilisateur choisira
 
     void Start()
     {
-        DontDestroyOnLoad(GameObject.Find("DifficultyManager"));
+        DontDestroyOnLoad(GameObject.Find("DifficultyManager")); // Permet de garder un élément de la scène après changement de la scène
     }
 
+    // Fonction qui sert au bouton de la scène SudokuMenu afin de définir la difficulté
     public void setDifficulty(int num)
     {
         switch(num) {

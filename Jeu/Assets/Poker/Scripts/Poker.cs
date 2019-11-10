@@ -9,11 +9,14 @@ public class Poker : MonoBehaviour
     public GameObject cardPrefab;//Modèle de carte à dupliquer
     public GameObject playerPrefab;//Modèle de joueur à dupliquer
     public List<GameObject> deck;//Paquet de cartes
-    public List<GameObject> joueurs;//Liste des joueurs
-    public int nbJoueurs = 5;//Nombre de joueurs dans la partie
+    public List<GameObject> joueurs;//Liste de tous less joueurs
+    public List<GameObject> joueursManche;//Liste de tous les joueurs restants
+    public static int nbJoueurs = 5;//Nombre de joueurs dans la partie
     private int tour = 0;//Indice du joueur qui doit jouer
     public int tourGlobal = 0;//Indique le numéro du tour (augmente de 1 à chaque fois que les les nbJoueurs ont joué une fois)
-    public List<GameObject> flop = new List<GameObject>(5);//Liste des cinq cartes composant le flop
+    public List<GameObject> flop = new List<GameObject>();//Liste des cinq cartes composant le flop
+    public readonly static int BOURSEDEPART = 2500;//Bourse de départ pour les joueurs
+    public static int miseManche = 10;//Mise de la manche 
 
     // Start is called before the first frame update
     void Start()
@@ -80,13 +83,15 @@ public class Poker : MonoBehaviour
     }
     public void generationJoueurs()//Crée les GameObjects correspondant aux joueurs
     {
-        this.joueurs = new List<GameObject>(this.nbJoueurs);
+        this.joueurs = new List<GameObject>(nbJoueurs);
+        this.joueursManche = new List<GameObject>();
         for(int i = 1; i <= nbJoueurs; i++)
         {
             GameObject newPlayer = Instantiate(playerPrefab);
             newPlayer.name = "Joueur_" + i;
             newPlayer.SetActive(true);
             this.joueurs.Add(newPlayer);
+            this.joueursManche.Add(newPlayer);
         }
     }
     public void distribution()//Distribue les cartes deux cartes du deck à chaque joueur
@@ -94,7 +99,7 @@ public class Poker : MonoBehaviour
         System.Random random = new System.Random();
         int rdm;
         GameObject player;
-        for(int i = 1; i <= this.nbJoueurs; i++)
+        for(int i = 1; i <= nbJoueurs; i++)
         {
             player = GameObject.Find("Joueur_" + i);
             player.GetComponent<Joueur>().main = new List<GameObject>(2);

@@ -11,7 +11,7 @@ public class Poker : MonoBehaviour
     public List<GameObject> deck;//Paquet de cartes
     public List<GameObject> joueurs;//Liste de tous less joueurs
     public List<GameObject> joueursManche;//Liste de tous les joueurs restants
-    public static int nbJoueurs = 5;//Nombre de joueurs dans la partie
+    public static int nbJoueurs = 3;//Nombre de joueurs dans la partie
     private int tour = 0;//Indice du joueur qui doit jouer
     public int tourGlobal = 0;//Indique le numéro du tour (augmente de 1 à chaque fois que les les nbJoueurs ont joué une fois)
     public List<GameObject> flop = new List<GameObject>();//Liste des cinq cartes composant le flop
@@ -89,6 +89,7 @@ public class Poker : MonoBehaviour
         {
             GameObject newPlayer = Instantiate(playerPrefab);
             newPlayer.name = "Joueur_" + i;
+            newPlayer.GetComponent<Joueur>().nom = "Joueur " + i;
             newPlayer.SetActive(true);
             this.joueurs.Add(newPlayer);
             this.joueursManche.Add(newPlayer);

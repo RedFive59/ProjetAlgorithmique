@@ -20,10 +20,7 @@ public class Joueur : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        updateAffichageMain();
-        updateAffichageBourse();
-        updateAffichageMise();
-        updateAffichageCombinaison();
+        determinaisonCombinaison();
     }
     public int getBourse()//Retourne la bourse du joueur
     {
@@ -45,37 +42,6 @@ public class Joueur : MonoBehaviour
             diminuerBourse(this.bourse);
             mise = this.bourse;
         }
-    }
-    public void updateAffichageMain()//Permet l'affichage des cartes du joueur si c'est à son tour
-    {
-        GameObject c1 = GameObject.Find("Carte_1");
-        GameObject c2 = GameObject.Find("Carte_2");
-        Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
-        if (poker.joueursManche[poker.getTour()].GetComponent<Joueur>().Equals(this))
-        {
-            this.main[0].transform.position = c1.transform.position;
-            this.main[1].transform.position = c2.transform.position;
-        }
-        else
-        {
-            this.main[0].transform.position = poker.cardPrefab.transform.position;
-            this.main[1].transform.position = poker.cardPrefab.transform.position;
-        }
-    }
-    public void updateAffichageBourse()//Permet l'affichage de le bourse du joueur
-    {
-        Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
-        GameObject.Find("Bourse").GetComponent<Text>().text = poker.joueursManche[poker.getTour()].GetComponent<Joueur>().getBourse().ToString();
-    }
-    public void updateAffichageMise()//Permet l'affichage de le mise du joueur
-    {
-        Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
-        GameObject.Find("Mise").GetComponent<Text>().text = "Mise : " + poker.joueursManche[poker.getTour()].GetComponent<Joueur>().mise;
-    }
-    public void updateAffichageCombinaison()//Permet l'affichage de le combinaison du joueur du joueur
-    {
-        Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
-        GameObject.Find("Combinaison").GetComponent<Text>().text = poker.joueursManche[poker.getTour()].GetComponent<Joueur>().combinaison.ToString() +" de " + max(poker.joueursManche[poker.getTour()].GetComponent<Joueur>().l).valeur.ToString();
     }
     public void determinaisonCombinaison()
     {
@@ -140,7 +106,6 @@ public class Joueur : MonoBehaviour
                     {
                         l.Add(c);
                         l.Add(c2);
-                        print(c.getValeur()+" de "+c.getCouleur()+" et " +  c2.getValeur() + " de " + c2.getCouleur());
                         return true;
                     }
                 }
@@ -387,7 +352,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public Carte max(List<Carte> liste)
+    public static Carte max(List<Carte> liste)
     {
         Carte max = liste[0];
         for(int i = 1; i < liste.Count; i++)

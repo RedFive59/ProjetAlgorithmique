@@ -32,19 +32,22 @@ public class LeaderboardManager : MonoBehaviour
             return;
         }
         var loadedData = JSON.Parse(File.ReadAllText(filePath)); // Répartition des données dans loadedData
-        for (int i = 0; i < loadedData["taille"]; i++)
+        if(!loadedData["history"] && loadedData["history"].Count != 0)
         {
-            Vector3 pos = boardRef.transform.position + new Vector3(0, -30*i);
-            GameObject boardTab = Instantiate(boardRef, pos, boardRef.transform.rotation, parent.transform);
-            boardTab.name = "board" + (i+1);
-            boardTab.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = " " + loadedData["history"][i][0];
-            boardTab.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = " " + loadedData["history"][i][1];
-            boardTab.transform.GetChild(8).GetComponent<TextMeshProUGUI>().text = " " + loadedData["history"][i][2];
-        }
-        if(loadedData["taille"] < 16) // Vérification qui permet la disparition de la barre de scroll si le tableau n'est pas assez grand
-        {
-            GameObject.Find("Scroll View").GetComponent<ScrollRect>().enabled = false;
-            GameObject.Find("Scrollbar Vertical").SetActive(false);
+            for (int i = 0; i < loadedData["history"].Count; i++)
+            {
+                Vector3 pos = boardRef.transform.position + new Vector3(0, -30 * i);
+                GameObject boardTab = Instantiate(boardRef, pos, boardRef.transform.rotation, parent.transform);
+                boardTab.name = "board" + (i + 1);
+                boardTab.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = " " + loadedData["history"][i][0];
+                boardTab.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = " " + loadedData["history"][i][1];
+                boardTab.transform.GetChild(8).GetComponent<TextMeshProUGUI>().text = " " + loadedData["history"][i][2];
+            }
+            if (loadedData["history"].Count < 16) // Vérification qui permet la disparition de la barre de scroll si le tableau n'est pas assez grand
+            {
+                GameObject.Find("Scroll View").GetComponent<ScrollRect>().enabled = false;
+                GameObject.Find("Scrollbar Vertical").SetActive(false);
+            }
         }
         Destroy(boardRef);
     }

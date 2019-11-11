@@ -284,12 +284,16 @@ internal class GrilleSudoku : Grille<Case>
         Jeu jeu = GameObject.Find("Jeu").GetComponent<Jeu>();
         string num = jeu.numGrille;
         string difficulte = jeu.difficulte;
+        string timer = jeu.temps.ToString();
+        string timerString = jeu.affichageTemps;
         string directoryPath = "Saves/sauvegardeSudoku.json";
         string filePath = Path.Combine(Application.dataPath, directoryPath);
         string save = "{\n\t//Fichier de sauvegarde de la grille du Sudoku afin de reprendre une partie abandonnée\n";
 
         if (File.Exists(filePath))
         {
+            save += "\t\"timer\": \"" + timer + "\",\n";
+            save += "\t\"timerString\": \"" + timerString + "\",\n";
             save += "\t\"num\": " + num + ",\n";
             save += "\t\"difficulte\": \"" + difficulte + "\",\n";
             save += this.ToString();
@@ -316,6 +320,33 @@ internal class GrilleSudoku : Grille<Case>
                     if (loadedData["tabTrou"][i][j] == 1)
                     {
                         this.getVal(i, j).changeable = false;
+                        this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
+                    }
+                }
+            }
+        }
+        else Debug.Log("Chargement impossible\nFichier " + filePath + " introuvable");
+    }
+
+    // Rempli la grille avec le fichier sauvegardeSudoku
+    public void chargementGrilleSauvegarde()
+    {
+        string directoryPath = "Saves/sauvegardeSudoku.json";
+        string filePath = Path.Combine(Application.dataPath, directoryPath);
+
+        if (File.Exists(filePath))
+        {
+            string dataAsJson = File.ReadAllText(filePath);
+            var loadedData = JSON.Parse(dataAsJson);
+            chargementGrille(loadedData["num"].ToString(), loadedData["difficulte"]);
+
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (this.getVal(i, j).valeur == 0 && loadedData["tabTrou"][i][j] == 1)
+                    {
+                        this.getVal(i, j).changeable = true;
                         this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
                     }
                 }

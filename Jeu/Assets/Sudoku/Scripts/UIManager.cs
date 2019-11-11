@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using SimpleJSON;
 
 public class UIManager : MonoBehaviour
 {
@@ -23,7 +25,7 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(KeyCode.KeypadPeriod))
             eraseValue();
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.KeypadPlus) || Input.GetKeyDown(KeyCode.Asterisk))
             notesSwitch();
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
             buttonClick(1);
@@ -327,5 +329,41 @@ public class UIManager : MonoBehaviour
         GameObject.Find("Infos").SetActive(false);
         finishCanvas.SetActive(true);
         finishCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text += " in " + tempsFin;
+        File.WriteAllText(Path.Combine(Application.dataPath, "Saves/sauvegardeSudoku.json"), "{\n\t//Fichier de sauvegarde de la grille du Sudoku afin de reprendre une partie abandonnée\n}"); // Reset du fichier sauvegardeSudoku
+        Jeu jeu = GameObject.Find("Jeu").GetComponent<Jeu>();
+        string num = jeu.numGrille;
+        string difficulte = jeu.difficulte;
+        string timerString = jeu.affichageTemps;
+        ajoutDonneesLeaderboard(difficulte, num, timerString);
+    }
+    
+    // Méthode pour ajouter un résultat en fin de partie
+    public void ajoutDonneesLeaderboard(string difficulty, string numGrille, string timer)
+    {
+        string filePath = Path.Combine(Application.dataPath, "Saves/Sudoku.json");
+        if (File.Exists(filePath))
+        {
+            var loadedData = JSON.Parse(File.ReadAllText(filePath)); // Répartition des données dans loadedData
+            if (loadedData["history"] || loadedData["history"].Count == 0)
+            {
+                string res = "{\n\t//Historique des games de Sudoku\n\t\"history\": [\n\t\t[ \"" + difficulty + "\", \"" + numGrille + "\", \"" + timer + "\" ]\n\t]\n}";
+                File.WriteAllText(filePath, res);
+            }
+            else
+            {
+                int line_to_edit = 3 + loadedData["history"].Count;
+                string newText = (",\n\t\t[ \"" + difficulty + "\", \"" + numGrille + "\", \"" + timer + "\" ]");
+                lineChanger(newText, filePath, line_to_edit);
+            }
+        }
+        else Debug.Log("Fichier " + filePath + " introuvable");
+    }
+
+    // Méthode pour changer une ligne spécifique dans un fichier
+    static void lineChanger(string newText, string fileName, int line_to_edit)
+    {
+        string[] arrLine = File.ReadAllLines(fileName);
+        arrLine[line_to_edit - 1] = arrLine[line_to_edit - 1] + newText;
+        File.WriteAllLines(fileName, arrLine);
     }
 }

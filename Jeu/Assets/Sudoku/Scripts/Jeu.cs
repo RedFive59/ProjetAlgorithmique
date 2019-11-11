@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using TMPro;
+using SimpleJSON;
 
 public class Jeu : MonoBehaviour
 {
@@ -12,27 +13,41 @@ public class Jeu : MonoBehaviour
     private GrilleSudoku grille = null; // Référence à la grille
     public string numGrille; // Numéro de la grille
     public string difficulte; // Difficulté de la grille
-    private float temps = 0; // Temps qui va changer au fur et à mesure
-    private string affichageTemps = "00:00"; //Chaine de caractères pour l'affichage du temps
+    public float temps = 0; // Temps qui va changer au fur et à mesure
+    public string affichageTemps = "00:00"; //Chaine de caractères pour l'affichage du temps
     private GameObject infos; // Référence à l'object Infos pour afficher dans son élément texte les informations de la partie
 
     void Start()
     {
-        Resources.LoadAll("SudokuLevels"); // Chargement des niveaux avant tout
+        grille = new GrilleSudoku(9, 9); // Définition de la grille de 9 par 9
+        grille.initVal(0); // Toutes les cases sont à 0
         GameObject diffManager = GameObject.Find("DifficultyManager");
         if (diffManager) // Vérification que la scène SudokuMenu a fait son travail
         {
-            difficulte = diffManager.GetComponent<sceneManager>().difficulty; // Récupération de la difficulté choisit dans la scène SudokuMenu
-            Destroy(diffManager);
+            if (diffManager.GetComponent<sceneManager>().resumeGame)
+            {
+                // Cas où l'on veut reprendre la partie du fichier sauvegardeSudoku
+                var loadedData = JSON.Parse(File.ReadAllText(Path.Combine(Application.dataPath, "Saves/sauvegardeSudoku.json")));
+                numGrille = loadedData["num"].ToString();
+                difficulte = loadedData["difficulte"];
+                temps = float.Parse(loadedData["timer"]);
+                affichageTemps = loadedData["timerString"];
+                grille.chargementGrilleSauvegarde();
+                Destroy(diffManager);
+            } else
+            {
+                difficulte = diffManager.GetComponent<sceneManager>().difficulty; // Récupération de la difficulté choisit dans la scène SudokuMenu
+                Destroy(diffManager);
 
-            //Choix d'un niveau au hasard selon la difficulté précedement choisie
-            int cpt = 0;
-            string directoryPath = Path.Combine(Application.dataPath, ("StreamingAssets/SudokuLevels/" + difficulte + "/"));
-            var info = new DirectoryInfo(directoryPath);
-            var fileInfo = info.GetFiles();
-            foreach (FileInfo f in fileInfo) if (f.Extension == ".json") cpt++;
-            int level = UnityEngine.Random.Range(1, cpt + 1);
-            numGrille = level.ToString();
+                //Choix d'un niveau au hasard selon la difficulté précedement choisie
+                int cpt = 0;
+                string directoryPath = Path.Combine(Application.dataPath, ("StreamingAssets/SudokuLevels/" + difficulte + "/"));
+                var info = new DirectoryInfo(directoryPath);
+                var fileInfo = info.GetFiles();
+                foreach (FileInfo f in fileInfo) if (f.Extension == ".json") cpt++;
+                int level = UnityEngine.Random.Range(1, cpt + 1);
+                numGrille = level.ToString();
+            }
         }
         else // Afin de pouvoir lancer la scène Sudoku sans problème
         {
@@ -40,8 +55,6 @@ public class Jeu : MonoBehaviour
             difficulte = level[0];
             numGrille = level[1]; // Numéro de grille choisit au hasard
         }
-        grille = new GrilleSudoku(9, 9); // Définition de la grille de 9 par 9
-        grille.initVal(0); // Toutes les cases sont à 0
         infos = GameObject.Find("Infos");
         infos.GetComponent<TextMeshProUGUI>().text = "Difficulty : " + difficulte + "           Level : " + numGrille + "\nTimer : " + affichageTemps; // Changement du texte des infos
         grille.chargementGrille(numGrille, difficulte); // Chargement de la grille avec la difficulté et son numéro de grille
@@ -59,6 +72,7 @@ public class Jeu : MonoBehaviour
         {
             int secondes, minutes;
             temps += Time.deltaTime;
+            if((int)temps%2 == 0) grille.sauvegardeGrille(); // Sauvegarde de la grille toutes les 2 secondes
             secondes = (int)temps % 60;
             minutes = (int)temps / 60;
             if (secondes < 10)

@@ -11,8 +11,9 @@ public class ChangeScene : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void PlayGame(string SceneName)
+    public void Retry(string SceneName)
     {
+        PlayerStats.reset();
         SceneManager.LoadScene(SceneName);
     }
 }

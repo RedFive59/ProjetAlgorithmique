@@ -95,14 +95,12 @@ public class JeuBingo : MonoBehaviour
             this.fini = true;
             afficherBINGO(this.ObjectMenuGagne);
             updateScore();
-            Debug.Log(this.userName);
             if (this.userName != "Anonyme")
                 ajoutDonneesLeaderboard(this.userName, this.score.ToString());
         }
         else
         {
             this.score--;
-
             GameObject score = GameObject.Find("Score");
             score.transform.GetComponent<TextMeshProUGUI>().text = this.score.ToString();
         }
@@ -129,7 +127,7 @@ public class JeuBingo : MonoBehaviour
     //Ajoute le nouveau score
     private void updateScore()
     {
-        if (this.score < 140)
+        if (this.score < -140)
             this.score = -140;
         this.score += (this.modeJeu + 5) * 20 / this.nbgrilles;
 

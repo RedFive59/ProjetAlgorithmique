@@ -14,7 +14,7 @@ public class sceneManager : MonoBehaviour
     void Start()
     {
         DontDestroyOnLoad(GameObject.Find("DifficultyManager")); // Permet de garder un élément de la scène après changement de la scène
-        filePath = Path.Combine(Application.dataPath, "StreamingAssets/SudokuLevels/sauvegardeSudoku.json");
+        filePath = defineSudoku.cheminSauvegarde;
         resumeUpdate();
     }
 

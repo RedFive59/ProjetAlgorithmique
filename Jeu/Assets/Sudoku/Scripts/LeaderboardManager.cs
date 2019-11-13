@@ -21,7 +21,7 @@ public class LeaderboardManager : MonoBehaviour
     void Start()
     {
         nombreColonnes = 3; // Nombre de colonnes de votre leaderboard
-        filePath = Path.Combine(Application.dataPath, "StreamingAssets/Leaderboard/leaderboardSudoku.json"); // Définition du chemin du fichier
+        filePath = defineSudoku.cheminLeaderboard; // Définition du chemin du fichier
         leaderboard = GameObject.Find("Leaderboard");
         boardRef = GameObject.Find("BoardReference");
         parent = GameObject.Find("Content");

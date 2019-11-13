@@ -42,3 +42,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: SpriteLayer
+    uniqueID: 2611808935
+    locked: 0
+  - name: ShipLayer2
+    uniqueID: 2618111299
+    locked: 0
+  - name: PanelLayer
+    uniqueID: 2866613059
+    locked: 0
+  - name: ShipLayer
+    uniqueID: 2777634333
+    locked: 0

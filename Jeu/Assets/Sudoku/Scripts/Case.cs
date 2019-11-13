@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 class Case
 {
-    private List<int> listIndice;
-    public int valeur;
-    public Boolean changeable;
-    public Boolean selected = false;
+    private List<int> listIndice; // Liste dans laquelle apparaît les indices présents dans la case
+    public int valeur; // Valeur de la case
+    public Boolean changeable; // Booléen afin de savoir si la case est changeable ou pas
+    public Boolean selected = false; // Booléen pour savoir si la case est sélectionné dans le jeu
 
+    // Constructeurs
     public Case()
     {
         changeable = true;
@@ -21,6 +22,7 @@ class Case
         listIndice = new List<int>();
     }
 
+    // Getters & Setters
     public void setValeur(int val)
     {
         if (val > 0 && val < 10)
@@ -51,6 +53,7 @@ class Case
         return false;
     }
 
+    // Chaine de caractères utilisées pour afficher les indices sur le jeu
     public string indicesToString()
     {
         string res = "";
@@ -63,6 +66,7 @@ class Case
         return res;
     }
 
+    // Override du ToString pour ne récupérer que la valeur de la case pour l'affichage InGame
     public override string ToString()
     {
         if(valeur != 0) return "" + this.valeur;

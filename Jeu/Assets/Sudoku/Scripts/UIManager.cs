@@ -329,7 +329,7 @@ public class UIManager : MonoBehaviour
         GameObject.Find("Infos").SetActive(false);
         finishCanvas.SetActive(true);
         finishCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text += " in " + tempsFin;
-        File.WriteAllText(Path.Combine(Application.dataPath, "Saves/sauvegardeSudoku.json"), "{\n\t//Fichier de sauvegarde de la grille du Sudoku afin de reprendre une partie abandonnée\n}"); // Reset du fichier sauvegardeSudoku
+        File.WriteAllText(Path.Combine(Application.dataPath, "StreamingAssets/SudokuLevels/sauvegardeSudoku.json"), "{\n\t//Fichier de sauvegarde de la grille du Sudoku afin de reprendre une partie abandonnée\n}"); // Reset du fichier sauvegardeSudoku
         Jeu jeu = GameObject.Find("Jeu").GetComponent<Jeu>();
         string num = jeu.numGrille;
         string difficulte = jeu.difficulte;
@@ -340,7 +340,7 @@ public class UIManager : MonoBehaviour
     // Méthode pour ajouter un résultat en fin de partie
     public void ajoutDonneesLeaderboard(string difficulty, string numGrille, string timer)
     {
-        string filePath = Path.Combine(Application.dataPath, "Saves/Sudoku.json");
+        string filePath = Path.Combine(Application.dataPath, "StreamingAssets/Leaderboard/leaderboardSudoku.json");
         if (File.Exists(filePath))
         {
             var loadedData = JSON.Parse(File.ReadAllText(filePath)); // Répartition des données dans loadedData

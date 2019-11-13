@@ -286,7 +286,7 @@ internal class GrilleSudoku : Grille<Case>
         string difficulte = jeu.difficulte;
         string timer = jeu.temps.ToString();
         string timerString = jeu.affichageTemps;
-        string directoryPath = "Saves/sauvegardeSudoku.json";
+        string directoryPath = "StreamingAssets/SudokuLevels/sauvegardeSudoku.json";
         string filePath = Path.Combine(Application.dataPath, directoryPath);
         string save = "{\n\t//Fichier de sauvegarde de la grille du Sudoku afin de reprendre une partie abandonnée\n";
 
@@ -331,7 +331,7 @@ internal class GrilleSudoku : Grille<Case>
     // Rempli la grille avec le fichier sauvegardeSudoku
     public void chargementGrilleSauvegarde()
     {
-        string directoryPath = "Saves/sauvegardeSudoku.json";
+        string directoryPath = "StreamingAssets/SudokuLevels/sauvegardeSudoku.json";
         string filePath = Path.Combine(Application.dataPath, directoryPath);
 
         if (File.Exists(filePath))

@@ -27,7 +27,7 @@ public class Jeu : MonoBehaviour
             if (diffManager.GetComponent<sceneManager>().resumeGame)
             {
                 // Cas où l'on veut reprendre la partie du fichier sauvegardeSudoku
-                var loadedData = JSON.Parse(File.ReadAllText(Path.Combine(Application.dataPath, "Saves/sauvegardeSudoku.json")));
+                var loadedData = JSON.Parse(File.ReadAllText(Path.Combine(Application.dataPath, "StreamingAssets/SudokuLevels/sauvegardeSudoku.json")));
                 numGrille = loadedData["num"].ToString();
                 difficulte = loadedData["difficulte"];
                 temps = float.Parse(loadedData["timer"]);

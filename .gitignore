@@ -34,3 +34,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Ignore Sudoku save files
+Jeu/Assets/StreamingAssets/SudokuLevels/sauvegardeSudoku.json
+Jeu/Assets/StreamingAssets/SudokuLevels/sauvegardeSudoku.json.meta
+Jeu/Assets/StreamingAssets/Leaderboard/leaderboardSudoku.json
+Jeu/Assets/StreamingAssets/Leaderboard/leaderboardSudoku.json.meta

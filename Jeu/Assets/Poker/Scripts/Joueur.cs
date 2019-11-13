@@ -26,6 +26,10 @@ public class Joueur : MonoBehaviour
     {
         return this.bourse;
     }
+    public void setBourse(int bourse)//Retourne la bourse du joueur
+    {
+        this.bourse = bourse;
+    }
     public void diminuerBourse(int valeur)//Diminue la bourse du joueur de la valeur passée en paramètre
     {
         if (this.bourse - valeur >= 0) this.bourse -= valeur;

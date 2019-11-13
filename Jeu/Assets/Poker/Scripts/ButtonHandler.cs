@@ -28,7 +28,7 @@ public class ButtonHandler : MonoBehaviour
     public void suivre()
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
-        Joueur j = p.joueursManche[p.getTour()].GetComponent<Joueur>();
+        Joueur j = p.joueursManche[p.getTour()].GetComponent<Joueur>(); 
         int x = j.getBourse() - (Poker.miseManche - j.mise);
         if(x >= 0)
         {

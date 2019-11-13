@@ -6,6 +6,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using System.Text.RegularExpressions;
 
 public class LeaderboardManager : MonoBehaviour
 {
@@ -66,6 +67,10 @@ public class LeaderboardManager : MonoBehaviour
                     GameObject.Find("Scroll View").GetComponent<ScrollRect>().enabled = false;
                     GameObject.Find("Scrollbar Vertical").SetActive(false);
                 }
+            } else
+            {
+                GameObject.Find("Scroll View").GetComponent<ScrollRect>().enabled = false;
+                GameObject.Find("Scrollbar Vertical").SetActive(false);
             }
             Destroy(boardRef);
         } else
@@ -170,15 +175,28 @@ public class LeaderboardManager : MonoBehaviour
         // Méthode qui permet de mettre les différentes règles de tri
         protected int CompareStrings(int x, int y, int col)
         {
+            
             int res = 0;
             res = _sortArray[x, col].CompareTo(_sortArray[y, col]);
-            if (col == 0 && _sortArray[x, col] == _sortArray[y, col])
+            if (col == 0) // Cas où on check la difficulté
             {
-                if(_sortArray[x, col + 1] == _sortArray[y, col + 1]) res = _sortArray[x, col + 2].CompareTo(_sortArray[y, col + 2]);
-                else res = _sortArray[x, col + 1].CompareTo(_sortArray[y, col + 1]);
+                if(_sortArray[x, col] == _sortArray[y, col])
+                {
+                    if (_sortArray[x, col + 1] == _sortArray[y, col + 1]) res = _sortArray[x, col + 2].CompareTo(_sortArray[y, col + 2]);
+                    else res = _sortArray[x, col + 1].CompareTo(_sortArray[y, col + 1]);
+                } else
+                {
+                    if (_sortArray[x, col] == "Medium" && _sortArray[y, col] == "Hard") res = -1;
+                    if (_sortArray[x, col] == "Hard" && _sortArray[y, col] == "Medium") res = 1;
+                }
             }
-            if (_sortArray[x, col] == "Medium" && _sortArray[y, col] == "Hard") res = -1;
-            if (_sortArray[x, col] == "Hard" && _sortArray[y, col] == "Medium") res = 1;
+            if (col == 2) // Cas où on check le timer
+            {
+                string[] temp = Regex.Split(_sortArray[x, col], ":");
+                string[] temp2 = Regex.Split(_sortArray[y, col], ":");
+                res = int.Parse(temp[0]).CompareTo(int.Parse(temp2[0]));
+                if(res == 0) res = int.Parse(temp[1]).CompareTo(int.Parse(temp2[1]));
+            }
             return res;
         }
     }

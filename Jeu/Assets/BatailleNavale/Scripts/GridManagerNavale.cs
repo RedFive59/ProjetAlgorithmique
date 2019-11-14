@@ -11,12 +11,8 @@ public class GridManagerNavale : MonoBehaviour
     private Grille<int> col0; //vecteur qui contiendra la colonne des chiffres (juste visuel) 
     private Grille<int> row0; //vecteur qui contiendra la ligne des lettres (juste visuel)
     private Grille<int> grille; //matrice qui contiendra les valeurs de l'eau/bateau, libre/raté/touché
-    //public Sprite WaterDiffuseMini; //var texture des cases d'eau !!! OUT
-    //public Sprite Cadre; //var textures cases chiffres et lettres !!! OUT
-    Canvas myCanvas;
-    GameObject cvs;
-    CanvasScaler CS;
-
+    private CanvasGenerator Cvs;
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -29,28 +25,14 @@ public class GridManagerNavale : MonoBehaviour
         GameObject Camera0 = new GameObject("Camera : "+pos);
         Camera0.AddComponent<Camera>();
         Camera Cam = Camera0.GetComponent<Camera>();
-        Cam.transform.position = new Vector3(pos+5.5f,pos+6f,-10f);
+        Cam.transform.position = new Vector3(pos+5f,pos+5f,-10f);
         Camera0.AddComponent<CameraManager>();
 
-        // Canvas ///////////////////////////////
-        cvs = new GameObject();
-            cvs.name = ("Canvas Main");
-            cvs.AddComponent<Canvas>();
-            cvs.transform.SetParent(this.transform, false);
-            RectTransform Rect3;//var pour stocker le rectTransform du canvas
-            myCanvas = cvs.GetComponent<Canvas>();//recupère le "pointeur" vers le Canvas du gameObject
-            myCanvas.renderMode = RenderMode.WorldSpace;//set le canvas sur world space = est indépendant de la caméra ou de la résolution
-            myCanvas.transform.position = new Vector3(0, 0, 0);//place le canvas dans la scene
-            Rect3 = myCanvas.GetComponent<RectTransform>();//récupère le "pointeur" vers le RectTransform du Canvas
-            Rect3.sizeDelta = new Vector2(1, 1);//resize le canvs, largeur/hauteur
-            cvs.AddComponent<CanvasScaler>();//modifie la pixelisation des lettres
-            cvs.AddComponent<GraphicRaycaster>();//useless
-            CS = myCanvas.GetComponent<CanvasScaler>();
-            CS.dynamicPixelsPerUnit = 50f;//set la pixelisation par unité des lettres
             this.grille = new Grille<int>(rows - 1, cols - 1);
             this.col0 = new Grille<int>(cols - 1);
             this.row0 = new Grille<int>(rows - 1);
             // Canvas ////////////////////////////////////
+     
 
             for (int i = 0; i < rows - 1; i++)
             {
@@ -58,7 +40,8 @@ public class GridManagerNavale : MonoBehaviour
                 row0.setVal(i, i + 65); //convertit un entier en char
             }
             grille.initVal(0);
-            ShowGrid(pos, col0, row0, grille);
+        Cvs = new CanvasGenerator("CanvasCases", new Vector3(pos, pos, 0), new Vector2(1, 1), RenderMode.WorldSpace, Cam, 10, "SpriteLayer", gameObject);
+        ShowGrid(pos, col0, row0, grille);
         }
 
     void ShowGrid(int pos,Grille<int> col00, Grille<int> row00, Grille<int> grille00)//affiche les différentes matrices/vecteurs
@@ -72,24 +55,24 @@ public class GridManagerNavale : MonoBehaviour
         for (i = 0; i < rows - 1; i++)
         {
             for (j = 0; j < cols - 1; j++)
-                CreateTileWater(pos,i+1, j+1, grille.getVal(i, j));//creer les cases d'eau
+                CreateTileWater(pos,i, j, grille.getVal(i, j));//creer les cases d'eau
         }
     }
 
         void CreateTileNumber(int pos,int i, int j, int v)//voir CreateTileWater
         {
             GameObject t = new GameObject("X:" + i + "Y:" + j);
-            t.transform.position = new Vector3(pos+i,pos+j+1);
+            t.transform.position = new Vector3(pos+i-1,pos+j);
             t.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/cadre");//lie la texture cadre aux sprites Chiffres
-            GenText(pos, i, j+1, v);//appelle la fonction qui genere le texte de cette case
+            GenText(pos, i-1, j, v);//appelle la fonction qui genere le texte de cette case
     }
 
     void CreateTileChar(int pos, int i, int j, int v)//voir CreateTileWater
     {
         GameObject t = new GameObject("X:" + i + "Y:" + j);
-        t.transform.position = new Vector3(pos+i+1,pos+j);
+        t.transform.position = new Vector3(pos+i,pos+j-1);
         t.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/cadre");//lie la texture cadre aux sprites Lettres
-        GenText(pos, i+1, j, v);//appelle la fonction qui genere le texte de ces cases
+        GenText(pos, i, j-1, v);//appelle la fonction qui genere le texte de ces cases
     }
 
     void CreateTileWater(int pos, int i, int j, int v)
@@ -105,36 +88,20 @@ public class GridManagerNavale : MonoBehaviour
 
     void GenText(int pos, int i, int j, int v)
     {
-        GameObject myText;
-        Text text;
-        RectTransform rectTransform;
+        string temp;
 
-        // Text
-        myText = new GameObject();
-        myText.transform.parent = cvs.transform;
         if (v > 10)
         {
-            myText.name = System.Convert.ToString(System.Convert.ToChar(v));//convertit le int en char puis en string
+            temp=System.Convert.ToString(System.Convert.ToChar(v));//convertit le int en char puis en string
+            Debug.Log("Debug");
+            Cvs.addText("Cadre" + i + j, new Vector3(i, j, 0), new Vector2(2,2),1, temp, "Arial", Color.black, TextAnchor.MiddleCenter);
         }
         else
         {
-            myText.name = System.Convert.ToString(10-v);
+            temp=System.Convert.ToString(10-v);
+            Debug.Log("Debug");
+            Cvs.addText("Cadre" + i + j, new Vector3(i, j, 0), new Vector2(2, 2), 1, temp, "Arial", Color.black, TextAnchor.MiddleCenter);
         }
-
-        text = myText.AddComponent<Text>();
-        text.color = Color.black;//couleur de texte noire
-        text.font = (Font)Resources.GetBuiltinResource<Font>("Arial.ttf");//utilise la police Arial pour afficher le texte
-        text.text = myText.name;
-        text.fontSize = 1;//taille de la police
-        text.alignment = TextAnchor.MiddleCenter;//attache le text au centre de sa box
-
-        // Text position
-        rectTransform = text.GetComponent<RectTransform>();
-        rectTransform.localPosition = new Vector3(i, j, 0);//place le text dans la scene
-        rectTransform.sizeDelta = new Vector2(2, 2);//resize la box du text
-        rectTransform.localScale = new Vector3(0.5f, 0.5f, 1);//resieze le text par rapport à son rectTransform
-   
-
     }
 
         // Update is called once per frame

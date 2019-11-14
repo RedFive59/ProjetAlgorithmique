@@ -328,7 +328,7 @@ public class UIManager : MonoBehaviour
         GameObject.Find("Notes").GetComponent<Button>().interactable = false;
         GameObject.Find("Infos").SetActive(false);
         finishCanvas.SetActive(true);
-        finishCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text += " in " + tempsFin;
+        finishCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text += " en " + tempsFin;
         File.WriteAllText(defineSudoku.cheminSauvegarde, "{\n\t//Fichier de sauvegarde de la grille du Sudoku afin de reprendre une partie abandonnée\n}"); // Reset du fichier sauvegardeSudoku
         Jeu jeu = GameObject.Find("Jeu").GetComponent<Jeu>();
         string num = jeu.numGrille;

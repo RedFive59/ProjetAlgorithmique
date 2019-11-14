@@ -86,7 +86,7 @@ public class Jeu : MonoBehaviour
                 else affichageTemps = minutes + ":" + secondes;
             }
             UIManager.tempsFin = affichageTemps;
-            GameObject.Find("Infos").GetComponent<TextMeshProUGUI>().text = "Difficulty : " + difficulte + "           Level : " + numGrille + "\nTimer : " + affichageTemps;
+            GameObject.Find("Infos").GetComponent<TextMeshProUGUI>().text = "Difficulté : " + difficulte + "           Grille n° : " + numGrille + "\nTemps : " + affichageTemps;
             // Raccourci de débug
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -106,13 +106,13 @@ public class Jeu : MonoBehaviour
         switch (difficulty)
         {
             case 1:
-                res[0] = "Easy";
+                res[0] = "Facile";
                 break;
             case 2:
-                res[0] = "Medium";
+                res[0] = "Intermédiaire";
                 break;
             case 3:
-                res[0] = "Hard";
+                res[0] = "Difficile";
                 break;
         }
         int cpt = 0;

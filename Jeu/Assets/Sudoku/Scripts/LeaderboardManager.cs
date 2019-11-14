@@ -186,8 +186,12 @@ public class LeaderboardManager : MonoBehaviour
                     else res = _sortArray[x, col + 1].CompareTo(_sortArray[y, col + 1]);
                 } else
                 {
-                    if (_sortArray[x, col] == "Medium" && _sortArray[y, col] == "Hard") res = -1;
-                    if (_sortArray[x, col] == "Hard" && _sortArray[y, col] == "Medium") res = 1;
+                    if (_sortArray[x, col] == "Facile" && _sortArray[y, col] == "Difficile") res = -1;
+                    if (_sortArray[x, col] == "Difficile" && _sortArray[y, col] == "Facile") res = 1;
+                    if (_sortArray[x, col] == "Facile" && _sortArray[y, col] == "Intermédiaire") res = -1;
+                    if (_sortArray[x, col] == "Intermédiaire" && _sortArray[y, col] == "Facile") res = 1;
+                    if (_sortArray[x, col] == "Intermédiaire" && _sortArray[y, col] == "Difficile") res = -1;
+                    if (_sortArray[x, col] == "Difficile" && _sortArray[y, col] == "Intermédiaire") res = 1;
                 }
             }
             if (col == 2) // Cas où on check le timer

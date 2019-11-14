@@ -24,13 +24,13 @@ public class sceneManager : MonoBehaviour
         resumeGame = false;
         switch(num) {
             case 1:
-                difficulty = "Easy";
+                difficulty = "Facile";
                 break;
             case 2:
-                difficulty = "Medium";
+                difficulty = "Intermédiaire";
                 break;
             case 3:
-                difficulty = "Hard";
+                difficulty = "Difficile";
                 break;
             default:
                 break;

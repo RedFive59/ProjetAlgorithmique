@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +22,7 @@ public class JeuBingo : MonoBehaviour
 
     private float timer, waitTime = 0.0f;
 
-    private bool fini = false, commencer = false;
+    private bool fini = false;
     
     //definie des objets physique
     GameObject tile;
@@ -52,38 +51,26 @@ public class JeuBingo : MonoBehaviour
     //fonction mise à jour à chaque image par seconde
     private void Update()
     {
-        if (commencer)
+        if (!this.fini)
         {
-            if (!this.fini)
+            if (this.tirage.Count > 0)
             {
-                if (this.tirage.Count > 0)
+                //timer de "tempsPioche" secondes
+                timer += Time.deltaTime;
+                this.fillImg.fillAmount = timer / waitTime;
+                if (timer > waitTime)
                 {
-                    //timer de "tempsPioche" secondes
-                    timer += Time.deltaTime;
-                    this.fillImg.fillAmount = timer / waitTime;
-                    if (timer > waitTime)
-                    {
-                        tirer();
-                        timer = timer - waitTime;
-                    }
+                    tirer();
+                    timer = timer - waitTime;
                 }
-                //vérifie si on selectionne une case
-                select();
-                //appel la fonction pour verifier si on à gagné
-                if (Input.GetKeyDown("g"))
-                {
-                    finDuJeu();
-                }
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown("space"))
-            {
-                commencer = true; ;
             }
             //vérifie si on selectionne une case
             select();
+            //appel la fonction pour verifier si on à gagné
+            if (Input.GetKeyDown("g"))
+            {
+                finDuJeu();
+            }
         }
     }
 

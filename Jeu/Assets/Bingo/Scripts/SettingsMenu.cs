@@ -51,7 +51,11 @@ public class SettingsMenu : MonoBehaviour
     {
         string username = GameObject.Find("InputName").transform.GetComponent<TextMeshProUGUI>().text;
         if (username.Length > 4)
+        {
             PlayerStats.UserName = username;
+            if(GameObject.Find("ErreurNom"))
+                GameObject.Find("ErreurNom").transform.GetComponent<TextMeshProUGUI>().enabled = false;
+        }
         else
         {
             GameObject.Find("ErreurNom").transform.GetComponent<TextMeshProUGUI>().enabled = true;

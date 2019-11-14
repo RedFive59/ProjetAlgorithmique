@@ -49,7 +49,13 @@ public class SettingsMenu : MonoBehaviour
 
     public void setInputName()
     {
-        PlayerStats.UserName = GameObject.Find("InputName").transform.GetComponent<TextMeshProUGUI>().text;
+        string username = GameObject.Find("InputName").transform.GetComponent<TextMeshProUGUI>().text;
+        if (username.Length > 4)
+            PlayerStats.UserName = username;
+        else
+        {
+            GameObject.Find("ErreurNom").transform.GetComponent<TextMeshProUGUI>().enabled = true;
+        }
     }
 
     public void updateSettings()

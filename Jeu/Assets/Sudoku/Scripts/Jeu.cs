@@ -27,7 +27,7 @@ public class Jeu : MonoBehaviour
             if (diffManager.GetComponent<sceneManager>().resumeGame)
             {
                 // Cas où l'on veut reprendre la partie du fichier sauvegardeSudoku
-                var loadedData = JSON.Parse(File.ReadAllText(Path.Combine(Application.dataPath, "StreamingAssets/SudokuLevels/sauvegardeSudoku.json")));
+                var loadedData = JSON.Parse(File.ReadAllText(defineSudoku.cheminSauvegarde));
                 numGrille = loadedData["num"].ToString();
                 difficulte = loadedData["difficulte"];
                 temps = float.Parse(loadedData["timer"]);
@@ -41,7 +41,7 @@ public class Jeu : MonoBehaviour
 
                 //Choix d'un niveau au hasard selon la difficulté précedement choisie
                 int cpt = 0;
-                string directoryPath = Path.Combine(Application.dataPath, ("StreamingAssets/SudokuLevels/" + difficulte + "/"));
+                string directoryPath = defineSudoku.getCheminDifficulte(difficulte);
                 var info = new DirectoryInfo(directoryPath);
                 var fileInfo = info.GetFiles();
                 foreach (FileInfo f in fileInfo) if (f.Extension == ".json") cpt++;
@@ -86,7 +86,7 @@ public class Jeu : MonoBehaviour
                 else affichageTemps = minutes + ":" + secondes;
             }
             UIManager.tempsFin = affichageTemps;
-            GameObject.Find("Infos").GetComponent<TextMeshProUGUI>().text = "Difficulty : " + difficulte + "           Level : " + numGrille + "\nTimer : " + affichageTemps;
+            GameObject.Find("Infos").GetComponent<TextMeshProUGUI>().text = "Difficulté : " + difficulte + "           Grille n° : " + numGrille + "\nTemps : " + affichageTemps;
             // Raccourci de débug
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -106,17 +106,17 @@ public class Jeu : MonoBehaviour
         switch (difficulty)
         {
             case 1:
-                res[0] = "Easy";
+                res[0] = "Facile";
                 break;
             case 2:
-                res[0] = "Medium";
+                res[0] = "Intermédiaire";
                 break;
             case 3:
-                res[0] = "Hard";
+                res[0] = "Difficile";
                 break;
         }
         int cpt = 0;
-        string directoryPath = Path.Combine(Application.dataPath, ("StreamingAssets/SudokuLevels/" + res[0] + "/"));
+        string directoryPath = defineSudoku.getCheminDifficulte(res[0]);
         var info = new DirectoryInfo(directoryPath);
         var fileInfo = info.GetFiles();
         foreach (FileInfo f in fileInfo) if(f.Extension == ".json") cpt++;

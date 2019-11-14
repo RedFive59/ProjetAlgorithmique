@@ -34,6 +34,11 @@ public class Joueur : MonoBehaviour
     {
         if (this.bourse - valeur >= 0) this.bourse -= valeur;
     }
+    public bool Equals(Joueur j)//Retourne true si les joueurs ont tous deux les mêmes attributs
+    {
+        if (this.nom == j.nom && this.main == j.main && this.mise == j.mise && this.bourse == j.getBourse() && this.combinaison == j.combinaison && this.l == j.l) return true;
+        return false;
+    }
     public void suivre()//Permet au joueur de suivre la mise
     {
         if(this.bourse + this.mise > Poker.miseManche)

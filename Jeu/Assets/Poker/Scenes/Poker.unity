@@ -2777,7 +2777,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2107283562}
-        m_MethodName: suivre
+        m_MethodName: ts
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3196,7 +3196,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2107283557}
+      - m_Target: {fileID: 2107283558}
         m_MethodName: ReturnToMain
         m_Mode: 1
         m_Arguments:

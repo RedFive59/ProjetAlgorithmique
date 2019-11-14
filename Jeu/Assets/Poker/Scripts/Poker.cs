@@ -114,6 +114,22 @@ public class Poker : MonoBehaviour
             }
         }
     }
+    public void rassemblementDeck()//Rassemble toutes les cartes du jeu dans le deck
+    {
+        foreach(GameObject g in this.joueurs)
+        {
+            g.GetComponent<Joueur>().main[0].transform.position = this.cardPrefab.transform.position;
+            g.GetComponent<Joueur>().main[1].transform.position = this.cardPrefab.transform.position;
+            this.deck.Add(g.GetComponent<Joueur>().main[0]);
+            this.deck.Add(g.GetComponent<Joueur>().main[1]);
+        }
+        foreach (GameObject g in this.flop)
+        {
+            g.transform.position = this.cardPrefab.transform.position;
+            this.deck.Add(g);
+        }
+        this.flop.Clear();
+    }
     public void flopper()//Permet de tirer une carte du deck, de la mettre dans le flop et de l'afficher
     {
         System.Random random = new System.Random();
@@ -124,5 +140,93 @@ public class Poker : MonoBehaviour
         int i = this.flop.IndexOf(carte);
         GameObject pos = GameObject.Find("Tirage_" + (i + 1));
         carte.transform.position = pos.transform.position;
+    }
+    public void quiGagne()//Désigne le joueur gagnant et modifie sa bourse en conséquence
+    {
+        Combinaison c = this.joueursManche[0].GetComponent<Joueur>().combinaison;
+        Combinaison c2;
+        List<Joueur> gagnants = new List<Joueur>();
+        foreach(GameObject g in this.joueursManche)//On cherche la meilleur combinaison
+        {
+            c2 = g.GetComponent<Joueur>().combinaison;
+            if (c2 > c) c = c2;
+        }
+        foreach (GameObject g in this.joueursManche)
+        {
+            c2 = g.GetComponent<Joueur>().combinaison;
+            if (c2 == c) gagnants.Add(g.GetComponent<Joueur>());
+        }
+        switch (gagnants.Count)
+        {
+            case 1 :
+                victoire(gagnants[0]);
+                break;
+            default :
+                do
+                {
+                    List<Joueur> liste = new List<Joueur>();
+                    Carte max = Joueur.max(gagnants[0].l);
+                    Carte tempo;
+                    foreach (Joueur j in gagnants)//On cherche la meilleur combinaison
+                    {
+                        tempo = Joueur.max(j.l);
+                        if (tempo.superieurA(max)) max = tempo;
+                    }
+                    foreach (Joueur j in gagnants)
+                    {
+                        tempo = Joueur.max(j.l);
+                        if (max.Equals(tempo))
+                        {
+                            liste.Add(j);
+                            j.l.Remove(tempo);
+                        }
+                    }
+                    gagnants.Clear();
+                    gagnants = liste;
+                } while (gagnants.Count != 1);
+                victoire(gagnants[0]);
+                break;
+        }
+    }
+    public void victoire(Joueur j)//Attribue au joueur j une nouvelle bourse correspondant à la somme de toutes les mises
+    {
+        foreach(GameObject g in this.joueurs)
+        {
+            j.setBourse(g.GetComponent<Joueur>().mise + j.getBourse());
+            g.GetComponent<Joueur>().mise = 0;
+
+        }
+        print("J'ai gagné - " + j.nom);
+    }
+    public void nouvelleManche()//Gère la fin d'une manche en décidant si on relance une partie ou si le jeu s'arrête car un joueur a gagné
+    {
+        quiGagne();
+        this.joueursManche.Clear();
+        Joueur j;
+        foreach (GameObject g in this.joueurs)
+        {
+            j = g.GetComponent<Joueur>();
+            if(j.getBourse() > 0)
+            {
+                this.joueursManche.Add(g);
+            }
+        }
+        switch (this.joueursManche.Count)
+        {
+            case 1 :
+                finDeJeu();
+                break;
+            default :
+                rassemblementDeck();
+                shuffle(this.deck);
+                distribution();
+                Poker.miseManche = 0;
+                this.tourGlobal = 0;
+                break;
+        }
+    }
+    public void finDeJeu()//Fonction utilisée pour mettre fin au jeu
+    {
+        print("Fin du jeu");
     }
 }

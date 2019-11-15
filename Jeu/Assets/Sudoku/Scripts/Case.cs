@@ -7,6 +7,7 @@ class Case
     public int valeur; // Valeur de la case
     public Boolean changeable; // Booléen afin de savoir si la case est changeable ou pas
     public Boolean selected = false; // Booléen pour savoir si la case est sélectionné dans le jeu
+    public Boolean highlighted = false; // Booléen pour savoir si la case est sélectionné dans le jeu
 
     // Constructeurs
     public Case()

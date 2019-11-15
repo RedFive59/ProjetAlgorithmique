@@ -35,9 +35,8 @@ public class GridManagerBingo
         {
             for (int j = 0; j < this.colonne; j++)
             {
-                Vector3 pos = new Vector3(posX + (j * espacement - (this.colonne - 1) * espacement / 2), posY + (i * -espacement - (this.ligne - 1) * -espacement / 2), 0);
+                Vector3 pos = new Vector3(posX + (j * espacement - (this.colonne - 1) * espacement / 2), posY + (i * -espacement - (this.ligne - 1) * -espacement / 2), 100);
                 GameObject tile = UnityEngine.Object.Instantiate(tileReference, pos, tileReference.transform.rotation, parent);
-                tile.transform.GetComponent<RectTransform>().position.z = 0f;
                 tile.name = "Case " + ind + ": " + i + "_" + j;
                 afficher(i, j, tile);
             }
@@ -47,7 +46,7 @@ public class GridManagerBingo
     //fonction qui affiche une valeur dans la case "CaseTirage"
     public void GenerateVal(float posX, float posY, Transform parent)
     {
-        Vector3 pos = new Vector3(posX, posY, 0);
+        Vector3 pos = new Vector3(posX, posY, 100);
         GameObject tile = UnityEngine.Object.Instantiate(tileReference, pos, tileReference.transform.rotation, parent);
         tile.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
         tile.name = "CaseTirage";

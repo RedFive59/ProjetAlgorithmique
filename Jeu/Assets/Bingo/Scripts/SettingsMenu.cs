@@ -19,10 +19,8 @@ public class SettingsMenu : MonoBehaviour
 
     public void updateScore()
     {
-        GameObject scoreDisp = GameObject.Find("ScoreDisp");
         GameObject score = GameObject.Find("Score");
 
-        scoreDisp.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
         score.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
     }
 
@@ -66,7 +64,6 @@ public class SettingsMenu : MonoBehaviour
     {
         float temp;
         GameObject score = GameObject.Find("Score");
-        GameObject scoreDisp = GameObject.Find("ScoreDisp");
 
         Scrollbar gamemode = GameObject.Find("GameMode").transform.GetComponent<Scrollbar>();
         Scrollbar nbGrilles = GameObject.Find("NbGrilles").transform.GetComponent<Scrollbar>();
@@ -74,7 +71,6 @@ public class SettingsMenu : MonoBehaviour
         Slider waitTime = GameObject.Find("WaitTime").transform.GetComponent<Slider>();
 
         score.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
-        scoreDisp.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
 
         temp = (float)(PlayerStats.GameMode - 0) / (2 - 0);
         gamemode.value = temp;

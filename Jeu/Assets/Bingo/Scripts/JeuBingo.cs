@@ -109,6 +109,7 @@ public class JeuBingo : MonoBehaviour
     {
         Transform[] go = parent.GetComponentsInChildren<RectTransform>(true);
         go[1].gameObject.SetActive(true);
+        GameObject.Find("Bingo").SetActive(false);
     }
 
     //Ajoute le nouveau score

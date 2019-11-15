@@ -55,8 +55,8 @@ public class ScoreBoardBingo : MonoBehaviour
                     Vector3 pos = boardRef.transform.position + new Vector3(0, -30 * i);
                     GameObject boardTab = Instantiate(boardRef, pos, boardRef.transform.rotation, parent.transform);
                     boardTab.name = "board" + (i + 1);
-                    boardTab.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = " " + history[i, 0];
-                    boardTab.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = " " + history[i, 1];
+                    boardTab.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = " " + history[i, 0];
+                    boardTab.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = " " + history[i, 1];
                 }
                 if (loadedData["history"].Count < 16) // Vérification qui permet la disparition de la barre de scroll si le tableau n'est pas assez grand
                 {
@@ -79,8 +79,8 @@ public class ScoreBoardBingo : MonoBehaviour
                 for (int i = 0; i < loadedData["history"].Count; i++)
                 {
                     GameObject boardTab = GameObject.Find("board" + (i + 1));
-                    boardTab.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = " " + history[i, 0];
-                    boardTab.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = " " + history[i, 1];
+                    boardTab.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = " " + history[i, 0];
+                    boardTab.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = " " + history[i, 1];
                 }
             }
         }

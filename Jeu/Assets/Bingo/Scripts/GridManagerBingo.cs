@@ -35,8 +35,9 @@ public class GridManagerBingo
         {
             for (int j = 0; j < this.colonne; j++)
             {
-                Vector2 pos = new Vector2(posX + (j * espacement - (this.colonne - 1) * espacement / 2), posY + (i * -espacement - (this.ligne - 1) * -espacement / 2));
+                Vector3 pos = new Vector3(posX + (j * espacement - (this.colonne - 1) * espacement / 2), posY + (i * -espacement - (this.ligne - 1) * -espacement / 2), 0);
                 GameObject tile = UnityEngine.Object.Instantiate(tileReference, pos, tileReference.transform.rotation, parent);
+                tile.transform.GetComponent<RectTransform>().position.z = 0f;
                 tile.name = "Case " + ind + ": " + i + "_" + j;
                 afficher(i, j, tile);
             }
@@ -46,7 +47,7 @@ public class GridManagerBingo
     //fonction qui affiche une valeur dans la case "CaseTirage"
     public void GenerateVal(float posX, float posY, Transform parent)
     {
-        Vector2 pos = new Vector2(posX, posY);
+        Vector3 pos = new Vector3(posX, posY, 0);
         GameObject tile = UnityEngine.Object.Instantiate(tileReference, pos, tileReference.transform.rotation, parent);
         tile.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
         tile.name = "CaseTirage";
@@ -81,7 +82,6 @@ public class GridManagerBingo
     {
         if (this.grille.getVal(i, j) != -1)
             afficher(tile, this.grille.getVal(i, j).ToString());
-        //tile.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
         else
         {
             tile.GetComponent<SpriteRenderer>().color = Color.gray;

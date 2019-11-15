@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class defineSudoku
 {
-    #if (UNITY_EDITOR || UNITY_STANDALONE_WINDOWS)
+    #if UNITY_EDITOR
     public static string cheminSauvegarde = Path.Combine(Application.dataPath, "StreamingAssets/SudokuLevels/sauvegardeSudoku.json");
     #elif UNITY_IOS
     public static string cheminSauvegarde = Path.Combine(Application.dataPath, "StreamingAssets/SudokuLevels/sauvegardeSudoku.json");

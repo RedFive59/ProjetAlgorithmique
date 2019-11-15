@@ -77,7 +77,6 @@ public class UIManager : MonoBehaviour
     public void UpdateGrid()
     {
         grille.sauvegardeGrille();
-        highlightTiles();
         cpt1 = 0; cpt2 = 0; cpt3 = 0; cpt4 = 0; cpt5 = 0; cpt6 = 0; cpt7 = 0; cpt8 = 0; cpt9 = 0;
         for (int i = 0; i < this.ligne; i++)
         {
@@ -147,53 +146,37 @@ public class UIManager : MonoBehaviour
     private void afficher(int i, int j, GameObject tile)
     {
         Case selectedCase = grille.getVal(i, j);
-        if (!selectedCase.highlighted)
+        Color blue = new Color32(0, 110, 255, 255);
+        Color white = new Color32(205, 205, 205, 255);
+        Color goodValue = new Color32(80, 170, 255, 255);
+        Color badValue = new Color32(170, 20, 20, 255);
+        Color unchangeableCase = new Color32(0, 0, 0, 255);
+        if (selectedCase.changeable == false) // Case prédéfinie, préremplie
         {
-            Color blue = new Color32(0, 110, 255, 255);
-            Color white = new Color32(205, 205, 205, 255);
-            Color goodValue = new Color32(80, 170, 255, 255);
-            Color badValue = new Color32(170, 20, 20, 255);
-            Color unchangeableCase = new Color32(0, 0, 0, 255);
-            if (selectedCase.changeable == false) // Case prédéfinie, préremplie
+            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
+            tile.GetComponent<Button>().interactable = false;
+            tile.GetComponent<Image>().color = unchangeableCase;
+        } else // Case qui peut être remplie
+        {
+            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = grille.getVal(i, j).ToString();
+            tile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = grille.getVal(i, j).indicesToString();
+            if (selectedCase.valeur != 0)
             {
-                tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = this.grille.getVal(i, j).ToString();
-                tile.GetComponent<Button>().interactable = false;
-                tile.GetComponent<Image>().color = unchangeableCase;
-            } else // Case qui peut être remplie
-            {
-                tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = grille.getVal(i, j).ToString();
-                tile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = grille.getVal(i, j).indicesToString();
-                if (selectedCase.valeur != 0)
-                {
-                    // Valeur de la case entre 1 et 9
-                    Color32 textColor = goodValue;
-                    if (!grille.verifLigne(i) || !grille.verifColonne(j) || !grille.verifCarre(grille.numCarre(i, j))) textColor = badValue; // Changement de couleur si les cases sont mal remplies
-                    tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = textColor;
-                }
-                if (selectedCase.selected)
-                {
-                    // Case sélectionnée
-                    tile.GetComponent<Image>().color = blue;
-                }
-                else
-                {
-                    // Case non sélectionnée
-                    tile.GetComponent<Image>().color = white;
-                }
+                // Valeur de la case entre 1 et 9
+                Color32 textColor = goodValue;
+                if (!grille.verifLigne(i) || !grille.verifColonne(j) || !grille.verifCarre(grille.numCarre(i, j))) textColor = badValue; // Changement de couleur si les cases sont mal remplies
+                tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = textColor;
             }
-            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Normal;
-        } else
-        {
-            Color highlightedTileColor = new Color(0.314f, 0.314f, 0.314f, 1f);
-            Color defaultColor = new Color(0.137f, 0.137f, 0.137f, 1f);
-            ColorBlock block = new ColorBlock();
-            block.normalColor = new Color(0.137f, 0.137f, 0.137f, 1f);
-            block.highlightedColor = new Color(0.706f, 0.706f, 0.706f, 1f);
-            block.pressedColor = new Color(0.588f, 0.588f, 0.588f, 1f);
-            block.selectedColor = new Color(0.388f, 0.667f, 0.850f, 1f);
-            block.disabledColor = new Color(0.059f, 0.059f, 0.059f, 0.753f);
-            //tile.GetComponent<Button>().colors = block;
-            tile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Bold;
+            if (selectedCase.selected)
+            {
+                // Case sélectionnée
+                tile.GetComponent<Image>().color = blue;
+            }
+            else
+            {
+                // Case non sélectionnée
+                tile.GetComponent<Image>().color = white;
+            }
         }
     }
 
@@ -214,29 +197,6 @@ public class UIManager : MonoBehaviour
         Case selectedCase = grille.getVal(i, j);
         deselectOther(i, j);
         selectedCase.selected = true;
-    }
-    
-    // Méthode pour mettre en lumière les cases qui ont la même valeur ainsi que celles sur la même ligne et celles sur la même colonne
-    private void highlightTiles()
-    {
-        if (i != -1 && j != -1)
-        {
-            for(int a = 0; a < 9; a++)
-            {
-                for(int b = 0; b < 9; b++)
-                {
-                    Case c = grille.getVal(a, b);
-                    if (a == i || b == j)
-                    {
-                        if (grille.getVal(a, b).valeur == grille.getVal(i, j).valeur && grille.getVal(a, b).valeur != 0) c.highlighted = true;
-                    }
-                    else
-                    {
-                        c.highlighted = false;
-                    }
-                }
-            }
-        }
     }
 
     // Permet de générer les boutons de 1 à 9 pour remplir la grille

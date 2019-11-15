@@ -22,7 +22,7 @@ public class CanvasGenerator{
         Cvs.AddComponent<Canvas>();
         mCvs = Cvs.GetComponent<Canvas>();
         mCvs.renderMode = render;//render mode, RenderMode.WorldSpace,RenderMode.Camera etc...
-        mCvs.worldCamera = null;
+        mCvs.worldCamera = cam;
         mCvs.transform.position = pos;//position dans la scene
         mCvs.GetComponent<RectTransform>().sizeDelta = delta;//dimension h w du canvas
         mCvs.planeDistance = pld;//"aucune idée de la traduction", a permit de faire repasser les panneaux devant la grille car la caméra était trop proche= fusion des éléments
@@ -35,17 +35,18 @@ public class CanvasGenerator{
     }
 
     //méthode qui génère un texte dans le canvas
-    public void addText(string nom,Vector3 pos,Vector2 delta,int taille,string text,string police,Color C,TextAnchor TA)
+    public void addText(GameObject parent, string nom,Vector3 pos,Vector2 delta,int taille,string text,Color C,TextAnchor TA)
     {
-        Debug.Log("Debug2");
         GameObject mText = new GameObject(nom);
-        mText.transform.SetParent(Cvs.transform, false);
+        mText.transform.SetParent(parent.transform, false);
         mText.transform.position = pos;
         mText.AddComponent<RectTransform>().sizeDelta = delta;
+        mText.GetComponent<RectTransform>().localScale = new Vector3(0.5f, 0.5f, 1);
         Text xtext = mText.AddComponent<Text>();
         xtext.color = C; //couleur du texte
-        xtext.font = (Font)Resources.GetBuiltinResource<Font>(police+".ttf");//utilise la police Arial pour afficher le texte
+        xtext.font = (Font)Resources.GetBuiltinResource<Font>("Arial.ttf");//utilise la police Arial pour afficher le texte
         xtext.fontSize = taille;
+        xtext.fontStyle = FontStyle.Bold;
         xtext.text = text;//texte à afficher
         xtext.fontSize = taille;//taille police
         xtext.alignment = TA;//ancrage du text dans son canvas
@@ -56,15 +57,43 @@ public class CanvasGenerator{
     public void addPanel(string nom, Vector3 pos, Vector2 delta, Color C)
     {
         GameObject panel = new GameObject(nom);
-        panel.transform.parent = mCvs.transform;//range le panel dans son canvas
+        panel.transform.SetParent(Cvs.transform, false);
         panel.AddComponent<CanvasRenderer>();
-        panel.GetComponent<RectTransform>().sizeDelta = delta;
-        panel.GetComponent<RectTransform>().position = pos;
+        panel.transform.position = pos;
+        panel.AddComponent<RectTransform>().sizeDelta = delta;
         panel.AddComponent<Image>().color=C;//récupération du pseudo rendu du panel
         LPanel.Add(panel);
+    }
+
+    public void setText(string text)
+    {
+       LText[LText.Count-1].GetComponent<Text>().text = text;
+    }
+
+    public void rotateText(int i)
+    {
+        LText[i].GetComponent<RectTransform>().Rotate(new Vector3(0, 0, 90f));//permet de place le text à la verticale (rotation z à 90 degrés)
+    }
+
+    public void movMagasin(int i)
+    {
+      //  LPanel[LPanel.Count - 1].GetComponent<RectTransform>().position;
+    }
+
+    public GameObject getPanel(int i)
+    {
+        return LPanel[i];
     }
     
     public GameObject getCanvas(){
         return Cvs;
     }
+
+    public void MovePanel(int i,float x,float y,float z)
+    {
+        Vector3 VO = this.getPanel(i).GetComponent<RectTransform>().position;
+        this.getPanel(i).GetComponent<RectTransform>().position = new Vector3(VO.x +x, VO.y+y, VO.z+z);
+        Debug.Log(LPanel[i].transform.position);
+    }
 }
+

@@ -55,6 +55,7 @@ public class Affichage : MonoBehaviour
     public void updateAffichageCombinaison()//Permet l'affichage de le combinaison du joueur du joueur
     {
         Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
+        poker.joueursManche[poker.getTour()].GetComponent<Joueur>().determinaisonCombinaison();
         GameObject.Find("Combinaison").GetComponent<Text>().text = poker.joueursManche[poker.getTour()].GetComponent<Joueur>().combinaison.ToString() + " de " + Joueur.max(poker.joueursManche[poker.getTour()].GetComponent<Joueur>().l).valeur.ToString();
     }
     public void updateAffichageBouton()//Permet d'afficher les bonnes valeurs pour les boutons

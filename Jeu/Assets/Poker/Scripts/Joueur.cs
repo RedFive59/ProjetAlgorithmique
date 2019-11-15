@@ -20,7 +20,7 @@ public class Joueur : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        determinaisonCombinaison();
+        //determinaisonCombinaison();
     }
     public int getBourse()//Retourne la bourse du joueur
     {
@@ -90,6 +90,7 @@ public class Joueur : MonoBehaviour
                                         if (paire(liste)) this.combinaison = Combinaison.Paire;
                                         else
                                         {
+                                            this.combinaison = Combinaison.Hauteur;
                                             l = liste;
                                         }
                                     }

@@ -20,27 +20,40 @@ public class ButtonHandler : MonoBehaviour
         Poker p = FindObjectOfType<Poker>();
         int tour = p.getTour();
         p.joueursManche.Remove(p.joueursManche[tour]);
-        if(tour == p.joueursManche.Count)
+        if(p.joueursManche.Count == 1)
         {
-            if (p.tourGlobal == 0)
+            while(p.tourGlobal < 3)
             {
+                if(p.tourGlobal == 0)
+                {
+                    p.flopper(); p.flopper();
+                }
+                p.flopper();
                 p.tourGlobal++;
-                p.flopper(); p.flopper(); p.flopper();
             }
-            else if (p.tourGlobal < 3 )
+            p.nouvelleManche();
+        }
+        else if(tour == p.joueursManche.Count)
             {
-                if (p.tourGlobal < 3)
+                if (p.tourGlobal == 0)
                 {
                     p.tourGlobal++;
-                    p.flopper();
+                    p.flopper(); p.flopper(); p.flopper();
                 }
-                else
+                else if (p.tourGlobal < 3 )
                 {
-                    p.nouvelleManche();
+                    if (p.tourGlobal < 3)
+                    {
+                        p.tourGlobal++;
+                        p.flopper();
+                    }
+                    else
+                    {
+                        p.nouvelleManche();
+                    }
                 }
+                p.setTour(0);
             }
-            p.setTour(0);
-        }
     }
     public void suivre()
     {
@@ -89,6 +102,7 @@ public class ButtonHandler : MonoBehaviour
             else
             {
                 p.nouvelleManche();
+                return;
             }
             
         }

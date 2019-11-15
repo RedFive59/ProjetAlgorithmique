@@ -112,6 +112,7 @@ public class Poker : MonoBehaviour
                 this.deck.RemoveAt(rdm);
 
             }
+            player.GetComponent<Joueur>().determinaisonCombinaison();
         }
     }
     public void rassemblementDeck()//Rassemble toutes les cartes du jeu dans le deck
@@ -220,6 +221,27 @@ public class Poker : MonoBehaviour
                 rassemblementDeck();
                 shuffle(this.deck);
                 distribution();
+                /*foreach(GameObject g in this.joueurs)
+                {
+                    j = g.GetComponent<Joueur>();
+                    print(j.name + " Main : \n");
+                    foreach(GameObject l in j.main)
+                    {
+                        print(l.name+"\n");
+                    }
+                    print("l :\n");
+                    foreach(Carte c in j.l)
+                    {
+                        print(c.valeur + " de " + c.couleur);
+                    }
+                    print("Combinaison : " + j.combinaison+"\n");
+                    j.determinaisonCombinaison();
+                    print("Combinaison : " + j.combinaison + "\n");
+                }
+                foreach (GameObject l in this.flop)
+                {
+                    print(l.name + "\n");
+                }*/
                 Poker.miseManche = 0;
                 this.tourGlobal = 0;
                 break;

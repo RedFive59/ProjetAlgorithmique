@@ -6,15 +6,9 @@ using UnityEngine.UI;
 public class Magasin : MonoBehaviour
 {
     private GenVisualManager GVM;
-    private Canvas myCanvas2;
-    private GameObject cvs2;
-    private RectTransform rect2;
-    private RectTransform rect3;
+    private CanvasGenerator Cvs;
     private int Magasinpos;//var qui dit si le magasin est ouvert ou fermé
-    private Text text;
     private int pos;
-    private GameObject panel;
-    private GameObject panel2;
     private GenShips Ships;
 
     // Start is called before the first frame update
@@ -24,133 +18,51 @@ public class Magasin : MonoBehaviour
         pos = GVM.getposGVM();
         Ships = GameObject.FindObjectOfType<GenShips>();
         Magasinpos = 1;//ouvre le magasin au début de la scène
-        cvs2 = new GameObject("Canvas Panel");
-        cvs2.AddComponent<Canvas>();
-        cvs2.AddComponent<CanvasScaler>().dynamicPixelsPerUnit = 50;//pixelisation du texte dans le canvas (plus élevé pour éviter la bouillie)
-        cvs2.AddComponent<GraphicRaycaster>();
-        Color sgrey;//la couleur qui sera utilisée pour le panel
+        Cvs = new CanvasGenerator("CanvasMagasin", new Vector3(pos, pos, 0), new Vector2(1, 1), RenderMode.WorldSpace,(Camera)GameObject.FindObjectOfType<Camera>(), 10, "PanelLayer", gameObject);
+        Cvs.addPanel("PanelBateaux", new Vector3(pos + 12f, pos + 5f, 0), new Vector2(7.25f, 12), new Color32(255, 255, 255, 160));
+        Cvs.addPanel("PanelBouton", new Vector3(pos + 8.875f, pos + 5, 0), new Vector2(1, 12), new Color32(22, 25, 77, 175));
+        Cvs.addText(Cvs.getPanel(1), "MagasinText", Cvs.getPanel(1).transform.position, new Vector2(12, 2), 1, "Magasin (Fermer)", Color.black, TextAnchor.MiddleCenter);
+        Cvs.rotateText(0);
+        Cvs.getPanel(1).AddComponent<Button>().onClick.AddListener(MoveMagasin);
+    }
 
-        myCanvas2 = cvs2.GetComponent<Canvas>();
-        //myCanvas2.renderMode = RenderMode.ScreenSpaceCamera; //canvas en mode resize sur la camera
-        myCanvas2.renderMode = RenderMode.WorldSpace;//rend le canvas indépendant de la caméra ou de la résolution
-        myCanvas2.worldCamera = GameObject.FindObjectOfType<Camera>();
-        myCanvas2.transform.position = new Vector3(pos + 4f, pos + 11f, 0);
-        //myCanvas2.worldCamera = FindObjectOfType<Camera>(); //cherche la premiere camera dispo dans les GO 
-        myCanvas2.planeDistance = 10;//"aucune idée de la traduction", a permit de faire repasser les panneaux devant la grille car la caméra était trop proche= fusion des éléments
-        myCanvas2.sortingLayerName = "PanelLayer";//applique le bon sortingLayer sur le canvas
-        rect3 = myCanvas2.GetComponent<RectTransform>();
-        rect3.sizeDelta = new Vector2(1f, 1f);//resize le canvas largeur/hauteur
-
-        panel = new GameObject("Panel");
-        panel.transform.parent = myCanvas2.transform;//range le panel dans son canvas
-        panel.AddComponent<CanvasRenderer>();
-        Image I = panel.AddComponent<Image>();//récupération du pseudo rendu du panel
-
-        cvs2.transform.SetParent(this.transform, false);//range le GO cvs2 dans le GO du script
-
-        rect2 = panel.GetComponent<RectTransform>();//recup le recttransform du panel
-        rect2.sizeDelta = new Vector2(6.532f, 11.6f);//resize le panel
-        rect2.localPosition = new Vector3(7.026f, 0, 0);
-
-        sgrey.r = 180;//set la valeur du rvb rouge
-        sgrey.b = 180;//set la valeur du rvb bleu
-        sgrey.g = 180;//set la valeur du rvb vert
-        sgrey.a = 0.5f;//set la transparence de la couleur de min 0 à max 1
-        I.color = sgrey;
-
-        panel2 = new GameObject("PanelButton");
-        panel2.transform.SetParent(myCanvas2.transform,false);//range panel2 dans son canvas
-        //début positionnement du panel2
-        panel2.AddComponent<CanvasRenderer>();
-        panel2.AddComponent<RectTransform>();
-        panel2.GetComponent<RectTransform>().sizeDelta = new Vector2(1f, 11.6f);
-        panel2.GetComponent<RectTransform>().localPosition = new Vector3(4.26f, 0, 0);
-        panel2.AddComponent<Button>().onClick.AddListener(MoveMagasin);
-  
-        //fin positionnement
-        //début change la couleur du panel
-        Image I2 = panel2.AddComponent<Image>();//récupération du pseudo rendu du panel
-        sgrey.r = 10;
-        sgrey.b = 10;
-        sgrey.g = 10;
-        sgrey.a = 0.5f;
-        I2.color = sgrey;
-        //fin couleur
-
-        //TEXT/////////////////////////
-        // Text titre du Magasin
-        GameObject myText;
-        RectTransform rectTransform;
-        myText = new GameObject("Magasin");
-        myText.transform.parent = panel2.transform;//attache le text au panel2
-        text = myText.AddComponent<Text>();
-        text.color = Color.black;//couleur de texte noire
-        text.font = (Font)Resources.GetBuiltinResource<Font>("Arial.ttf");//utilise la police Arial pour afficher le texte
-        text.text = "Magasin (fermer)";
-        text.fontSize = 1;//taille police
-        text.alignment = TextAnchor.MiddleCenter;//attache le text au centre de sa box, ici le panel2
-
-
-        // Text position
-        rectTransform = text.GetComponent<RectTransform>();
-        rectTransform.localPosition = new Vector3(0, 0, 0);
-        rectTransform.sizeDelta = new Vector2(9, 2);
-        rectTransform.localScale = new Vector3(0.5f, 0.5f, 1);
-        //rectTransform.rotation = new Quaternion(0f,0f,0f,90f);
-        rectTransform.Rotate(new Vector3(0, 0, 90f));//permet de place le text à la verticale (rotation z à 90 degrés)
-                                                     //TEXT/////////////////////////
-
-        void MoveMagasin()//fonction qui répond à l'action du bouton du panel2
+       public void MoveMagasin()//fonction qui répond à l'action du bouton du panel2
         {
             if (Magasinpos == 0)//si les panneaux sont rangés, déplace les deux panneaux pour l'ouverture
             {
-                panel.transform.localPosition = new Vector3(7.026f, 0, 0);
-                panel2.transform.localPosition = new Vector3(4.26f, 0, 0);
-                text.text = "Magasin (fermer)";
-                Magasinpos = 1;
+                this.setOuvrir();
                 Ships.moveShip(-4.5f, 0, 0);
             }
             else
             {
                 if (Magasinpos == 1)//si les panneaux sont ouverts, déplace les deux panneaux pour la fermeture
                 {
-                    panel.transform.localPosition = new Vector3(11.466f, 0, 0);
-                    panel2.transform.localPosition = new Vector3(8.7f, 0, 0);
-                    text.text = "Magasin (ouvrir)";
-                    Magasinpos = 0;
+                this.setFermer();
                     Ships.moveShip(4.5f, 0, 0);
                 }
             }
         }
-    }
 
     public void setFermer()
     {
-        panel.transform.localPosition = new Vector3(11.466f, 0, 0);
-        panel2.transform.localPosition = new Vector3(8.7f, 0, 0);
-        text.text = "Magasin (ouvrir)";
+        Cvs.MovePanel(0, 6, 0, 0);
+        Cvs.MovePanel(1, 6, 0, 0);
+        Cvs.setText("Magasin (Ouvrir)");
         Magasinpos = 0;
         Ships.moveShip(4.5f, 0, 0);
     }
 
     public void setOuvrir()
     {
-        panel.transform.localPosition = new Vector3(7.026f, 0, 0);
-        panel2.transform.localPosition = new Vector3(4.26f, 0, 0);
-        text.text = "Magasin (fermer)";
+        Cvs.MovePanel(0, -6, 0, 0);
+        Cvs.MovePanel(1, -6, 0, 0);
+        Cvs.setText("Magasin (Fermer)");
         Magasinpos = 1;
         Ships.moveShip(-4.5f, 0, 0);
     }
 
-    public int getMagasinpos()
+public int getMagasinpos()
     {
         return Magasinpos;
-    }
-
- 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

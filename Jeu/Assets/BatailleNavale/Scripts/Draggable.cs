@@ -8,15 +8,19 @@ public class Draggable : MonoBehaviour
     private bool rotv = false;
     private GenShips GS;
     private Vector3 OriginalPos;
+    private GenVisualManager GVM;
+    private int pos;
 
     void initOrigin(float x, float y)
     {
-        OriginalPos =new Vector3(x, y, 0);
-        Debug.Log("Origine :"+OriginalPos);
+        OriginalPos = new Vector3(x, y, 0);
+       // Debug.Log("Origine :"+OriginalPos);
     }
     private void Start()
     {
-        initOrigin(this.transform.localPosition.x, this.transform.localPosition.y);
+        GVM = GameObject.FindObjectOfType<GenVisualManager>();
+        pos = GVM.getposGVM();
+        initOrigin(this.transform.position.x, this.transform.position.y);
     }
 
     public void changeMag()
@@ -55,8 +59,8 @@ public class Draggable : MonoBehaviour
         Vector3 V;
             if (magv)
             {
-                V = this.transform.localPosition;
-                this.transform.localPosition = new Vector3(V.x + x, V.y + y, V.z + z);
+                V = this.transform.position;
+                this.transform.position = new Vector3(V.x + x, V.y + y, V.z + z);
             }
     }
 
@@ -126,34 +130,34 @@ public class Draggable : MonoBehaviour
             changeRot();
         }
         this.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
-        this.transform.localPosition = OriginalPos;
+        this.transform.position = OriginalPos;
         moveShip(4.5f, 0, 0);
     }
     private void checkPos()
     {
         GS = GameObject.FindObjectOfType<GenShips>();
-        if ((this.transform.localPosition.x < 0) || (this.transform.localPosition.x > 9) || (this.transform.localPosition.y < 6) || (this.transform.localPosition.y > 15))
+        if ((this.transform.position.x < pos+0) || (this.transform.position.x >pos+9) || (this.transform.position.y <pos+0) || (this.transform.position.y > pos+9))
         {
             resetPos();
             return;
             }
 
-            if ((this.transform.localPosition.x <= 0 + (int)(getTaille() / 2)-1)&& (rotv == false))
+            if ((this.transform.position.x <=pos+0 + (int)(getTaille() / 2)-1)&& (rotv == false))
             {
             resetPos();
             return;
         }
-        if ((this.transform.localPosition.x >= 9 - (int)(getTaille() / 2) + 1) && (rotv == false))
+        if ((this.transform.position.x >=pos+9 - (int)(getTaille() / 2) + 1) && (rotv == false))
         {
             resetPos();
             return;
         }
-        if ((this.transform.localPosition.y <= 6 + (int)(getTaille() / 2) - 1) && (rotv == true))
+        if ((this.transform.position.y <=pos+ 0 + (int)(getTaille() / 2) - 1) && (rotv == true))
         {
             resetPos();
             return;
         }
-        if ((this.transform.localPosition.y >= 15 - (int)(getTaille() / 2) + 1) && (rotv == true))
+        if ((this.transform.position.y >=pos+9 - (int)(getTaille() / 2) + 1) && (rotv == true))
         {
             resetPos();
             return;
@@ -224,7 +228,7 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseUp()
     {
-        this.transform.localPosition = cutVector(this.transform.localPosition);
+        this.transform.position = cutVector(this.transform.position);
         this.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer2";
         checkPos();
         mag.setOuvrir();

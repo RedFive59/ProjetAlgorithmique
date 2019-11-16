@@ -78,6 +78,7 @@ public class Poker : MonoBehaviour
         {
             GameObject newCard = Instantiate(cardPrefab, new Vector3(this.cardPrefab.transform.position.x, this.cardPrefab.transform.position.y, this.cardPrefab.transform.position.z), Quaternion.identity);
             newCard.name = s;
+            newCard.GetComponent<SpriteRenderer>().sprite = newCard.GetComponent<Carte>().cardBack;//Définit toutes les cartes comme étant de dos
             this.deck.Add(newCard);
         }
     }
@@ -95,7 +96,7 @@ public class Poker : MonoBehaviour
             this.joueursManche.Add(newPlayer);
         }
     }
-    public void distribution()//Distribue les cartes deux cartes du deck à chaque joueur
+    public void distribution()//Distribue deux cartes du deck à chaque joueur
     {
         System.Random random = new System.Random();
         int rdm;
@@ -123,10 +124,13 @@ public class Poker : MonoBehaviour
             g.GetComponent<Joueur>().main[1].transform.position = this.cardPrefab.transform.position;
             this.deck.Add(g.GetComponent<Joueur>().main[0]);
             this.deck.Add(g.GetComponent<Joueur>().main[1]);
+            g.GetComponent<Joueur>().main[0].GetComponent<SpriteRenderer>().sprite = g.GetComponent<Joueur>().main[0].GetComponent<Carte>().cardBack;
+            g.GetComponent<Joueur>().main[0].GetComponent<SpriteRenderer>().sprite = g.GetComponent<Joueur>().main[1].GetComponent<Carte>().cardBack;
         }
         foreach (GameObject g in this.flop)
         {
             g.transform.position = this.cardPrefab.transform.position;
+            g.GetComponent<SpriteRenderer>().sprite = g.GetComponent<Carte>().cardBack;
             this.deck.Add(g);
         }
         this.flop.Clear();
@@ -138,6 +142,7 @@ public class Poker : MonoBehaviour
         GameObject carte = this.deck[rdm];
         this.deck.Remove(carte);
         this.flop.Add(carte);
+        carte.GetComponent<SpriteRenderer>().sprite = carte.GetComponent<Carte>().cardFace;
         int i = this.flop.IndexOf(carte);
         GameObject pos = GameObject.Find("Tirage_" + (i + 1));
         carte.transform.position = pos.transform.position;

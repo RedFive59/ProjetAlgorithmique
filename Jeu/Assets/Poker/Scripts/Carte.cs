@@ -82,7 +82,7 @@ public class Carte : MonoBehaviour
             }
             i++;
         }
-        GetComponent<SpriteRenderer>().sprite = this.cardFace;
+        //GetComponent<SpriteRenderer>().sprite = this.cardFace;
     }
     public Valeur getValeur()
     {

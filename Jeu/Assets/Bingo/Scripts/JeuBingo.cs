@@ -41,7 +41,6 @@ public class JeuBingo : MonoBehaviour
             this.fillImg = GameObject.Find("WaitBar").GetComponent<Image>();
 
             getStats();
-            this.waitTime = 0;
 
             initBingo();
             creerBingo();
@@ -81,6 +80,7 @@ public class JeuBingo : MonoBehaviour
         {
             this.fini = true;
             afficherBINGO(this.ObjectMenuGagne);
+            //GameObject.Find("Bingo").SetActive(false);
             updateScore();
             if (this.userName != "Anonyme")
                 ajoutDonneesLeaderboard(this.userName, this.score.ToString());
@@ -239,18 +239,21 @@ public class JeuBingo : MonoBehaviour
         {
             int nbcase = this.ligne * this.nbgrilles - (nbCaseVide(t)) - 9;
             bool fini = false;
-            
+            //liste contenant les indices des lignes pour repartire les nouvelles cases cahées
+            List<int> casesACacher = new List<int>();
+            for (int i = 0; i < this.ligne * this.nbgrilles; i++)
+                casesACacher.Add(i);
             do
             {
                 if (nbcase != 0)
                 {
-                    ind = Random.Range(0, this.ligne * this.nbgrilles);
-
-                    if (t[ind] != -1)
+                    ind = Random.Range(0, casesACacher.Count);
+                    if (t[casesACacher[ind]] != -1)
                     {
-                        t[ind] = -1;
+                        t[casesACacher[ind]] = -1;
                         nbcase--;
                     }
+                    casesACacher.RemoveAt(ind);
                 }
                 else
                     fini = true;
@@ -291,6 +294,8 @@ public class JeuBingo : MonoBehaviour
                 for (int k = 0; k < this.ligne; k++)
                 {
                     this.grilles[j].setVal(k, col, vals[i]);
+                    if (vals[i] == -1)
+                        this.grillesSelection[j].setVal(k, col, vals[i]);
                     i++;
                 }
             }
@@ -544,6 +549,15 @@ public class JeuBingo : MonoBehaviour
         string[] arrLine = File.ReadAllLines(fileName);
         arrLine[line_to_edit - 1] = arrLine[line_to_edit - 1] + newText;
         File.WriteAllLines(fileName, arrLine);
+    }
+
+    private void affichermat(Cartons mat)
+    {
+        Debug.Log("nouvelle matrice");
+        for(int i =0; i < this.ligne; i++)
+        {
+            Debug.Log(mat.getVal(i, 0) + " " + mat.getVal(i, 1) + " " + mat.getVal(i, 2) + " " + mat.getVal(i, 3) + " " + mat.getVal(i, 4) + " " + mat.getVal(i, 5) + " " + mat.getVal(i, 6) + " " + mat.getVal(i, 7) + " " + mat.getVal(i, 8));
+        }
     }
 
     //permet de visualiser un tableau dans la console de debug

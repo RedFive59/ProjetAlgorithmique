@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Magasin : MonoBehaviour
+public class MagManager
 {
-    private GenVisualManager GVM;
+    private GameObject MagHolder;
     private CanvasGenerator Cvs;
     private int Magasinpos;//var qui dit si le magasin est ouvert ou fermé
-    private int pos;
-    private GenShips Ships;
+    private Vector3 pos;
+    private ShipManager Ships;
 
     // Start is called before the first frame update
-    void Start()
+    public MagManager(string nom,Vector3 posvm,ShipManager SM)
     {
-        GVM = GameObject.FindObjectOfType<GenVisualManager>();
-        pos = GVM.getposGVM();
-        Ships = GameObject.FindObjectOfType<GenShips>();
+        MagHolder = new GameObject(nom);
+        pos = new Vector3(posvm.x,posvm.y,posvm.z);
+        Ships = SM;
         Magasinpos = 1;//ouvre le magasin au début de la scène
-        Cvs = new CanvasGenerator("CanvasMagasin", new Vector3(pos, pos, 0), new Vector2(1, 1), RenderMode.WorldSpace,(Camera)GameObject.FindObjectOfType<Camera>(), 10, "PanelLayer", gameObject);
-        Cvs.addPanel("PanelBateaux", new Vector3(pos + 12f, pos + 5f, 0), new Vector2(7.25f, 12), new Color32(255, 255, 255, 160));
-        Cvs.addPanel("PanelBouton", new Vector3(pos + 8.875f, pos + 5, 0), new Vector2(1, 12), new Color32(22, 25, 77, 175));
+        Cvs = new CanvasGenerator("CanvasMagasin", new Vector3(pos.x, pos.y, pos.z), new Vector2(1, 1), RenderMode.WorldSpace,(Camera)GameObject.FindObjectOfType<Camera>(), 10, "PanelLayer", MagHolder);
+        Cvs.addPanel("PanelBateaux", new Vector3(pos.x + 12f, pos.y + 5f, 0), new Vector2(7.25f, 12), new Color32(255, 255, 255, 160));
+        Cvs.addPanel("PanelBouton", new Vector3(pos.x + 8.875f, pos.y + 5, 0), new Vector2(1, 12), new Color32(22, 25, 77, 175));
         Cvs.addText(Cvs.getPanel(1), "MagasinText", Cvs.getPanel(1).transform.position, new Vector2(12, 2), 1, "Magasin (Fermer)", Color.black, TextAnchor.MiddleCenter);
         Cvs.rotateText(0);
         Cvs.getPanel(1).AddComponent<Button>().onClick.AddListener(MoveMagasin);

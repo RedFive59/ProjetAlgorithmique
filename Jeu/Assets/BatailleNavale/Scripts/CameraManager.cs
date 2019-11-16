@@ -2,22 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager : MonoBehaviour
+public class CameraManager
 {
+    private GameObject CameraM;
     // Start is called before the first frame update
-    void Start()
+    public CameraManager(string nom, Vector3 pos)
     {
-        Camera CameraM=this.GetComponent<Camera>();//Declare une variable de type camera et récupère la camera à laquelle le script est attaché
-        CameraM.backgroundColor = Color.black;
-        CameraM.enabled = true; //la camera est active
-        CameraM.orthographic = true; //camera est en mode orthographique
-        CameraM.orthographicSize = 5.8f; //déclare la taille (diagonale) du rectangle que couvre la camera
+        //Camera//
+        CameraM = new GameObject("Camera : " + pos);
+        CameraM.AddComponent<Camera>();
+        Camera Cam = CameraM.GetComponent<Camera>();
+        Cam.transform.position = new Vector3(pos.x + 5f, pos.y + 5f, pos.z - 10f);
+        Cam.backgroundColor = Color.black;
+        Cam.enabled = true; //la camera est active
+        Cam.orthographic = true; //camera est en mode orthographique
+        Cam.orthographicSize = 5.8f; //déclare la taille (diagonale) du rectangle que couvre la camera
         //la position initiale n'est pas changée la caméra est centrée sur l'origine de la scène
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public Camera getCamera()
     {
-        
+        {
+            return CameraM.GetComponent<Camera>();
+        }
     }
 }

@@ -9,7 +9,7 @@ public class CameraManager
     public CameraManager(string nom, Vector3 pos)
     {
         //Camera//
-        CameraM = new GameObject("Camera : " + pos);
+        CameraM = new GameObject(nom);
         CameraM.AddComponent<Camera>();
         Camera Cam = CameraM.GetComponent<Camera>();
         Cam.transform.position = new Vector3(pos.x + 5f, pos.y + 5f, pos.z - 10f);

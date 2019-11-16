@@ -12,18 +12,19 @@ public class GridManagerNavale
     private Grille<int> grille; //matrice qui contiendra les valeurs de l'eau/bateau, libre/raté/touché
     private GameObject GridHolder;
     private CanvasGenerator Cvs;
+    private CameraManager CameraM;
 
     public GridManagerNavale(string nom,Vector3 pos)
     {
         GridHolder = new GameObject(nom);
-        GridHolder.transform.SetParent(GameObject.FindObjectOfType<GenVisualManager>().transform, false);
+        GridHolder.transform.SetParent(GameObject.FindObjectOfType<VisualManager>().transform, false);
         GenGrille(pos);
     }
 
     void GenGrille(Vector3 pos)
     {
         //Camera//
-        CameraManager CameraM= new CameraManager("Cam",pos);
+        CameraM= new CameraManager("Cam"+pos.x,pos);
 
         this.grille = new Grille<int>(rows - 1, cols - 1);
         this.col0 = new Grille<int>(cols - 1);
@@ -97,5 +98,14 @@ public class GridManagerNavale
             temp=System.Convert.ToString(10-v);
             Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2, 2), 1, temp, Color.black, TextAnchor.MiddleCenter);
         }
+    }
+
+    public Camera getCamera()
+    {
+        return CameraM.getCamera();
+    }
+    public Grille<int>  getGrille()
+    {
+        return grille;
     }
 }

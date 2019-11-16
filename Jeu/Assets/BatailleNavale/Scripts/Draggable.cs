@@ -6,21 +6,33 @@ public class Draggable : MonoBehaviour
 {
     private bool magv = true;
     private bool rotv = false;
-    private GenShips GS;
+    private ShipManager SM;
     private Vector3 OriginalPos;
-    private GenVisualManager GVM;
-    private int pos;
+    private VisualManager VM;
+    private Vector3 pos;
 
-    void initOrigin(float x, float y)
+    void initOrigin(float x, float y,float z)
     {
-        OriginalPos = new Vector3(x, y, 0);
-       // Debug.Log("Origine :"+OriginalPos);
+        OriginalPos = new Vector3(x, y, z);
     }
     private void Start()
     {
-        GVM = GameObject.FindObjectOfType<GenVisualManager>();
-        pos = GVM.getposGVM();
-        initOrigin(this.transform.position.x, this.transform.position.y);
+        VM = GameObject.FindObjectOfType<VisualManager>();
+        SM = this.GetComponentInParent<ShipManager>();
+
+        string test = this.transform.parent.name;
+        if (test[4] == '0')
+        {
+            mag = VM.GetMagM(1);
+            pos = VM.getposGVM(1);
+        }
+        if (test[4] == '3')
+        {
+            mag = VM.GetMagM(2);
+            pos = VM.getposGVM(2);
+        }
+
+        initOrigin(this.transform.position.x, this.transform.position.y, this.transform.position.z);
     }
 
     public void changeMag()
@@ -65,7 +77,7 @@ public class Draggable : MonoBehaviour
     }
 
     private Vector3 mOffset;
-    private Magasin mag;
+    private MagManager mag;
     private Camera C;
 
     // Start is called before the first frame update
@@ -74,7 +86,6 @@ public class Draggable : MonoBehaviour
     {
         magv = false;
         C = GameObject.FindObjectOfType<Camera>();
-        mag = GameObject.FindObjectOfType<Magasin>();
         mOffset = this.transform.position - GetMouseWorldPos();//enregistre l'offset entre la souris et l'objet
         if (mag.getMagasinpos() == 1)
         {
@@ -91,7 +102,7 @@ public class Draggable : MonoBehaviour
     private void OnMouseDrag()
     {
         this.transform.position = GetMouseWorldPos() + mOffset;
-        if (Input.GetKeyDown(KeyCode.Tab))//Press tab pour rotate un bateau
+        if (Input.GetKeyDown(KeyCode.R))//Press tab pour rotate un bateau
         {
             changeRot();
         }
@@ -101,22 +112,18 @@ public class Draggable : MonoBehaviour
     {
         if (this.name == "Torpilleur")
         {
-            Debug.Log("Taille2");
             return 2;
         }
         if ((this.name == "ContreTorpilleur")||(this.name == "SousMarin"))
         {
-            Debug.Log("Taille3");
             return 3;
         }
         if (this.name == "Croiseur")
         {
-            Debug.Log("Taille4");
             return 4;
         }
         if (this.name == "PorteAvion")
         {
-            Debug.Log("Taille5");
             return 5;
         }
         return -1;
@@ -135,29 +142,28 @@ public class Draggable : MonoBehaviour
     }
     private void checkPos()
     {
-        GS = GameObject.FindObjectOfType<GenShips>();
-        if ((this.transform.position.x < pos+0) || (this.transform.position.x >pos+9) || (this.transform.position.y <pos+0) || (this.transform.position.y > pos+9))
+        if ((this.transform.position.x < pos.x+0) || (this.transform.position.x >pos.y+9) || (this.transform.position.y <pos.y+0) || (this.transform.position.y > pos.y+9))
         {
             resetPos();
             return;
             }
 
-            if ((this.transform.position.x <=pos+0 + (int)(getTaille() / 2)-1)&& (rotv == false))
+            if ((this.transform.position.x <=pos.x+0 + (int)(getTaille() / 2)-1)&& (rotv == false))
             {
             resetPos();
             return;
         }
-        if ((this.transform.position.x >=pos+9 - (int)(getTaille() / 2) + 1) && (rotv == false))
+        if ((this.transform.position.x >=pos.x+9 - (int)(getTaille() / 2) + 1) && (rotv == false))
         {
             resetPos();
             return;
         }
-        if ((this.transform.position.y <=pos+ 0 + (int)(getTaille() / 2) - 1) && (rotv == true))
+        if ((this.transform.position.y <=pos.y+ 0 + (int)(getTaille() / 2) - 1) && (rotv == true))
         {
             resetPos();
             return;
         }
-        if ((this.transform.position.y >=pos+9 - (int)(getTaille() / 2) + 1) && (rotv == true))
+        if ((this.transform.position.y>=pos.y+9 - (int)(getTaille() / 2) + 1) && (rotv == true))
         {
             resetPos();
             return;

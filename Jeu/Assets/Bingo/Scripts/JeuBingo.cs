@@ -34,7 +34,7 @@ public class JeuBingo : MonoBehaviour
     {
         this.tile = GameObject.Find(0 + ":Case" + 0 + "_" + 0);
         this.scroll = GameObject.Find("Scrollbar");
-        this.ObjectMenuGagne = GameObject.Find("CommonObject");
+        this.ObjectMenuGagne = GameObject.Find("ObjectToHide");
 
         if (!this.tile)
         {

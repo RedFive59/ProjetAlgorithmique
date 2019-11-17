@@ -6,17 +6,49 @@ public class Draggable : MonoBehaviour
 {
     private bool magv = true;
     private bool rotv = false;
-    private GenShips GS;
+    private ShipManager SM;
     private Vector3 OriginalPos;
+    private VisualManager VM;
+    private Vector3 pos;
+    private Vector3 mOffset;
+    private MagManager mag;
+    private Camera C;
 
-    void initOrigin(float x, float y)
+    void initOrigin(float x, float y,float z)
     {
-        OriginalPos =new Vector3(x, y, 0);
-        Debug.Log("Origine :"+OriginalPos);
+        OriginalPos = new Vector3(x, y, z);
     }
     private void Start()
     {
-        initOrigin(this.transform.localPosition.x, this.transform.localPosition.y);
+        VM = GameObject.FindObjectOfType<VisualManager>();
+
+        string test = this.gameObject.transform.parent.name;
+        Debug.Log("NOM : "+ test);
+        if (test[10] == '1')
+        {
+            Debug.Log("debug : " + test[10]);
+            SM = VM.getShipM(1);
+            mag = VM.getMagM(1);
+            pos = VM.getposGVM(1);
+            C = VM.getCameraVM(1);
+        }
+        else
+        {
+            if (test[10] == '2')
+            {
+                Debug.Log("debug : " + test[10]);
+                SM = VM.getShipM(2);
+                mag = VM.getMagM(2);
+                pos = VM.getposGVM(2);
+                C = VM.getCameraVM(2);
+            }
+            else
+            {
+                Debug.Log("NO_LINK_FOUND");
+            }
+        }
+
+        initOrigin(this.gameObject.transform.position.x, this.gameObject.transform.position.y, this.gameObject.transform.position.z);
     }
 
     public void changeMag()
@@ -31,12 +63,12 @@ public class Draggable : MonoBehaviour
     {
         if (rotv == false)
         {
-            this.transform.Rotate(new Vector3(0, 0, 90f));
+            this.gameObject.transform.Rotate(new Vector3(0, 0, 90f));
             rotv = true;
         }
         else
         {
-            this.transform.Rotate(new Vector3(0, 0, 90f));
+            this.gameObject.transform.Rotate(new Vector3(0, 0, 90f));
             rotv = false;
         }
         } 
@@ -55,23 +87,16 @@ public class Draggable : MonoBehaviour
         Vector3 V;
             if (magv)
             {
-                V = this.transform.localPosition;
-                this.transform.localPosition = new Vector3(V.x + x, V.y + y, V.z + z);
+                V = this.gameObject.transform.position;
+                this.gameObject.transform.position = new Vector3(V.x + x, V.y + y, V.z + z);
             }
     }
 
-    private Vector3 mOffset;
-    private Magasin mag;
-    private Camera C;
 
-    // Start is called before the first frame update
-   
         void OnMouseDown()
     {
         magv = false;
-        C = GameObject.FindObjectOfType<Camera>();
-        mag = GameObject.FindObjectOfType<Magasin>();
-        mOffset = this.transform.position - GetMouseWorldPos();//enregistre l'offset entre la souris et l'objet
+        mOffset = this.gameObject.transform.position - GetMouseWorldPos();//enregistre l'offset entre la souris et l'objet
         if (mag.getMagasinpos() == 1)
         {
             mag.setFermer();
@@ -86,8 +111,8 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        this.transform.position = GetMouseWorldPos() + mOffset;
-        if (Input.GetKeyDown(KeyCode.Tab))//Press tab pour rotate un bateau
+        this.gameObject.transform.position = GetMouseWorldPos() + mOffset;
+        if (Input.GetKeyDown(KeyCode.R))//Press tab pour rotate un bateau
         {
             changeRot();
         }
@@ -95,24 +120,20 @@ public class Draggable : MonoBehaviour
 
     private int getTaille()
     {
-        if (this.name == "Torpilleur")
+        if (this.gameObject.name == "Torpilleur")
         {
-            Debug.Log("Taille2");
             return 2;
         }
-        if ((this.name == "ContreTorpilleur")||(this.name == "SousMarin"))
+        if ((this.gameObject.name == "ContreTorpilleur")||(this.name == "SousMarin"))
         {
-            Debug.Log("Taille3");
             return 3;
         }
-        if (this.name == "Croiseur")
+        if (this.gameObject.name == "Croiseur")
         {
-            Debug.Log("Taille4");
             return 4;
         }
-        if (this.name == "PorteAvion")
+        if (this.gameObject.name == "PorteAvion")
         {
-            Debug.Log("Taille5");
             return 5;
         }
         return -1;
@@ -125,35 +146,34 @@ public class Draggable : MonoBehaviour
         {
             changeRot();
         }
-        this.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
-        this.transform.localPosition = OriginalPos;
+        this.gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
+        this.gameObject.transform.position = OriginalPos;
         moveShip(4.5f, 0, 0);
     }
     private void checkPos()
     {
-        GS = GameObject.FindObjectOfType<GenShips>();
-        if ((this.transform.localPosition.x < 0) || (this.transform.localPosition.x > 9) || (this.transform.localPosition.y < 6) || (this.transform.localPosition.y > 15))
+        if ((this.gameObject.transform.position.x < pos.x+0) || (this.gameObject.transform.position.x >pos.y+9) || (this.gameObject.transform.position.y <pos.y+0) || (this.gameObject.transform.position.y > pos.y+9))
         {
             resetPos();
             return;
             }
 
-            if ((this.transform.localPosition.x <= 0 + (int)(getTaille() / 2)-1)&& (rotv == false))
+            if ((this.gameObject.transform.position.x <=pos.x+0 + (int)(getTaille() / 2)-1)&& (rotv == false))
             {
             resetPos();
             return;
         }
-        if ((this.transform.localPosition.x >= 9 - (int)(getTaille() / 2) + 1) && (rotv == false))
+        if ((this.gameObject.transform.position.x >=pos.x+9 - (int)(getTaille() / 2) + 1) && (rotv == false))
         {
             resetPos();
             return;
         }
-        if ((this.transform.localPosition.y <= 6 + (int)(getTaille() / 2) - 1) && (rotv == true))
+        if ((this.gameObject.transform.position.y <=pos.y+ 0 + (int)(getTaille() / 2) - 1) && (rotv == true))
         {
             resetPos();
             return;
         }
-        if ((this.transform.localPosition.y >= 15 - (int)(getTaille() / 2) + 1) && (rotv == true))
+        if ((this.gameObject.transform.position.y>=pos.y+9 - (int)(getTaille() / 2) + 1) && (rotv == true))
         {
             resetPos();
             return;
@@ -167,8 +187,6 @@ public class Draggable : MonoBehaviour
         int y;
         double decix = V.x - System.Math.Truncate(V.x);
         double deciy = V.y - System.Math.Truncate(V.y);
-        Debug.Log(decix);
-        Debug.Log(deciy);
         x = (int)V.x;
         y = (int)V.y;
 
@@ -224,8 +242,8 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseUp()
     {
-        this.transform.localPosition = cutVector(this.transform.localPosition);
-        this.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer2";
+        this.gameObject.transform.position = cutVector(this.gameObject.transform.position);
+        this.gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer2";
         checkPos();
         mag.setOuvrir();
     }

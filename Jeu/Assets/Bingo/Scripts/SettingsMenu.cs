@@ -12,7 +12,7 @@ public class SettingsMenu : MonoBehaviour
 
     public void NumberOfGrid(float value)
     {
-        int nouv = (int)(value*6);
+        int nouv = (int)(value * 6);
         if (nouv != 6) nouv++;
         PlayerStats.NbGrilles = nouv;
     }
@@ -29,7 +29,7 @@ public class SettingsMenu : MonoBehaviour
     public void getTempsAttente(float value)
     {
         int nouv = (int)(value);
-        PlayerStats.WaitTime= nouv;
+        PlayerStats.WaitTime = nouv;
         setTempsAttente();
     }
 
@@ -47,6 +47,17 @@ public class SettingsMenu : MonoBehaviour
         PlayerStats.GameMode = nouv - 1;
     }
 
+    public void setInputName()
+    {
+        string username = GameObject.Find("InputName").transform.GetComponent<TextMeshProUGUI>().text;
+        if (username.Length > 4)
+            PlayerStats.UserName = username;
+        else
+        {
+            GameObject.Find("ErreurNom").transform.GetComponent<TextMeshProUGUI>().enabled = true;
+        }
+    }
+
     public void updateSettings()
     {
         float temp;
@@ -60,7 +71,7 @@ public class SettingsMenu : MonoBehaviour
 
         score.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
         scoreDisp.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
-        
+
         temp = (float)(PlayerStats.GameMode - 0) / (2 - 0);
         gamemode.value = temp;
 

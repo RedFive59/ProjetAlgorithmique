@@ -7,11 +7,12 @@ using SimpleJSON;
 
 internal class GrilleSudoku : Grille<Case>
 {
-
+    // Constructeur de base faisant appel au constructeur de Grille
     public GrilleSudoku(int n, int m) : base(n, m)
     {
     }
 
+    // Fonction pour initialiser toutes les cases à 0
     public void initVal(int val)
     {
         for (int i = 0; i < this.rows; i++)
@@ -24,11 +25,7 @@ internal class GrilleSudoku : Grille<Case>
         }
     }
 
-    public void setVal(int i, int j, int val)
-    {
-
-    }
-
+    // Fonction global pour vérifier la grille
     public Boolean verifGrille()
     {
         for (int i = 0; i < 9; i++)
@@ -44,6 +41,7 @@ internal class GrilleSudoku : Grille<Case>
         return true;
     }
 
+    // Check la ligne nbLigne pour vérifier les doublons
     public Boolean verifLigne(int nbLigne)
     {
         List<int> list = new List<int>();
@@ -60,6 +58,7 @@ internal class GrilleSudoku : Grille<Case>
         return true;
     }
 
+    // Check la colonne nbColonne pour vérifier les doublons
     public Boolean verifColonne(int nbColonne)
     {
         List<int> list = new List<int>();
@@ -76,6 +75,7 @@ internal class GrilleSudoku : Grille<Case>
         return true;
     }
 
+    // Retourne le numéro du carré où la case [i,j] est présente. Les numéros de carré sont numérotés dans l'ordre de la gauche vers la droite puis orsqu'on passe à la ligne suivante on ajoute 1 jusqu'au carré 9.
     public int numCarre(int i, int j)
     {
         if (i < 3)
@@ -99,6 +99,7 @@ internal class GrilleSudoku : Grille<Case>
         return -1;
     }
 
+    // Check que le carré nCarre n'a pas 2 fois la même valeur en lui
     public Boolean verifCarre(int nCarre)
     {
         List<int> list = new List<int>();
@@ -237,6 +238,7 @@ internal class GrilleSudoku : Grille<Case>
         return true;
     }
 
+    // Check la présence de 0 dans la grille
     public Boolean verifZeros()
     {
         for (int i = 0; i < 9; i++)
@@ -245,12 +247,12 @@ internal class GrilleSudoku : Grille<Case>
         return true;
     }
 
+    // Fonction de debug pour remplir la grille directement
     public void remplirGrille(string num, string difficulte)
     {
         if (!verifGrille())
         {
-            string directoryPath = "StreamingAssets/SudokuLevels/" + difficulte + "/" + num + ".json";
-            string filePath = Path.Combine(Application.dataPath, directoryPath);
+            string filePath = defineSudoku.getCheminDifficulteNum(difficulte, num);
 
             if (File.Exists(filePath))
             {
@@ -274,14 +276,22 @@ internal class GrilleSudoku : Grille<Case>
         }
     }
 
-    public void sauvegardeGrille(string num, string difficulte)
+    // Fonction a appeler pour sauvegarde la grille, sa difficulté et son numéro de grille
+    // A ajouter dans cette fonction : Save des notes et du timer
+    public void sauvegardeGrille()
     {
-        string directoryPath = "Saves/sauvegardeSudoku.json";
-        string filePath = Path.Combine(Application.dataPath, directoryPath);
-        string save = "{\n";
+        Jeu jeu = GameObject.Find("Jeu").GetComponent<Jeu>();
+        string num = jeu.numGrille;
+        string difficulte = jeu.difficulte;
+        string timer = jeu.temps.ToString();
+        string timerString = jeu.affichageTemps;
+        string filePath = defineSudoku.cheminSauvegarde;
+        string save = "{\n\t//Fichier de sauvegarde de la grille du Sudoku afin de reprendre une partie abandonnée\n";
 
         if (File.Exists(filePath))
         {
+            save += "\t\"timer\": \"" + timer + "\",\n";
+            save += "\t\"timerString\": \"" + timerString + "\",\n";
             save += "\t\"num\": " + num + ",\n";
             save += "\t\"difficulte\": \"" + difficulte + "\",\n";
             save += this.ToString();
@@ -290,10 +300,10 @@ internal class GrilleSudoku : Grille<Case>
         else Debug.Log("Sauvegarde impossible\nFichier " + filePath + " introuvable");
     }
 
+    // Fonction a appeler pour charger les différents niveaux qui ont été enregistrés
     public void chargementGrille(string num, string difficulte)
     {
-        string directoryPath = "StreamingAssets/SudokuLevels/" + difficulte + "/" + num + ".json";
-        string filePath = Path.Combine(Application.dataPath, directoryPath);
+        string filePath = defineSudoku.getCheminDifficulteNum(difficulte, num);
 
         if (File.Exists(filePath))
         {
@@ -315,6 +325,33 @@ internal class GrilleSudoku : Grille<Case>
         else Debug.Log("Chargement impossible\nFichier " + filePath + " introuvable");
     }
 
+    // Rempli la grille avec le fichier sauvegardeSudoku
+    public void chargementGrilleSauvegarde()
+    {
+        string filePath = defineSudoku.cheminSauvegarde;
+
+        if (File.Exists(filePath))
+        {
+            string dataAsJson = File.ReadAllText(filePath);
+            var loadedData = JSON.Parse(dataAsJson);
+            chargementGrille(loadedData["num"].ToString(), loadedData["difficulte"]);
+
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (this.getVal(i, j).valeur == 0 && loadedData["tabTrou"][i][j] == 1)
+                    {
+                        this.getVal(i, j).changeable = true;
+                        this.getVal(i, j).setValeur(loadedData["tab"][i][j]);
+                    }
+                }
+            }
+        }
+        else Debug.Log("Chargement impossible\nFichier " + filePath + " introuvable");
+    }
+
+    // Override du ToString pour faciliter la sauvegarde (et la lecture humaine) dans un fichier .json
     public override string ToString()
     {
         string res = "\t\"tab\": [\n";
@@ -334,7 +371,7 @@ internal class GrilleSudoku : Grille<Case>
             }
             else res += "]\n";
         }
-        res += "\n\t],\n" +
+        res += "\t],\n" +
             "\t\"tabTrou\": [\n";
         for (int i = 0; i < 9; i++)
         {

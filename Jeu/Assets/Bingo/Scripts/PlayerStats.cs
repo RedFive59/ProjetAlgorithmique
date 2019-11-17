@@ -5,6 +5,7 @@ using UnityEngine;
 public static class PlayerStats
 {
     private static int nbGrilles = 1, waitTime = 5, score = 0, gameMode = 0;
+    private static string userName = "Anonyme";
 
     public static int NbGrilles
     {
@@ -54,12 +55,25 @@ public static class PlayerStats
         }
     }
 
+    public static string UserName
+    {
+        get
+        {
+            return userName;
+        }
+        set
+        {
+            userName = value;
+        }
+    }
+
     public static void reset()
     {
         nbGrilles = 1;
         waitTime = 5;
         score = 0;
         gameMode = 0;
+        userName = "Anonyme";
     }
 
     public static void initial()

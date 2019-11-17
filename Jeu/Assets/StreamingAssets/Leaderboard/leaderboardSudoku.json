@@ -1,0 +1,19 @@
+{
+  //Historique des games de Sudoku
+  "history": [
+    [ "Facile", "1", "10:23" ],
+    [ "Difficile", "2", "24:22" ],
+    [ "Intermédiaire", "2", "13:11" ],
+    [ "Difficile", "2", "17:28" ],
+    [ "Difficile", "3", "09:53" ],
+    [ "Facile", "1", "08:59" ],
+    [ "Facile", "1", "08:40" ],
+    [ "Intermédiaire", "2", "05:00" ],
+    [ "Facile", "7", "01:20" ],
+    [ "Difficile", "3", "127:05" ],
+    [ "Difficile", "1", "58:01" ],
+    [ "Difficile", "2", "67:50" ],
+    [ "Intermédiaire", "4", "101:00" ],
+		[ "Facile", "4", "00:06" ]
+  ]
+}

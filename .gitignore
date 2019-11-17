@@ -34,3 +34,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Ignore Sudoku save files
+sauvegardeSudoku.json
+leaderboardSudoku.json

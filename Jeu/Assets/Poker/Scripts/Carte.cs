@@ -25,13 +25,25 @@ public enum Valeur//Enumération correspondant à la valeur d'une carte
     Roi = 11,
     As = 12
 };
-
+public enum Combinaison//Enumération correspondant aux différentes combinaisons de cartes
+{
+    Hauteur = 0,
+    Paire = 1,
+    DoublePaire = 2,
+    Brelan = 3,
+    Quinte = 4,
+    Couleur = 5,
+    Full = 6,
+    Carré = 7,
+    QuinteFlush = 8,
+    QuinteFlushRoyal = 9
+}
 public class Carte : MonoBehaviour
 { 
     //Attributs
     public Sprite cardFace;//Texture de la carte
-    private Couleur couleur = Couleur.Trefle;//Couleur de la carte
-    private Valeur valeur = Valeur.Deux;//Valeur de la carte
+    public Couleur couleur = Couleur.Trefle;//Couleur de la carte
+    public Valeur valeur = Valeur.Deux;//Valeur de la carte
 
     // Start is called before the first frame update
     void Start()
@@ -59,10 +71,10 @@ public class Carte : MonoBehaviour
                 {
                     for (int k = 0; k <= 3; k++)
                     {
-                        if (this.name == ((this.valeur + k) + " de " + (this.couleur + j)))
+                        if (this.name == (this.valeur + j).ToString() + " de " + (this.couleur + k).ToString() )
                         {
-                            this.valeur += k;
-                            this.couleur += j;
+                            this.valeur += j;
+                            this.couleur += k;
                         }
                     }
                 }
@@ -70,5 +82,23 @@ public class Carte : MonoBehaviour
             i++;
         }
         GetComponent<SpriteRenderer>().sprite = this.cardFace;
+    }
+    public Valeur getValeur()
+    {
+        return this.valeur;
+    }
+    public Couleur getCouleur()
+    {
+        return this.couleur;
+    }
+    public bool Equals(Carte c)
+    {
+        if (this.couleur == c.getCouleur() && this.valeur == c.getValeur()) return true;
+        return false;
+    }
+    public bool superieurA(Carte c)
+    {
+        if (this.valeur > c.valeur) return true;
+        return false;
     }
 }

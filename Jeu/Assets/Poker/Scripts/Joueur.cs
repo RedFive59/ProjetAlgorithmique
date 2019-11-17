@@ -8,14 +8,14 @@ public class Joueur : MonoBehaviour
     public string nom;//Nom du joueur
     public List<GameObject> main;//Main du joueur
     public int mise = 0;//Mise d'argent que le joueur a misé cette manche
-    private int bourse = Poker.BOURSEDEPART;//Bourse totale du joueur
+    private int bourse;//Bourse totale du joueur
     public Combinaison combinaison = Combinaison.Hauteur;//Combinaison la plus haute que possède le joueur
     public List<Carte> l = new List<Carte>();//Liste des cartes composant la combinaison 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        bourse = GameObject.Find("Poker").GetComponent<Poker>().BOURSEDEPART;
     }
     // Update is called once per frame
     void Update()

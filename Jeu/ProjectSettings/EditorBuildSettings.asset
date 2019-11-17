@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Poker/Scenes/Poker.unity
     guid: 78d71aa5da77a7d4d82da7837f19c76c
   - enabled: 1
+    path: Assets/Poker/Scenes/PokerMenu.unity
+    guid: 2f8172f52ec83f049a48388378be0a6b
+  - enabled: 1
     path: Assets/Sudoku/Scenes/Sudoku.unity
     guid: b7aab8d89af16464e9954f434f41749d
   - enabled: 1

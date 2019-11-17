@@ -112,6 +112,11 @@ public class PokerMenu : MonoBehaviour
                 Destroy(child);
             }
         }
+        alerteNom.SetActive(true);
+        alerteNom.GetComponent<TextMeshProUGUI>().color = new Color(1f, 0f, 0f, 1f);
+        alerteNom.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        alerteNom.GetComponent<TextMeshProUGUI>().text = "Chaque joueur doit comporter un nom";
+        canLaunchGame = false;
     }
 
     public void verifMiseOnChange()

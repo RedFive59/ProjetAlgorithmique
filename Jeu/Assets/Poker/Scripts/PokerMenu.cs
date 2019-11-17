@@ -17,6 +17,7 @@ public class PokerMenu : MonoBehaviour
     private Coroutine currentCoroutine = null;
     private Coroutine currentCoroutine2 = null;
     private bool canLaunchGame = false;
+    private GameObject gameSettings;
 
     void Start()
     {
@@ -26,9 +27,11 @@ public class PokerMenu : MonoBehaviour
         alerteMise = GameObject.Find("AlerteMise");
         alerteNom = GameObject.Find("AlerteNom");
         lancerPartie = GameObject.Find("LancerPartie");
+        gameSettings = GameObject.Find("GameSettings");
         alerteMise.SetActive(false);
         createInputNameField();
         alerteNom.GetComponent<TextMeshProUGUI>().text = "Chaque joueur doit comporter un nom";
+        DontDestroyOnLoad(gameSettings);
     }
 
     private void Update()
@@ -92,6 +95,8 @@ public class PokerMenu : MonoBehaviour
             }
         }
         canLaunchGame = true;
+        updateGameSettingsObject(nbJoueurs, listNom, valeurMise());
+        //Animation de disparition de l'alerte des noms
         if (currentCoroutine2 != null) StopCoroutine(currentCoroutine2);
         currentCoroutine2 = StartCoroutine(disableAlerteNom());
     }
@@ -152,6 +157,13 @@ public class PokerMenu : MonoBehaviour
         }
     }
 
+    private int valeurMise()
+    {
+        string miseText = mise.GetComponent<TMP_InputField>().text;
+        if (miseText == "") return minMise;
+        else return int.Parse(miseText);
+    }
+
     private IEnumerator updateAlerteMise(string message)
     {
         if (message != "")
@@ -203,6 +215,56 @@ public class PokerMenu : MonoBehaviour
                 yield return null;
             }
             alerteNom.SetActive(false);
+        }
+    }
+
+    public void updateGameSettingsObject(int nbJoueurs, string[] listNom, int miseMax)
+    {
+        gameSettings.GetComponent<PokerValue>().nbJoueurs = nbJoueurs;
+        gameSettings.GetComponent<PokerValue>().bourse = miseMax;
+        for (int i = 0; i < 5; i++)
+        {
+            if(i < nbJoueurs)
+            {
+                switch (i) {
+                    case 0:
+                        gameSettings.GetComponent<PokerValue>().nomJoueur1 = listNom[i];
+                            break;
+                    case 1:
+                        gameSettings.GetComponent<PokerValue>().nomJoueur2 = listNom[i];
+                        break;
+                    case 2:
+                        gameSettings.GetComponent<PokerValue>().nomJoueur3 = listNom[i];
+                        break;
+                    case 3:
+                        gameSettings.GetComponent<PokerValue>().nomJoueur4 = listNom[i];
+                        break;
+                    case 4:
+                        gameSettings.GetComponent<PokerValue>().nomJoueur5 = listNom[i];
+                        break;
+                }
+            }
+            else
+            {
+                switch (i)
+                {
+                    case 0:
+                        gameSettings.GetComponent<PokerValue>().nomJoueur1 = null;
+                        break;
+                    case 1:
+                        gameSettings.GetComponent<PokerValue>().nomJoueur2 = null;
+                        break;
+                    case 2:
+                        gameSettings.GetComponent<PokerValue>().nomJoueur3 = null;
+                        break;
+                    case 3:
+                        gameSettings.GetComponent<PokerValue>().nomJoueur4 = null;
+                        break;
+                    case 4:
+                        gameSettings.GetComponent<PokerValue>().nomJoueur5 = null;
+                        break;
+                }
+            }
         }
     }
 }

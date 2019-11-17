@@ -11,16 +11,17 @@ public class Poker : MonoBehaviour
     public List<GameObject> deck;//Paquet de cartes
     public List<GameObject> joueurs;//Liste de tous less joueurs
     public List<GameObject> joueursManche;//Liste de tous les joueurs restants
-    public static int nbJoueurs = 5;//Nombre de joueurs dans la partie
+    public static int nbJoueurs;//Nombre de joueurs dans la partie
     private int tour = 0;//Indice du joueur qui doit jouer
     public int tourGlobal = 0;//Indique le numéro du tour (augmente de 1 à chaque fois que les les nbJoueurs ont joué une fois)
     public List<GameObject> flop = new List<GameObject>();//Liste des cinq cartes composant le flop
-    public readonly static int BOURSEDEPART = 2500;//Bourse de départ pour les joueurs
+    public int BOURSEDEPART;//Bourse de départ pour les joueurs
     public static int miseManche = 10;//Mise de la manche 
 
     // Start is called before the first frame update
     void Start()
     {
+        updateInfosMenu();
         startGame();
     }
 
@@ -28,6 +29,21 @@ public class Poker : MonoBehaviour
     void Update()
     {
 
+    }
+    private void updateInfosMenu()
+    {
+        GameObject gameSettings = GameObject.Find("GameSettings");
+        nbJoueurs = gameSettings.GetComponent<PokerValue>().nbJoueurs;
+        BOURSEDEPART = gameSettings.GetComponent<PokerValue>().bourse;
+        // Changer le nom des joueurs
+        /*
+        nomJoueur1 = gameSettings.GetComponent<PokerValue>().nomJoueur1;
+        nomJoueur2 = gameSettings.GetComponent<PokerValue>().nomJoueur2;
+        nomJoueur3 = gameSettings.GetComponent<PokerValue>().nomJoueur3;
+        nomJoueur4 = gameSettings.GetComponent<PokerValue>().nomJoueur4;
+        nomJoueur5 = gameSettings.GetComponent<PokerValue>().nomJoueur5;
+        */
+        Destroy(gameSettings);
     }
     public int getTour()//Retourne l'entier correspondant au tour
     {

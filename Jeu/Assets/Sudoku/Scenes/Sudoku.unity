@@ -1391,7 +1391,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2120254569}
-        m_MethodName: PlayGame
+        m_MethodName: ChangeScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1519,7 +1519,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2120254569}
-        m_MethodName: PlayGame
+        m_MethodName: ChangeScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3264,6 +3264,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2120254565}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ed3ca70371fa3747924fc8a18640fbd, type: 3}
+  m_Script: {fileID: 11500000, guid: 53fdb7851d6b17d469d7a5f0cbdb3c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

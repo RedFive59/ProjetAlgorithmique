@@ -18,18 +18,29 @@ public class Draggable : MonoBehaviour
     private void Start()
     {
         VM = GameObject.FindObjectOfType<VisualManager>();
-        SM = this.GetComponentInParent<ShipManager>();
 
-        string test = this.transform.parent.name;
-        if (test[4] == '0')
+        string test = this.gameObject.transform.parent.name;
+        Debug.Log("NOM : "+ test);
+        if (test[10] == '1')
         {
-            mag = VM.GetMagM(1);
+            Debug.Log("debug : " + test[10]);
+            SM = VM.getShipM(1);
+            mag = VM.getMagM(1);
             pos = VM.getposGVM(1);
         }
-        if (test[4] == '3')
+        else
         {
-            mag = VM.GetMagM(2);
-            pos = VM.getposGVM(2);
+            if (test[10] == '2')
+            {
+                Debug.Log("debug : " + test[10]);
+                SM = VM.getShipM(2);
+                mag = VM.getMagM(2);
+                pos = VM.getposGVM(2);
+            }
+            else
+            {
+                Debug.Log("NO_LINK_FOUND");
+            }
         }
 
         initOrigin(this.transform.position.x, this.transform.position.y, this.transform.position.z);
@@ -177,8 +188,6 @@ public class Draggable : MonoBehaviour
         int y;
         double decix = V.x - System.Math.Truncate(V.x);
         double deciy = V.y - System.Math.Truncate(V.y);
-        Debug.Log(decix);
-        Debug.Log(deciy);
         x = (int)V.x;
         y = (int)V.y;
 

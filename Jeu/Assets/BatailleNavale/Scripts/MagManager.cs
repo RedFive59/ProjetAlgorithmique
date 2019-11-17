@@ -12,13 +12,13 @@ public class MagManager
     private ShipManager Ships;
 
     // Start is called before the first frame update
-    public MagManager(string nom,Vector3 posvm,ShipManager SM)
+    public MagManager(string nom,Vector3 posvm,ShipManager SM,Camera cam)
     {
         MagHolder = new GameObject(nom);
         pos = new Vector3(posvm.x,posvm.y,posvm.z);
         Ships = SM;
         Magasinpos = 1;//ouvre le magasin au début de la scène
-        Cvs = new CanvasGenerator("CanvasMagasin", new Vector3(pos.x, pos.y, pos.z), new Vector2(1, 1), RenderMode.WorldSpace,(Camera)GameObject.FindObjectOfType<Camera>(), 10, "PanelLayer", MagHolder);
+        Cvs = new CanvasGenerator("CanvasMagasin", new Vector3(pos.x, pos.y, pos.z), new Vector2(1, 1), RenderMode.WorldSpace,cam, 10, "PanelLayer", MagHolder);
         Cvs.addPanel("PanelBateaux", new Vector3(pos.x + 12f, pos.y + 5f, 0), new Vector2(7.25f, 12), new Color32(255, 255, 255, 160));
         Cvs.addPanel("PanelBouton", new Vector3(pos.x + 8.875f, pos.y + 5, 0), new Vector2(1, 12), new Color32(22, 25, 77, 175));
         Cvs.addText(Cvs.getPanel(1), "MagasinText", Cvs.getPanel(1).transform.position, new Vector2(12, 2), 1, "Magasin (Fermer)", Color.black, TextAnchor.MiddleCenter);

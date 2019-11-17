@@ -9,7 +9,7 @@ public class ShipManager
     // Start is called before the first frame update
     public ShipManager(string nom, Vector3 pos)
     {
-        SM = new GameObject("nom");
+        SM = new GameObject(nom);
 
         GameObject Torpilleur = new GameObject("Torpilleur");
         Torpilleur.transform.localScale = new Vector3(2, 1, 1);//set la taille en unité du bateau
@@ -73,6 +73,11 @@ public class ShipManager
                 SM.transform.GetChild(i).position = new Vector3(V.x + x, V.y + y, V.z + z);
             }
         }
+    }
+
+    public ShipManager returnT()
+    {
+        return this;
     }
 
     // Update is called once per frame

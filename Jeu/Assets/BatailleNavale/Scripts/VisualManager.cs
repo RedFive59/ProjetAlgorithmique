@@ -21,18 +21,18 @@ public class VisualManager : MonoBehaviour
 
     void GenPlateau()
     {
-        GMN1= new GridManagerNavale("GridHolderNavale1",new Vector3(0,0,0));
-        GMN2 = new GridManagerNavale("GridHolderNavale2", new Vector3(30, 0, 0));
-        SM1 = new ShipManager("ShipHolder1",new Vector3(0, 0, 0));
-        SM2 = new ShipManager("ShipHolder2",new Vector3(30, 0, 0));
-        MG1 = new MagManager("MagHolder1", new Vector3(0, 0, 0),SM1);
-        MG2 = new MagManager("MagHolder2", new Vector3(30, 0, 0),SM2);
+        GMN1= new GridManagerNavale("GridHolderNavale1",pos1);
+        GMN2 = new GridManagerNavale("GridHolderNavale2",pos2);
+        SM1 = new ShipManager("ShipHolder1",pos1);
+        SM2 = new ShipManager("ShipHolder2",pos2);
+        MG1 = new MagManager("MagHolder1",pos1,SM1,GMN1.getCamera());
+        MG2 = new MagManager("MagHolder2",pos2,SM2,GMN2.getCamera());
 
         GMN1.getCamera().enabled =true;
         GMN2.getCamera().enabled = false;
     }
 
-    public MagManager GetMagM(int i)
+    public MagManager getMagM(int i)
     {
         if (i == 1)
         {
@@ -42,6 +42,19 @@ public class VisualManager : MonoBehaviour
             return MG2;
         }
         return MG1;
+    }
+
+    public ShipManager getShipM(int i)
+    {
+        if (i == 1)
+        {
+            return SM1;
+        }
+        if (i == 2)
+        {
+            return SM2;
+        }
+        return SM1;
     }
 
     public Vector3 getposGVM(int i)

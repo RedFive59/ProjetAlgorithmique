@@ -14,7 +14,7 @@ public class Hitbox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!FindObjectOfType<Poker>().flop.Contains(gameObject))
+        if (FindObjectOfType<Poker>().joueursManche[FindObjectOfType<Poker>().getTour()].GetComponent<Joueur>().main.Contains(gameObject))//Si l'objet est dans la main du joueur à qui le tour est
         {
             select();
         } 
@@ -28,9 +28,9 @@ public class Hitbox : MonoBehaviour
             //GameObject tile = GameObject.Find(hit.transform.gameObject.name);
             if(this.name == hit.transform.gameObject.name){
                 if (!dessus)
-                {
+                {//À modifier pour l'animation
                     gameObject.GetComponent<SpriteRenderer>().sprite = gameObject.GetComponent<Carte>().cardFace;
-                    print("Flip " + hit.transform.gameObject.name);
+                    //print("Flip " + hit.transform.gameObject.name);
                     dessus = true;
                 }
             }   
@@ -38,9 +38,9 @@ public class Hitbox : MonoBehaviour
         else
         {
             if (dessus)
-            {
+            {//À modifier pour l'animation
                 gameObject.GetComponent<SpriteRenderer>().sprite = gameObject.GetComponent<Carte>().cardBack;
-                print("Flip inverse " + this.name);
+                //print("Flip inverse " + this.name);
                 dessus = false;
             }
         }

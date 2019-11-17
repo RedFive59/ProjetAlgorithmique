@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class Affichage : MonoBehaviour
 {
+    public GameObject[] disposition = new GameObject[4];
     // Start is called before the first frame update
     void Start()
     {
-
+        affichageCarteJoueur();
     }
     // Update is called once per frame
     void Update()
@@ -43,14 +44,60 @@ public class Affichage : MonoBehaviour
     }
     public void updateAffichageBourse()//Permet l'affichage de le bourse du joueur
     {
-        Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
-        GameObject.Find("Bourse").GetComponent<Text>().text = poker.joueursManche[poker.getTour()].GetComponent<Joueur>().getBourse().ToString();
+        Poker p = GameObject.Find("Poker").GetComponent<Poker>();
+        GameObject.Find("Bourse").GetComponent<Text>().text = p.joueursManche[p.getTour()].GetComponent<Joueur>().getBourse().ToString();
+        switch (Poker.nbJoueurs)
+        {
+            case 2:
+                GameObject.Find("Bourse_2_2").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().getBourse().ToString();
+                break;
+            case 3:
+                GameObject.Find("Bourse_2_3").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().getBourse().ToString();
+                GameObject.Find("Bourse_3_3").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 2) % p.joueursManche.Count].GetComponent<Joueur>().getBourse().ToString();
+                break;
+            case 4:
+                GameObject.Find("Bourse_2_4").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().getBourse().ToString();
+                GameObject.Find("Bourse_3_4").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 2) % p.joueursManche.Count].GetComponent<Joueur>().getBourse().ToString();
+                GameObject.Find("Bourse_4_4").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 3) % p.joueursManche.Count].GetComponent<Joueur>().getBourse().ToString();
+                break;
+            case 5:
+                GameObject.Find("Bourse_2_5").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().getBourse().ToString();
+                GameObject.Find("Bourse_3_5").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 2) % p.joueursManche.Count].GetComponent<Joueur>().getBourse().ToString();
+                GameObject.Find("Bourse_4_5").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 3) % p.joueursManche.Count].GetComponent<Joueur>().getBourse().ToString();
+                GameObject.Find("Bourse_5_5").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 4) % p.joueursManche.Count].GetComponent<Joueur>().getBourse().ToString();
+                break;
+            default:
+                break;
+        }
     }
     public void updateAffichageMise()//Permet l'affichage de le mise du joueur
     {
-        Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
-        GameObject.Find("Mise").GetComponent<Text>().text = "Mise : " + poker.joueursManche[poker.getTour()].GetComponent<Joueur>().mise;
+        Poker p = GameObject.Find("Poker").GetComponent<Poker>();
+        GameObject.Find("Mise").GetComponent<Text>().text = "Mise : " + p.joueursManche[p.getTour()].GetComponent<Joueur>().mise;
         GameObject.Find("MiseGlobale").GetComponent<Text>().text = "Mise Globale : " + Poker.miseManche;
+        switch (Poker.nbJoueurs)
+        {
+            case 2:
+                GameObject.Find("Mise_2_2").GetComponent<Text>().text = "Mise : " + p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().mise.ToString();
+                break;
+            case 3:
+                GameObject.Find("Mise_2_3").GetComponent<Text>().text = "Mise : " + p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().mise.ToString();
+                GameObject.Find("Mise_3_3").GetComponent<Text>().text = "Mise : " + p.joueursManche[(p.getTour() + 2) % p.joueursManche.Count].GetComponent<Joueur>().mise.ToString();
+                break;
+            case 4:
+                GameObject.Find("Mise_2_4").GetComponent<Text>().text = "Mise : " + p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().mise.ToString();
+                GameObject.Find("Mise_3_4").GetComponent<Text>().text = "Mise : " + p.joueursManche[(p.getTour() + 2) % p.joueursManche.Count].GetComponent<Joueur>().mise.ToString();
+                GameObject.Find("Mise_4_4").GetComponent<Text>().text = "Mise : " + p.joueursManche[(p.getTour() + 3) % p.joueursManche.Count].GetComponent<Joueur>().mise.ToString();
+                break;
+            case 5:
+                GameObject.Find("Mise_2_5").GetComponent<Text>().text = "Mise : " + p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().mise.ToString();
+                GameObject.Find("Mise_3_5").GetComponent<Text>().text = "Mise : " + p.joueursManche[(p.getTour() + 2) % p.joueursManche.Count].GetComponent<Joueur>().mise.ToString();
+                GameObject.Find("Mise_4_5").GetComponent<Text>().text = "Mise : " + p.joueursManche[(p.getTour() + 3) % p.joueursManche.Count].GetComponent<Joueur>().mise.ToString();
+                GameObject.Find("Mise_5_5").GetComponent<Text>().text = "Mise : " + p.joueursManche[(p.getTour() + 4) % p.joueursManche.Count].GetComponent<Joueur>().mise.ToString();
+                break;
+            default:
+                break;
+        }
     }
     public void updateAffichageCombinaison()//Permet l'affichage de le combinaison du joueur du joueur
     {
@@ -89,5 +136,44 @@ public class Affichage : MonoBehaviour
     {
         Poker p = FindObjectOfType<Poker>();
         GameObject.Find("Nom").GetComponent<Text>().text = p.joueursManche[p.getTour()].GetComponent<Joueur>().nom;
+        switch (Poker.nbJoueurs)
+        {
+            case 2:
+                GameObject.Find("Nom_2_2").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().nom;
+                break;
+            case 3:
+                GameObject.Find("Nom_2_3").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().nom;
+                GameObject.Find("Nom_3_3").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 2) % p.joueursManche.Count].GetComponent<Joueur>().nom;
+                break;
+            case 4:
+                GameObject.Find("Nom_2_4").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().nom;
+                GameObject.Find("Nom_3_4").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 2) % p.joueursManche.Count].GetComponent<Joueur>().nom;
+                GameObject.Find("Nom_4_4").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 3) % p.joueursManche.Count].GetComponent<Joueur>().nom;
+                break;
+            case 5:
+                GameObject.Find("Nom_2_5").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 1) % p.joueursManche.Count].GetComponent<Joueur>().nom;
+                GameObject.Find("Nom_3_5").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 2) % p.joueursManche.Count].GetComponent<Joueur>().nom;
+                GameObject.Find("Nom_4_5").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 3) % p.joueursManche.Count].GetComponent<Joueur>().nom;
+                GameObject.Find("Nom_5_5").GetComponent<Text>().text = p.joueursManche[(p.getTour() + 4) % p.joueursManche.Count].GetComponent<Joueur>().nom;
+                break;
+            default:
+                break;
+        }
+    }
+    public void affichageCarteJoueur()//Permet le bon affichage des composants des joueurs en fonction du nb de joueurs
+    {
+        Poker p = FindObjectOfType<Poker>();
+        for (int i = 0; i < 4; i++)
+        {
+            if (i == Poker.nbJoueurs-2)
+            {
+                this.disposition[i].SetActive(true);
+            }
+            else
+            {
+                this.disposition[i].SetActive(false);
+            }
+
+        }
     }
 }

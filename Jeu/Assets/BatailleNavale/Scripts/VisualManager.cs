@@ -6,8 +6,12 @@ public class VisualManager : MonoBehaviour
 {
     private Vector3 pos1 = new Vector3(0, 0, 0);
     private Vector3 pos2 = new Vector3(30, 0, 0);
+    private Vector3 pos3 = new Vector3(0, 30, 0);
+    private Vector3 pos4 = new Vector3(30, 30, 0);
     GridManagerNavale GMN1;
     GridManagerNavale GMN2;
+    GridManagerNavale GMN3;
+    GridManagerNavale GMN4;
     ShipManager SM1;
     ShipManager SM2;
     MagManager MG1;
@@ -23,6 +27,9 @@ public class VisualManager : MonoBehaviour
     {
         GMN1= new GridManagerNavale("GridHolderNavale1",pos1);
         GMN2 = new GridManagerNavale("GridHolderNavale2",pos2);
+        GMN3 = new GridManagerNavale("GridMarker3",pos3);
+        GMN4 = new GridManagerNavale("GridMarker4",pos4);
+
         SM1 = new ShipManager("ShipHolder1",pos1);
         SM2 = new ShipManager("ShipHolder2",pos2);
         MG1 = new MagManager("MagHolder1",pos1,SM1,GMN1.getCamera());
@@ -30,6 +37,8 @@ public class VisualManager : MonoBehaviour
 
         GMN1.getCamera().enabled =true;
         GMN2.getCamera().enabled = false;
+        GMN3.getCamera().enabled = false;
+        GMN4.getCamera().enabled = false;
     }
 
     public MagManager getMagM(int i)
@@ -70,6 +79,20 @@ public class VisualManager : MonoBehaviour
         return pos1;
     }
 
+    public Camera getCameraVM(int i)
+    {
+        if (i == 1)
+        {
+            return GMN1.getCamera();
+        }
+        if (i == 2)
+        {
+            return GMN2.getCamera();
+        }
+        return GMN1.getCamera();
+    }
+
+
     public void switchCam()
     {
         if(GMN1.getCamera().enabled == true)
@@ -83,6 +106,8 @@ public class VisualManager : MonoBehaviour
             GMN2.getCamera().enabled = false;
         }
     }
+
+    public
 
     // Update is called once per frame
     void Update()

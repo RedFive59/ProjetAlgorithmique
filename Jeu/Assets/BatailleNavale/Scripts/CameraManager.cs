@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraManager
 {
     private GameObject CameraM;
-    // Start is called before the first frame update
     public CameraManager(string nom, Vector3 pos)
     {
         //Camera//

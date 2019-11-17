@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//public class CanvasGenerator : MonoBehaviour
+//public class CanvasGenerator
 public class CanvasGenerator{
 
     private GameObject Cvs;
@@ -77,7 +77,7 @@ public class CanvasGenerator{
 
     public void movMagasin(int i)
     {
-      //  LPanel[LPanel.Count - 1].GetComponent<RectTransform>().position;
+     // LPanel[i].GetComponent<RectTransform>().position;
     }
 
     public GameObject getPanel(int i)

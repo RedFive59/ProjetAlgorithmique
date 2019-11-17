@@ -10,6 +10,9 @@ public class Draggable : MonoBehaviour
     private Vector3 OriginalPos;
     private VisualManager VM;
     private Vector3 pos;
+    private Vector3 mOffset;
+    private MagManager mag;
+    private Camera C;
 
     void initOrigin(float x, float y,float z)
     {
@@ -27,6 +30,7 @@ public class Draggable : MonoBehaviour
             SM = VM.getShipM(1);
             mag = VM.getMagM(1);
             pos = VM.getposGVM(1);
+            C = VM.getCameraVM(1);
         }
         else
         {
@@ -36,6 +40,7 @@ public class Draggable : MonoBehaviour
                 SM = VM.getShipM(2);
                 mag = VM.getMagM(2);
                 pos = VM.getposGVM(2);
+                C = VM.getCameraVM(2);
             }
             else
             {
@@ -43,7 +48,7 @@ public class Draggable : MonoBehaviour
             }
         }
 
-        initOrigin(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+        initOrigin(this.gameObject.transform.position.x, this.gameObject.transform.position.y, this.gameObject.transform.position.z);
     }
 
     public void changeMag()
@@ -58,12 +63,12 @@ public class Draggable : MonoBehaviour
     {
         if (rotv == false)
         {
-            this.transform.Rotate(new Vector3(0, 0, 90f));
+            this.gameObject.transform.Rotate(new Vector3(0, 0, 90f));
             rotv = true;
         }
         else
         {
-            this.transform.Rotate(new Vector3(0, 0, 90f));
+            this.gameObject.transform.Rotate(new Vector3(0, 0, 90f));
             rotv = false;
         }
         } 
@@ -82,22 +87,16 @@ public class Draggable : MonoBehaviour
         Vector3 V;
             if (magv)
             {
-                V = this.transform.position;
-                this.transform.position = new Vector3(V.x + x, V.y + y, V.z + z);
+                V = this.gameObject.transform.position;
+                this.gameObject.transform.position = new Vector3(V.x + x, V.y + y, V.z + z);
             }
     }
 
-    private Vector3 mOffset;
-    private MagManager mag;
-    private Camera C;
 
-    // Start is called before the first frame update
-   
         void OnMouseDown()
     {
         magv = false;
-        C = GameObject.FindObjectOfType<Camera>();
-        mOffset = this.transform.position - GetMouseWorldPos();//enregistre l'offset entre la souris et l'objet
+        mOffset = this.gameObject.transform.position - GetMouseWorldPos();//enregistre l'offset entre la souris et l'objet
         if (mag.getMagasinpos() == 1)
         {
             mag.setFermer();
@@ -112,7 +111,7 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        this.transform.position = GetMouseWorldPos() + mOffset;
+        this.gameObject.transform.position = GetMouseWorldPos() + mOffset;
         if (Input.GetKeyDown(KeyCode.R))//Press tab pour rotate un bateau
         {
             changeRot();
@@ -121,19 +120,19 @@ public class Draggable : MonoBehaviour
 
     private int getTaille()
     {
-        if (this.name == "Torpilleur")
+        if (this.gameObject.name == "Torpilleur")
         {
             return 2;
         }
-        if ((this.name == "ContreTorpilleur")||(this.name == "SousMarin"))
+        if ((this.gameObject.name == "ContreTorpilleur")||(this.name == "SousMarin"))
         {
             return 3;
         }
-        if (this.name == "Croiseur")
+        if (this.gameObject.name == "Croiseur")
         {
             return 4;
         }
-        if (this.name == "PorteAvion")
+        if (this.gameObject.name == "PorteAvion")
         {
             return 5;
         }
@@ -147,34 +146,34 @@ public class Draggable : MonoBehaviour
         {
             changeRot();
         }
-        this.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
-        this.transform.position = OriginalPos;
+        this.gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
+        this.gameObject.transform.position = OriginalPos;
         moveShip(4.5f, 0, 0);
     }
     private void checkPos()
     {
-        if ((this.transform.position.x < pos.x+0) || (this.transform.position.x >pos.y+9) || (this.transform.position.y <pos.y+0) || (this.transform.position.y > pos.y+9))
+        if ((this.gameObject.transform.position.x < pos.x+0) || (this.gameObject.transform.position.x >pos.y+9) || (this.gameObject.transform.position.y <pos.y+0) || (this.gameObject.transform.position.y > pos.y+9))
         {
             resetPos();
             return;
             }
 
-            if ((this.transform.position.x <=pos.x+0 + (int)(getTaille() / 2)-1)&& (rotv == false))
+            if ((this.gameObject.transform.position.x <=pos.x+0 + (int)(getTaille() / 2)-1)&& (rotv == false))
             {
             resetPos();
             return;
         }
-        if ((this.transform.position.x >=pos.x+9 - (int)(getTaille() / 2) + 1) && (rotv == false))
+        if ((this.gameObject.transform.position.x >=pos.x+9 - (int)(getTaille() / 2) + 1) && (rotv == false))
         {
             resetPos();
             return;
         }
-        if ((this.transform.position.y <=pos.y+ 0 + (int)(getTaille() / 2) - 1) && (rotv == true))
+        if ((this.gameObject.transform.position.y <=pos.y+ 0 + (int)(getTaille() / 2) - 1) && (rotv == true))
         {
             resetPos();
             return;
         }
-        if ((this.transform.position.y>=pos.y+9 - (int)(getTaille() / 2) + 1) && (rotv == true))
+        if ((this.gameObject.transform.position.y>=pos.y+9 - (int)(getTaille() / 2) + 1) && (rotv == true))
         {
             resetPos();
             return;
@@ -243,8 +242,8 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseUp()
     {
-        this.transform.position = cutVector(this.transform.position);
-        this.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer2";
+        this.gameObject.transform.position = cutVector(this.gameObject.transform.position);
+        this.gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer2";
         checkPos();
         mag.setOuvrir();
     }

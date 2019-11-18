@@ -93,7 +93,6 @@ public class CanvasGenerator{
     {
         Vector3 VO = this.getPanel(i).GetComponent<RectTransform>().position;
         this.getPanel(i).GetComponent<RectTransform>().position = new Vector3(VO.x +x, VO.y+y, VO.z+z);
-        Debug.Log(LPanel[i].transform.position);
     }
 }
 

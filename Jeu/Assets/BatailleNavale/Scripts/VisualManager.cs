@@ -30,15 +30,15 @@ public class VisualManager : MonoBehaviour
         GMN3 = new GridManagerNavale("GridMarker3",pos3);
         GMN4 = new GridManagerNavale("GridMarker4",pos4);
 
+        GMN1.getCamera().enabled = true;
+        GMN2.getCamera().enabled = false;
+        GMN3.getCamera().enabled = false;
+        GMN4.getCamera().enabled = false;
+
         SM1 = new ShipManager("ShipHolder1",pos1);
         SM2 = new ShipManager("ShipHolder2",pos2);
         MG1 = new MagManager("MagHolder1",pos1,SM1,GMN1.getCamera());
         MG2 = new MagManager("MagHolder2",pos2,SM2,GMN2.getCamera());
-
-        GMN1.getCamera().enabled =true;
-        GMN2.getCamera().enabled = false;
-        GMN3.getCamera().enabled = false;
-        GMN4.getCamera().enabled = false;
     }
 
     public MagManager getMagM(int i)

@@ -42,6 +42,7 @@ public class Carte : MonoBehaviour
 { 
     //Attributs
     public Sprite cardFace;//Texture de la carte
+    public Sprite cardBack;//Texture du dos de la carte
     public Couleur couleur = Couleur.Trefle;//Couleur de la carte
     public Valeur valeur = Valeur.Deux;//Valeur de la carte
 
@@ -81,7 +82,7 @@ public class Carte : MonoBehaviour
             }
             i++;
         }
-        GetComponent<SpriteRenderer>().sprite = this.cardFace;
+        //GetComponent<SpriteRenderer>().sprite = this.cardFace;
     }
     public Valeur getValeur()
     {

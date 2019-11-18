@@ -1,6 +1,7 @@
 {
 	//Historique des games de Bingo
 	"history": [
-		[ "Antoine​", "140" ]
+		[ "Antoine​", "140" ],
+		[ "test​", "99" ]
 	]
 }

@@ -5,9 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
-    public void PlayGame()
+    private void Awake()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            if (ConfigMenu.Seen)
+            {
+                GameObject parent = GameObject.Find("Canvas");
+
+                Transform[] go = parent.GetComponentsInChildren<RectTransform>(true);
+                go[2].gameObject.SetActive(false);
+                go[8].gameObject.SetActive(true);
+            }
+        }
     }
 
     public void QuitGame()
@@ -17,6 +27,12 @@ public class MenuScript : MonoBehaviour
 
     public void ChangeScene(string sceneName)
     {
+        ConfigMenu.Seen = true;
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void returnToMain()
+    {
+        SceneManager.LoadScene(0);
     }
 }

@@ -5,69 +5,107 @@ using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
-    //Attributs
-    public GameObject Text;//Texte liée au bouton
-
-    void Update()
+    public void max()
     {
-        updateTexte();
+        Slider s = GameObject.Find("Slider").GetComponent<Slider>();
+        s.value = s.maxValue;
     }
-    public void joueurSuivant()//Permet de passer au joueur suivant
+    public void min()
+    {
+        Slider s = GameObject.Find("Slider").GetComponent<Slider>();
+        s.value = s.minValue;
+    }
+    public void seCoucher()
+    {
+        Poker p = FindObjectOfType<Poker>();
+        int tour = p.getTour();
+        p.joueursManche.Remove(p.joueursManche[tour]);
+        if(p.joueursManche.Count == 1)
+        {
+            while(p.tourGlobal < 3)
+            {
+                if(p.tourGlobal == 0)
+                {
+                    p.flopper(); p.flopper();
+                }
+                p.flopper();
+                p.tourGlobal++;
+            }
+            p.nouvelleManche();
+        }
+        else if(tour == p.joueursManche.Count)
+            {
+                if (p.tourGlobal == 0)
+                {
+                    p.tourGlobal++;
+                    p.flopper(); p.flopper(); p.flopper();
+                }
+                else if (p.tourGlobal < 3 )
+                {
+                    if (p.tourGlobal < 3)
+                    {
+                        p.tourGlobal++;
+                        p.flopper();
+                    }
+                    else
+                    {
+                        p.nouvelleManche();
+                    }
+                }
+                p.setTour(0);
+            }
+    }
+    public void suivre()
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
-        if (p.tourGlobal < 5 && p.getTour() == (p.joueursManche.Count - 1))
+        Joueur j = p.joueursManche[p.getTour()].GetComponent<Joueur>(); 
+        int x = j.getBourse() - (Poker.miseManche - j.mise);
+        if(x >= 0)
         {
-            p.flopper();
-            p.tourGlobal++;
+            j.diminuerBourse(Poker.miseManche - j.mise);
+            j.mise = Poker.miseManche;
         }
-        p.setTour((p.getTour() + 1) % p.joueursManche.Count);
-        GameObject.Find("joueur").GetComponent<Text>().text = p.joueursManche[p.getTour()].name;
-        OptionSlider.updateValeur();
-        p.joueursManche[p.getTour()].GetComponent<Joueur>().determinaisonCombinaison();
-        
+        else
+        {
+            j.mise += j.getBourse();
+            j.diminuerBourse(j.getBourse());
+        }
+        ts();
     }
-    public void suivre()//Est déclenchée quand le joueur appuie sur Suivre
-    {
-        Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
-        poker.joueursManche[poker.getTour()].GetComponent<Joueur>().suivre();
-        joueurSuivant();
-    }
-    public void seCoucher()//Est déclenchée quand le joueur appuie sur Se coucher
+    public void relancer()
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
-        p.joueursManche.Remove(p.joueursManche[p.getTour()]);
-        if (p.tourGlobal < 5 && p.getTour() == (p.joueursManche.Count - 1))
-        {
-            p.flopper();
-            p.tourGlobal++;
-        }
-        GameObject.Find("joueur").GetComponent<Text>().text = p.joueursManche[p.getTour()].name;
-        OptionSlider.updateValeur();
-    }
-    public void relancer()//Est déclenchée quand le joueur appuie sur Relancer
-    {
-        int valeur = (int)GameObject.Find("Slider").GetComponent<Slider>().value;
-        Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
-        poker.joueursManche[poker.getTour()].GetComponent<Joueur>().diminuerBourse(valeur);
-        joueurSuivant();
+        Joueur j = p.joueursManche[p.getTour()].GetComponent<Joueur>();
+        Slider s = GameObject.Find("Slider").GetComponent<Slider>();
+        int valeur = (int)s.value;
+        suivre();
+        j.diminuerBourse(valeur);
         Poker.miseManche += valeur;
-        OptionSlider.updateValeur();
+        j.mise = Poker.miseManche;
     }
-    public void updateTexte()//Permet d'afficher les bonnes valeurs pour les boutons
+    public void ts()
     {
-        Poker p = GameObject.Find("Poker").GetComponent<Poker>();
-        switch (this.name)
+        Poker p = FindObjectOfType<Poker>();
+        int tour = p.getTour();
+        if (tour == p.joueursManche.Count - 1)
         {
-            default:
-                break;
-            case "Suivre":
-                int val = (Poker.miseManche - p.joueursManche[p.getTour()].GetComponent<Joueur>().mise);
-                if(val > p.joueursManche[p.getTour()].GetComponent<Joueur>().getBourse()) this.Text.GetComponent<Text>().text = "Suivre : " + p.joueursManche[p.getTour()].GetComponent<Joueur>().getBourse();
-                else this.Text.GetComponent<Text>().text = "Suivre : " + (Poker.miseManche - p.joueursManche[p.getTour()].GetComponent<Joueur>().mise);
-                break;
-            case "Relancer":
-                this.Text.GetComponent<Text>().text = "Relancer : " + (int)GameObject.Find("Slider").GetComponent<Slider>().value;
-                break;
+            if(p.tourGlobal == 0)
+            {
+                p.tourGlobal++;
+                p.flopper(); p.flopper(); p.flopper();
+            }
+            else if(p.tourGlobal < 3)
+            {
+                p.tourGlobal++;
+                p.flopper();
+            }
+            else
+            {
+                p.nouvelleManche();
+                return;
+            }
+            
         }
+        p.setTour((tour + 1) % p.joueursManche.Count);
     }
 }

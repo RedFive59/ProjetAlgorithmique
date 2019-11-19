@@ -21,7 +21,7 @@ public class Affichage : MonoBehaviour
         updateAffichageMain();
         updateAffichageBourse();
         updateAffichageMise();
-        updateAffichageCombinaison();
+        //updateAffichageCombinaison();
         updateAffichageBouton();
         updateAffichageNomJoueur();
     }
@@ -33,12 +33,12 @@ public class Affichage : MonoBehaviour
         Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
         poker.joueursManche[poker.getTour()].GetComponent<Joueur>().main[0].transform.position = c1.transform.position;
         poker.joueursManche[poker.getTour()].GetComponent<Joueur>().main[1].transform.position = c2.transform.position;
-        for(int i = 0; i < poker.joueursManche.Count; i++)
+        for(int i = 0; i < Poker.nbJoueurs; i++)
         {
-            if(poker.getTour() != i)
+            if(poker.joueursManche[poker.getTour()] != poker.joueurs[i])
             {
-                poker.joueursManche[i].GetComponent<Joueur>().main[0].transform.position = c.transform.position;
-                poker.joueursManche[i].GetComponent<Joueur>().main[1].transform.position = c.transform.position;
+                poker.joueurs[i].GetComponent<Joueur>().main[0].transform.position = c.transform.position;
+                poker.joueurs[i].GetComponent<Joueur>().main[1].transform.position = c.transform.position;
             }
         }
     }
@@ -74,7 +74,7 @@ public class Affichage : MonoBehaviour
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
         GameObject.Find("Mise").GetComponent<Text>().text = "Mise : " + p.joueursManche[p.getTour()].GetComponent<Joueur>().mise;
-        GameObject.Find("MiseGlobale").GetComponent<Text>().text = "Mise Globale : " + Poker.miseManche;
+        GameObject.Find("MiseGlobale").GetComponent<Text>().text = Poker.miseManche.ToString();
         switch (Poker.nbJoueurs)
         {
             case 2:
@@ -99,12 +99,12 @@ public class Affichage : MonoBehaviour
                 break;
         }
     }
-    public void updateAffichageCombinaison()//Permet l'affichage de le combinaison du joueur du joueur
+    /*public void updateAffichageCombinaison()//Permet l'affichage de le combinaison du joueur du joueur
     {
         Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
         poker.joueursManche[poker.getTour()].GetComponent<Joueur>().determinaisonCombinaison();
         GameObject.Find("Combinaison").GetComponent<Text>().text = poker.joueursManche[poker.getTour()].GetComponent<Joueur>().combinaison.ToString() + " de " + Joueur.max(poker.joueursManche[poker.getTour()].GetComponent<Joueur>().l).valeur.ToString();
-    }
+    }*/
     public void updateAffichageBouton()//Permet d'afficher les bonnes valeurs pour les boutons
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();

@@ -41,17 +41,14 @@ public class ButtonHandler : MonoBehaviour
                     p.flopper(); p.flopper(); p.flopper();
                 }
                 else if (p.tourGlobal < 3 )
-                {
-                    if (p.tourGlobal < 3)
-                    {
+                     {
                         p.tourGlobal++;
                         p.flopper();
-                    }
-                    else
-                    {
+                     }
+                     else
+                     {
                         p.nouvelleManche();
-                    }
-                }
+                     }
                 p.setTour(0);
             }
     }

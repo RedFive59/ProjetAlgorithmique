@@ -79,7 +79,6 @@ public class GridManagerNavale
         t.transform.position = new Vector3(pos.x+i, pos.y+j,pos.z+0);//place le gameObject dans la scene
         t.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/WaterDiffuseMini2");//creer et attache un rendu au sprite et lui attribut la texture de l'eau
         t.AddComponent<BoxCollider2D>().autoTiling=true;//attache un collider 2D au sprite en le resizant automatiquement au sprite auquel il est attaché
-       // t.GetComponent<BoxCollider2D>().isTrigger = true;//test debug
         t.AddComponent<Selection>();//attache au sprite le script selection
         t.transform.parent = GridHolder.transform;//range les cases d'eau dans l'objet auquel le script est lié (GridHodler)
     }

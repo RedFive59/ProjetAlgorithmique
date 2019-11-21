@@ -28,7 +28,7 @@ public class Draggable : MonoBehaviour
             SM = VM.getShipM(1);
             mag = VM.getMagM(1);
             pos = VM.getposGVM(1);
-            C = VM.getCameraVM(1);
+            C = VM.getCameraVM(1).GetComponent<Camera>();
         }
         else
         {
@@ -38,7 +38,7 @@ public class Draggable : MonoBehaviour
                 SM = VM.getShipM(2);
                 mag = VM.getMagM(2);
                 pos = VM.getposGVM(2);
-                C = VM.getCameraVM(2);
+                C = VM.getCameraVM(2).GetComponent<Camera>();
             }
             else
             {

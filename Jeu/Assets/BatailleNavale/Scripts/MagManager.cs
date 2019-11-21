@@ -13,14 +13,9 @@ public class MagManager
     private VisualManager VM;
     private Camera cam;
 
-    // Start is called before the first frame update
-    void start()
-    {
-        VM = GameObject.FindObjectOfType<VisualManager>();
-    }
-
     public MagManager(string nom, Vector3 posvm, ShipManager SMx, Camera camx)
     {
+        VM = GameObject.FindObjectOfType<VisualManager>();
         MagHolder = new GameObject(nom);
         pos = new Vector3(posvm.x, posvm.y, posvm.z);
         this.SM = SMx;
@@ -99,16 +94,6 @@ public class MagManager
             }
             VM.switchCam();
             Cvs.disable();
-        }
-    }
-
-    public void Update()
-    {
-        if ((Input.GetKeyDown(KeyCode.A)) && (cam.enabled == true))
-        {
-            {
-                FinPlacement();
-            }
         }
     }
 }

@@ -24,7 +24,7 @@ public class GridManagerNavale
     void GenGrille(Vector3 pos)
     {
         //Camera//
-        CameraM= new CameraManager("Cam"+pos.x,pos);
+        CameraM= new CameraManager("Cam"+(GridHolder.name[GridHolder.name.Length - 1]-48), pos);
 
         this.grille = new Grille<int>(rows - 1, cols - 1);
         this.col0 = new Grille<int>(cols - 1);
@@ -36,7 +36,7 @@ public class GridManagerNavale
              row0.setVal(i, i + 65); //convertit un entier en char
         }
         grille.initVal(0);
-        Cvs = new CanvasGenerator("CanvasCases"+pos.x, new Vector3(pos.x, pos.y, pos.z), new Vector2(1, 1), RenderMode.WorldSpace, CameraM.getCamera(), 10, "SpriteLayer", GridHolder);
+        Cvs = new CanvasGenerator("CanvasCases"+pos.x, new Vector3(pos.x, pos.y, pos.z), new Vector2(1, 1), RenderMode.WorldSpace, CameraM.getCameraC().GetComponent<Camera>(), 10, "SpriteLayer", GridHolder);
         ShowGrid(pos, col0, row0, grille);
     }
 
@@ -99,9 +99,10 @@ public class GridManagerNavale
         }
     }
 
-    public Camera getCamera()
+    public GameObject getCamera()
     {
-        return CameraM.getCamera();
+        GameObject C= CameraM.getCameraC();
+        return C;
     }
     public Grille<int>  getGrille()
     {

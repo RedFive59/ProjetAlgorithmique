@@ -12,17 +12,26 @@ public class Selection : MonoBehaviour
         startColor = this.GetComponent<SpriteRenderer>().color;   //récupère la couleur original depuis le rendu du sprite auquel le script est attaché
     }
 
-    private void OnMouseOver()
+    void OnMouseOver()
     {
         this.GetComponent<SpriteRenderer>().color = Color.red; //la souris est sur le sprite sa nouvelle couleur devient rouge
     }
-    /*void OnMouseEnter()
+
+    private void OnMouseDown()
     {
-        this.GetComponent<SpriteRenderer>().color = Color.red; //la souris est sur le sprite sa nouvelle couleur devient rouge
+        getpos();  
     }
-    */
+    
+    public Vector3 getpos()
+    {
+        return this.transform.position;
+    }
+
+
+
     void OnMouseExit()
     {
         this.GetComponent<SpriteRenderer>().color = startColor; //la souris sort du sprite il reprend sa couleur d'origine
     }
+
 }

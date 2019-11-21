@@ -12,6 +12,10 @@ public class VisualManager : MonoBehaviour
     GridManagerNavale GMN2;
     GridManagerNavale GMN3;
     GridManagerNavale GMN4;
+    GameObject C1;
+    GameObject C2;
+    GameObject C3;
+    GameObject C4;
     ShipManager SM1;
     ShipManager SM2;
     MagManager MG1;
@@ -30,15 +34,20 @@ public class VisualManager : MonoBehaviour
         GMN3 = new GridManagerNavale("GridMarker3",pos3);
         GMN4 = new GridManagerNavale("GridMarker4",pos4);
 
-        GMN1.getCamera().enabled = true;
-        GMN2.getCamera().enabled = false;
-        GMN3.getCamera().enabled = false;
-        GMN4.getCamera().enabled = false;
+        C1 = GMN1.getCamera();
+        C2 = GMN2.getCamera();
+        C3 = GMN3.getCamera();
+        C4 = GMN4.getCamera();
+
+        C1.GetComponent<Camera>().enabled = true;
+        C2.GetComponent<Camera>().enabled = false;
+        C3.GetComponent<Camera>().enabled = false;
+        C4.GetComponent<Camera>().enabled = false;
 
         SM1 = new ShipManager("ShipHolder1",pos1);
         SM2 = new ShipManager("ShipHolder2",pos2);
-        MG1 = new MagManager("MagHolder1",pos1,SM1,GMN1.getCamera());
-        MG2 = new MagManager("MagHolder2",pos2,SM2,GMN2.getCamera());
+        MG1 = new MagManager("MagHolder1",pos1,SM1,C1.GetComponent<Camera>());
+        MG2 = new MagManager("MagHolder2",pos2,SM2,C2.GetComponent<Camera>());
     }
 
     public MagManager getMagM(int i)
@@ -79,31 +88,45 @@ public class VisualManager : MonoBehaviour
         return pos1;
     }
 
-    public Camera getCameraVM(int i)
+    public GameObject getCameraVM(int i)
     {
         if (i == 1)
         {
-            return GMN1.getCamera();
+            return C1;
         }
         if (i == 2)
         {
-            return GMN2.getCamera();
+            return C2;
         }
-        return GMN1.getCamera();
+        return C1;
     }
 
 
     public void switchCam()
     {
-        if(GMN1.getCamera().enabled == true)
+        if (GMN1.getCamera().GetComponent<Camera>().enabled == true)
         {
-            GMN1.getCamera().enabled = false;
-            GMN2.getCamera().enabled = true;
+            GMN1.getCamera().GetComponent<Camera>().enabled = false;
+            GMN3.getCamera().GetComponent<Camera>().enabled = true;
+            return;
         }
-        else
+        if(GMN3.getCamera().GetComponent<Camera>().enabled == true)
         {
-            GMN1.getCamera().enabled = true;
-            GMN2.getCamera().enabled = false;
+            GMN3.getCamera().GetComponent<Camera>().enabled = false;
+            GMN1.getCamera().GetComponent<Camera>().enabled = true;
+            return;
+        }
+        if (GMN2.getCamera().GetComponent<Camera>().enabled == true)
+        {
+            GMN2.getCamera().GetComponent<Camera>().enabled = false;
+            GMN4.getCamera().GetComponent<Camera>().enabled = true;
+            return;
+        }
+        if (GMN4.getCamera().GetComponent<Camera>().enabled == true)
+        {
+            GMN4.getCamera().GetComponent<Camera>().enabled = false;
+            GMN2.getCamera().GetComponent<Camera>().enabled = true;
+            return;
         }
     }
 
@@ -112,7 +135,12 @@ public class VisualManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab)){
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            switchCam();
+        }
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
             switchCam();
         }
     }

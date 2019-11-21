@@ -7,7 +7,6 @@ public class ShipManager
     private GameObject SM;
     private List<Ship> LShip;
 
-    // Start is called before the first frame update
     public ShipManager(string nom, Vector3 pos)
     {
         SM = new GameObject(nom);
@@ -29,7 +28,6 @@ public class ShipManager
             getClassShip(i).updateG();
         }
     }
-
 
     public void moveShip(float x, float y, float z)
     {
@@ -78,9 +76,4 @@ public class ShipManager
         }
         return false;
     }
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
 }

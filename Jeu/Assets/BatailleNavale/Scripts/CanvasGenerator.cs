@@ -65,9 +65,9 @@ public class CanvasGenerator{
         LPanel.Add(panel);
     }
 
-    public void setText(string text)
+    public void setText(int i,string text)
     {
-       LText[LText.Count-1].GetComponent<Text>().text = text;
+       LText[i].GetComponent<Text>().text = text;
     }
 
     public void rotateText(int i)
@@ -93,6 +93,11 @@ public class CanvasGenerator{
     {
         Vector3 VO = this.getPanel(i).GetComponent<RectTransform>().position;
         this.getPanel(i).GetComponent<RectTransform>().position = new Vector3(VO.x +x, VO.y+y, VO.z+z);
+    }
+
+    public void disable()
+    {
+        Cvs.GetComponent<Canvas>().enabled = false;
     }
 }
 

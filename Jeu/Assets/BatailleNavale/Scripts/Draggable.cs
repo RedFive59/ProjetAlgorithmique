@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Draggable : MonoBehaviour
 {
@@ -13,16 +14,17 @@ public class Draggable : MonoBehaviour
     private Vector3 mOffset;
     private MagManager mag;
     private Camera C;
+    string test;
 
     private void Start()
     {
         VM = GameObject.FindObjectOfType<VisualManager>();
-
-        string test = this.gameObject.transform.parent.name;
-        Debug.Log("NOM : "+ test);
-        if (test[10] == '1')
+        test=this.gameObject.name;
+        string test2 = this.gameObject.transform.parent.name;
+       // Debug.Log("NOM : "+ test2);
+        if (test2[10] == '1')
         {
-            Debug.Log("debug : " + test[10]);
+           // Debug.Log("debug : " + test2[10]);
             SM = VM.getShipM(1);
             mag = VM.getMagM(1);
             pos = VM.getposGVM(1);
@@ -30,9 +32,9 @@ public class Draggable : MonoBehaviour
         }
         else
         {
-            if (test[10] == '2')
+            if (test2[10] == '2')
             {
-                Debug.Log("debug : " + test[10]);
+               // Debug.Log("debug : " + test2[10]);
                 SM = VM.getShipM(2);
                 mag = VM.getMagM(2);
                 pos = VM.getposGVM(2);
@@ -52,7 +54,7 @@ public class Draggable : MonoBehaviour
     {
         Debug.Log(this.gameObject.name);
         Debug.Log(this.gameObject.transform.position);
-
+        //SM.getClassShip(test[test.Length - 1] - 48).updateG();
         magv = false;
         mOffset = this.gameObject.transform.position - GetMouseWorldPos();//enregistre l'offset entre la souris et l'objet
         if (mag.getMagasinpos() == 1)
@@ -75,6 +77,7 @@ public class Draggable : MonoBehaviour
         Debug.Log(this.gameObject.transform.position);
         this.gameObject.transform.position = cutVector(this.gameObject.transform.position);
         this.gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer2";
+        SM.getClassShip(test[test.Length-1]-48).updateG();
         checkPos();
         mag.setOuvrir();
     }
@@ -133,21 +136,22 @@ public class Draggable : MonoBehaviour
         }
     }
 
+
     private int getTaille()
     {
-        if (this.gameObject.name == "Torpilleur")
+        if (this.gameObject.name == "Torpilleur0")
         {
             return 2;
         }
-        if ((this.gameObject.name == "ContreTorpilleur")||(this.gameObject.name == "SousMarin"))
+        if ((this.gameObject.name == "ContreTorpilleur1")||(this.gameObject.name == "SousMarin2"))
         {
             return 3;
         }
-        if (this.gameObject.name == "Croiseur")
+        if (this.gameObject.name == "Croiseur3")
         {
             return 4;
         }
-        if (this.gameObject.name == "PorteAvion")
+        if (this.gameObject.name == "PorteAvion4")
         {
             return 5;
         }
@@ -170,6 +174,7 @@ public class Draggable : MonoBehaviour
     {
         Debug.Log("POSDRAG: " + pos);
         Debug.Log("POSSHIP: " + this.gameObject.transform.position);
+        Debug.Log(test[test.Length - 1]);
         if ((this.gameObject.transform.position.x < pos.x + 0) || (this.gameObject.transform.position.x > pos.x + 9) || (this.gameObject.transform.position.y < pos.y + 0) || (this.gameObject.transform.position.y > pos.y + 9))
         {
             Debug.Log("HorsMap");
@@ -200,8 +205,13 @@ public class Draggable : MonoBehaviour
             resetPos();
             return;
         }
+        if ((SM.checkContact(test[test.Length - 1] - 48)))
+        {
+            Debug.Log("Chevauchage");
+            resetPos();
+            return;
+        }
     }
-
 
     private Vector3 cutVector(Vector3 V)
     {

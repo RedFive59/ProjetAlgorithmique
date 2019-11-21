@@ -5,18 +5,18 @@ using UnityEngine;
 public class Ship
 {
     private GameObject Sp;
-    private string name;
+    private string namex;
     private int length;
     private Vector3 pos;
     private int HP;
     private Grille<Vector3> G;
     private bool rot;
 
-    public Ship(GameObject SM, string name, int length, Vector3 scale, string texture, string slayer)
+    public Ship(GameObject SM, string namex, int length, Vector3 scale, string texture, string slayer)
     {
-        Sp = new GameObject(name);
+        Sp = new GameObject(namex);
         G = new Grille<Vector3>(length);
-        this.name = name;
+        this.namex = namex;
         this.length = length;
         this.HP = length;
         Sp.transform.localScale = scale;
@@ -28,21 +28,68 @@ public class Ship
         rot = false;
     }
 
-    public Ship()
-    
-    /*
-    void Update()
+    public int getLength()
     {
-        if (length % 2 != 0)
+        return length;
+    }
+    public Grille<Vector3> getVecteur()
+    {
+        return G;
+    }
+
+    public string getName()
+    {
+        return namex;
+    }
+
+    public void updateG()
+    {
+        pos = Sp.transform.position;
+        Vector3 V;
+        if ((rot == false) && (length % 2 == 0))
         {
-            for (int i = 0; i < length / 2; i++)
+            for(int i = 0; i < (length / 2); i++)
             {
-                G.setVal(i, Sp.transform.position);
+                V = new Vector3(pos.x - i*0.5f, pos.y, pos.z);
+                G.setVal(i, V);
+                V = new Vector3(pos.x + i * 0.5f, pos.y, pos.z);
+                G.setVal(i+(length/2)-1, V);
+                }
             }
+
+        if ((rot == true) && (length % 2 == 0))
+        {
+            for (int i = 0; i < (length / 2) + 1; i++)
             {
-                G.setVal(i, Sp.transform.position);
+                V = new Vector3(pos.x, pos.y-i*0.5f, pos.z);
+                G.setVal(i, V);
+                V = new Vector3(pos.x, pos.y+i*0.5f, pos.z);
+                G.setVal(i +(length/2)-1, V);
+            }
+
+            if ((rot == false) && (length % 2 != 0))
+            {
+                G.setVal(length/2, new Vector3(pos.x, pos.y, pos.z));
+                for (int i = 0; i < (length / 2) + 1; i++)
+                {
+                    V = new Vector3(pos.x - i, pos.y, pos.z);
+                    G.setVal(i, V);
+                    V = new Vector3(pos.x + i, pos.y, pos.z);
+                    G.setVal(i + (length / 2 + 1), V);
+                }
+            }
+
+            if ((rot == true) && (length % 2 != 0))
+            {
+               G.setVal(length/2,new Vector3(pos.x,pos.y,pos.z));
+                for (int i = 0; i < (length / 2) + 1; i++)
+                {
+                    V = new Vector3(pos.x, pos.y-i, pos.z);
+                    G.setVal(i, V);
+                    V = new Vector3(pos.x, pos.y+i, pos.z);
+                    G.setVal(i + (length / 2 + 1), V);
+                }
             }
         }
     }
-    */
 }

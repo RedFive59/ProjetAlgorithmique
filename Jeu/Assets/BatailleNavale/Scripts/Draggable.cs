@@ -107,11 +107,13 @@ public class Draggable : MonoBehaviour
         if (rotv == false)
         {
             this.gameObject.transform.Rotate(new Vector3(0, 0, 90f));
+            SM.getClassShip(test[test.Length - 1] - 48).changeRotShip();
             rotv = true;
         }
         else
         {
             this.gameObject.transform.Rotate(new Vector3(0, 0, 90f));
+            SM.getClassShip(test[test.Length - 1] - 48).changeRotShip();
             rotv = false;
         }
     }

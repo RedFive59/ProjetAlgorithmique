@@ -26,6 +26,7 @@ public class ShipManager
         for (int i = 0; i < 5; i++)
         {
             SM.transform.GetChild(i).transform.position = new Vector3(pos.x + 12.5f, pos.y + 1 + i * 2, pos.z + 0);
+            getClassShip(i).updateG();
         }
     }
 
@@ -39,7 +40,6 @@ public class ShipManager
             {
                 V = SM.transform.GetChild(i).position;
                 SM.transform.GetChild(i).position = new Vector3(V.x + x, V.y + y, V.z + z);
-                getClassShip(i).updateG();
             }
         }
     }

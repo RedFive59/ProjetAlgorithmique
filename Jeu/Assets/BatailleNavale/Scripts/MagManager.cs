@@ -31,10 +31,8 @@ public class MagManager
         Cvs.addPanel("PanelBouton" + pos.x, new Vector3(pos.x + 8.875f, pos.y + 5, pos.z + 0), new Vector2(1, 12), new Color32(22, 25, 77, 175));
         Cvs.addText(Cvs.getPanel(1), "MagasinText", Cvs.getPanel(1).transform.position, new Vector2(12, 2), 1, "Magasin (Fermer)", Color.black, TextAnchor.MiddleCenter);
         Cvs.rotateText(0);
-        // Cvs.getPanel(1).AddComponent<Button>().onClick.AddListener(MoveMagasin);
         Cvs.addPanel("Bouttonplacement", new Vector3(pos.x - 3, pos.y + 10.1f, pos.z), new Vector2(4, 1), new Color32(192, 72, 73, 255));
         Cvs.addText(Cvs.getPanel(2), "Bouttontext", Cvs.getPanel(2).transform.position, new Vector2(5, 2), 1, "Confirmer", Color.black, TextAnchor.MiddleCenter);
-        // Cvs.getPanel(2).AddComponent<Button>().onClick.AddListener(FinPlacement);
     }
 
     public void MoveMagasin()//fonction qui répond à l'action du bouton du panel2

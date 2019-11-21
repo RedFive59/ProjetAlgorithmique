@@ -48,48 +48,60 @@ public class Ship
         Vector3 V;
         if ((rot == false) && (length % 2 == 0))
         {
-            for(int i = 0; i < (length / 2); i++)
+            for (int i = 0; i < (length / 2); i++)
             {
-                V = new Vector3(pos.x - i*0.5f, pos.y, pos.z);
+                V = new Vector3(pos.x - i - 0.5f, pos.y, pos.z);
                 G.setVal(i, V);
-                V = new Vector3(pos.x + i * 0.5f, pos.y, pos.z);
-                G.setVal(i+(length/2)-1, V);
-                }
+                V = new Vector3(pos.x + i + 0.5f, pos.y, pos.z);
+                G.setVal(i + (length / 2), V);
             }
+        }
 
         if ((rot == true) && (length % 2 == 0))
         {
+            for (int i = 0; i < (length / 2); i++)
+            {
+                V = new Vector3(pos.x, pos.y - i - 0.5f, pos.z);
+                G.setVal(i, V);
+                V = new Vector3(pos.x, pos.y + i + 0.5f, pos.z);
+                G.setVal(i + (length / 2), V);
+            }
+        }
+
+        if ((rot == false) && (length % 2 != 0))
+        {
+            G.setVal(length / 2, new Vector3(pos.x, pos.y, pos.z));
             for (int i = 0; i < (length / 2) + 1; i++)
             {
-                V = new Vector3(pos.x, pos.y-i*0.5f, pos.z);
+                V = new Vector3(pos.x - i, pos.y, pos.z);
                 G.setVal(i, V);
-                V = new Vector3(pos.x, pos.y+i*0.5f, pos.z);
-                G.setVal(i +(length/2)-1, V);
+                V = new Vector3(pos.x + i, pos.y, pos.z);
+                G.setVal(i + (length / 2), V);
             }
+        }
 
-            if ((rot == false) && (length % 2 != 0))
+        if ((rot == true) && (length % 2 != 0))
+        {
+            G.setVal(length / 2, new Vector3(pos.x, pos.y, pos.z));
+            for (int i = 0; i < (length / 2) + 1; i++)
             {
-                G.setVal(length/2, new Vector3(pos.x, pos.y, pos.z));
-                for (int i = 0; i < (length / 2) + 1; i++)
-                {
-                    V = new Vector3(pos.x - i, pos.y, pos.z);
-                    G.setVal(i, V);
-                    V = new Vector3(pos.x + i, pos.y, pos.z);
-                    G.setVal(i + (length / 2 + 1), V);
-                }
+                V = new Vector3(pos.x, pos.y - i, pos.z);
+                G.setVal(i, V);
+                V = new Vector3(pos.x, pos.y + i, pos.z);
+                G.setVal(i + (length / 2), V);
             }
+        }
 
-            if ((rot == true) && (length % 2 != 0))
-            {
-               G.setVal(length/2,new Vector3(pos.x,pos.y,pos.z));
-                for (int i = 0; i < (length / 2) + 1; i++)
-                {
-                    V = new Vector3(pos.x, pos.y-i, pos.z);
-                    G.setVal(i, V);
-                    V = new Vector3(pos.x, pos.y+i, pos.z);
-                    G.setVal(i + (length / 2 + 1), V);
-                }
-            }
+    }
+    public void changeRotShip()
+    {
+        if (rot == false)
+        {
+            rot = true;
+        }
+        else
+        {
+            rot = false;
         }
     }
 }

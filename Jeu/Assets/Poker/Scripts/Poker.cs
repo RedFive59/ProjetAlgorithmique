@@ -6,6 +6,7 @@ public class Poker : MonoBehaviour
 {
     //Attributs
     public Sprite[] cardFaces;//Tableau des textures de cartes
+    public string[] nomJoueur;
     public GameObject cardPrefab;//Modèle de carte à dupliquer
     public GameObject playerPrefab;//Modèle de joueur à dupliquer
     public List<GameObject> deck;//Paquet de cartes
@@ -15,8 +16,8 @@ public class Poker : MonoBehaviour
     private int tour = 0;//Indice du joueur qui doit jouer
     public int tourGlobal = 0;//Indique le numéro du tour (augmente de 1 à chaque fois que les les nbJoueurs ont joué une fois)
     public List<GameObject> flop = new List<GameObject>();//Liste des cinq cartes composant le flop
-    public int BOURSEDEPART;//Bourse de départ pour les joueurs
-    public static int miseManche = 10;//Mise de la manche 
+    public static int BOURSEDEPART;//Bourse de départ pour les joueurs
+    public static int miseManche = 0;//Mise de la manche 
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +34,43 @@ public class Poker : MonoBehaviour
     private void updateInfosMenu()
     {
         GameObject gameSettings = GameObject.Find("GameSettings");
-        nbJoueurs = gameSettings.GetComponent<PokerValue>().nbJoueurs;
-        BOURSEDEPART = gameSettings.GetComponent<PokerValue>().bourse;
+        if (gameSettings)
+        {
+            nbJoueurs = gameSettings.GetComponent<PokerValue>().nbJoueurs;
+            this.nomJoueur = new string[nbJoueurs];
+            BOURSEDEPART = gameSettings.GetComponent<PokerValue>().bourse;
+            for(int i = 0; i < nbJoueurs; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        nomJoueur[i] = gameSettings.GetComponent<PokerValue>().nomJoueur1;
+                        break;
+                    case 1:
+                        nomJoueur[i] = gameSettings.GetComponent<PokerValue>().nomJoueur2;
+                        break;
+                    case 2:
+                        nomJoueur[i] = gameSettings.GetComponent<PokerValue>().nomJoueur3;
+                        break;
+                    case 3:
+                        nomJoueur[i] = gameSettings.GetComponent<PokerValue>().nomJoueur4;
+                        break;
+                    case 4:
+                        nomJoueur[i] = gameSettings.GetComponent<PokerValue>().nomJoueur5;
+                        break;
+                }
+            }
+        }
+        else
+        {
+            nbJoueurs = 2;
+            this.nomJoueur = new string[nbJoueurs];
+            BOURSEDEPART = 3000;
+            for(int i = 0; i < nbJoueurs; i++)
+            {
+                this.nomJoueur[i] = "Joueur " + (i+1);
+            }
+        }
         // Changer le nom des joueurs
         /*
         nomJoueur1 = gameSettings.GetComponent<PokerValue>().nomJoueur1;
@@ -106,7 +142,8 @@ public class Poker : MonoBehaviour
         {
             GameObject newPlayer = Instantiate(playerPrefab);
             newPlayer.name = "Joueur_" + i;
-            newPlayer.GetComponent<Joueur>().nom = "Joueur " + i;
+            newPlayer.GetComponent<Joueur>().nom = this.nomJoueur[i-1];
+            newPlayer.GetComponent<Joueur>().setBourse(BOURSEDEPART);
             newPlayer.SetActive(true);
             this.joueurs.Add(newPlayer);
             this.joueursManche.Add(newPlayer);

@@ -17,7 +17,10 @@ public class PokerMenu : MonoBehaviour
     private Coroutine currentCoroutine = null;
     private Coroutine currentCoroutine2 = null;
     private bool canLaunchGame = false;
+    private bool animationDone = false;
     private GameObject gameSettings;
+    private int nbJoueurs;
+    private string[] listNom;
 
     void Start()
     {
@@ -44,7 +47,7 @@ public class PokerMenu : MonoBehaviour
     {
         destroyAllInputNameField();
         nomJoueurRef.SetActive(true);
-        int nbJoueurs = (int) GameObject.Find("NbJoueursSlider").GetComponent<Slider>().value;
+        nbJoueurs = (int) GameObject.Find("NbJoueursSlider").GetComponent<Slider>().value;
         for(int i = 0; i < nbJoueurs; i++)
         {
             GameObject input = Instantiate(nomJoueurRef, parent.transform);
@@ -60,8 +63,8 @@ public class PokerMenu : MonoBehaviour
     public void verifInputs()
     {
         canLaunchGame = false;
-        int nbJoueurs = (int)GameObject.Find("NbJoueursSlider").GetComponent<Slider>().value;
-        string[] listNom = new string[nbJoueurs];
+        nbJoueurs = (int)GameObject.Find("NbJoueursSlider").GetComponent<Slider>().value;
+        listNom = new string[nbJoueurs];
         // Vérification que les pseudos soient remplis
         for (int i = 0; i < nbJoueurs; i++)
         {
@@ -74,6 +77,7 @@ public class PokerMenu : MonoBehaviour
                 alerteNom.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
                 alerteNom.SetActive(true);
                 alerteNom.GetComponent<TextMeshProUGUI>().text = "Chaque joueur doit comporter un nom";
+                animationDone = false;
                 return;
             }
         }
@@ -90,6 +94,7 @@ public class PokerMenu : MonoBehaviour
                     alerteNom.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
                     alerteNom.SetActive(true);
                     alerteNom.GetComponent<TextMeshProUGUI>().text = "Chaque joueur doit comporter un nom différent";
+                    animationDone = false;
                     return;
                 }
             }
@@ -97,8 +102,12 @@ public class PokerMenu : MonoBehaviour
         canLaunchGame = true;
         updateGameSettingsObject(nbJoueurs, listNom, valeurMise());
         //Animation de disparition de l'alerte des noms
-        if (currentCoroutine2 != null) StopCoroutine(currentCoroutine2);
-        currentCoroutine2 = StartCoroutine(disableAlerteNom());
+        if (!animationDone)
+        {
+            if (currentCoroutine2 != null) StopCoroutine(currentCoroutine2);
+            currentCoroutine2 = StartCoroutine(disableAlerteNom());
+            animationDone = true;
+        }
     }
 
     private void destroyAllInputNameField()
@@ -139,6 +148,7 @@ public class PokerMenu : MonoBehaviour
             }
         }
         if(!ok) mise.GetComponent<TMP_InputField>().text = "0";
+        if(listNom != null && nbJoueurs != 0) updateGameSettingsObject(nbJoueurs, listNom, valeurMise());
     }
 
     public void verifMiseOnEndEdit()
@@ -160,6 +170,7 @@ public class PokerMenu : MonoBehaviour
                 currentCoroutine = StartCoroutine(updateAlerteMise("Valeur maximale dépassée"));
             }
         }
+        if (listNom != null && nbJoueurs != 0) updateGameSettingsObject(nbJoueurs, listNom, valeurMise());
     }
 
     private int valeurMise()

@@ -18,6 +18,7 @@ public class OptionSlider : MonoBehaviour
         int maxvalue = j.getBourse() - (Poker.miseManche - j.mise);
         if (maxvalue >= 0)
         {
+            print(j.getBourse());
             s.maxValue = maxvalue;
         }
         else

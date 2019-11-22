@@ -11,9 +11,11 @@ public class Ship
     private int HP;
     private Grille<Vector3> G;
     private bool rot;
+    private VisualManager VM;
 
     public Ship(GameObject SM, string namex, int length, Vector3 scale, string texture, string slayer)
     {
+        VM = GameObject.FindObjectOfType<VisualManager>();
         Sp = new GameObject(namex);
         G = new Grille<Vector3>(length);
         this.namex = namex;
@@ -102,6 +104,20 @@ public class Ship
         else
         {
             rot = false;
+        }
+    }
+    
+    public void hit()
+    {
+        Debug.Log("TOUCHé");
+        HP--;
+        for(int i = 1; i < 5; i++)
+        {
+            if (VM.getCameraVM(i).GetComponent<Camera>().enabled == true)
+            {
+                GameObject.Find("HitPanel").transform.position = new Vector3(VM.getCameraVM(i).transform.position.x, VM.getCameraVM(i).transform.position.y, 0);
+                return;
+            }
         }
     }
 }

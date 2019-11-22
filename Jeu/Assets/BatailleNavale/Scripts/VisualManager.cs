@@ -98,6 +98,14 @@ public class VisualManager : MonoBehaviour
         {
             return C2;
         }
+        if (i == 3)
+        {
+            return C3;
+        }
+        if (i == 4)
+        {
+            return C4;
+        }
         return C1;
     }
 
@@ -130,16 +138,27 @@ public class VisualManager : MonoBehaviour
         }
     }
 
+    public void switchPlayer()
+    {
+        if (C1.GetComponent<Camera>().enabled == true)
+        {
+            C1.GetComponent<Camera>().enabled = false;
+            C2.GetComponent<Camera>().enabled = true;
+            return;
+        }
+        else
+        {
+            C1.GetComponent<Camera>().enabled = true;
+            C2.GetComponent<Camera>().enabled = false;
+        }
+    }
+
     public
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            switchCam();
-        }
-        if (Input.GetKeyUp(KeyCode.Tab))
         {
             switchCam();
         }

@@ -78,8 +78,11 @@ public class GridManagerNavale
         GameObject t = new GameObject("X:" + i + "Y:" + j);//creer un gameObject sprite avec un nom donné
         t.transform.position = new Vector3(pos.x+i, pos.y+j,pos.z+0);//place le gameObject dans la scene
         t.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/WaterDiffuseMini2");//creer et attache un rendu au sprite et lui attribut la texture de l'eau
-        t.AddComponent<BoxCollider2D>().autoTiling=true;//attache un collider 2D au sprite en le resizant automatiquement au sprite auquel il est attaché
-        t.AddComponent<Selection>();//attache au sprite le script selection
+        if ((GridHolder.name[GridHolder.name.Length - 1] == '3') || ((GridHolder.name[GridHolder.name.Length - 1] == '4')))
+        {
+            t.AddComponent<BoxCollider2D>().autoTiling = true;//attache un collider 2D au sprite en le resizant automatiquement au sprite auquel il est attaché
+            t.AddComponent<Selection>();//attache au sprite le script selection
+        }
         t.transform.parent = GridHolder.transform;//range les cases d'eau dans l'objet auquel le script est lié (GridHodler)
     }
 
@@ -90,12 +93,12 @@ public class GridManagerNavale
         if (v > 10)
         {
             temp=System.Convert.ToString(System.Convert.ToChar(v));//convertit le int en char puis en string
-            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2,2),1, temp, Color.black, TextAnchor.MiddleCenter);
+            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2,2),1,0.5f, temp, Color.black, TextAnchor.MiddleCenter);
         }
         else
         {
             temp=System.Convert.ToString(10-v);
-            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2, 2), 1, temp, Color.black, TextAnchor.MiddleCenter);
+            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2, 2), 1,0.5f, temp, Color.black, TextAnchor.MiddleCenter);
         }
     }
 

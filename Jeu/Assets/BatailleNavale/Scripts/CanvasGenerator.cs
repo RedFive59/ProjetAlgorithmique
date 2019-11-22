@@ -35,13 +35,13 @@ public class CanvasGenerator{
     }
 
     //méthode qui génère un texte dans le canvas
-    public void addText(GameObject parent, string nom,Vector3 pos,Vector2 delta,int taille,string text,Color C,TextAnchor TA)
+    public void addText(GameObject parent, string nom,Vector3 pos,Vector2 delta,int taille,float scale,string text,Color C,TextAnchor TA)
     {
         GameObject mText = new GameObject(nom);
         mText.transform.SetParent(parent.transform, false);
         mText.transform.position = pos;
         mText.AddComponent<RectTransform>().sizeDelta = delta;
-        mText.GetComponent<RectTransform>().localScale = new Vector3(0.5f, 0.5f, 1);
+        mText.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
         Text xtext = mText.AddComponent<Text>();
         xtext.color = C; //couleur du texte
         xtext.font = (Font)Resources.GetBuiltinResource<Font>("Arial.ttf");//utilise la police Arial pour afficher le texte
@@ -98,6 +98,11 @@ public class CanvasGenerator{
     public void disable()
     {
         Cvs.GetComponent<Canvas>().enabled = false;
+    }
+
+    public void ChangeCam(Camera camz)
+    {
+    mCvs.worldCamera = camz;
     }
 }
 

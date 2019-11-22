@@ -283,4 +283,9 @@ public class PokerMenu : MonoBehaviour
             }
         }
     }
+
+    public void destroySaveObject()
+    {
+        Destroy(gameSettings);
+    }
 }

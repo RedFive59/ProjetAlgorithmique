@@ -20,7 +20,7 @@ public class Ship
         G = new Grille<Vector3>(length);
         this.namex = namex;
         this.length = length;
-        this.HP = length;
+        HP = length;
         Sp.transform.localScale = scale;
         Sp.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/" + texture);
         Sp.transform.SetParent(SM.transform, false);
@@ -109,15 +109,40 @@ public class Ship
     
     public void hit()
     {
-        Debug.Log("TOUCHé");
+        CanvasGenerator CvsGN = GameObject.FindObjectOfType<GameNavale>().getCvsGN();
+        Debug.Log("CurrentHp :" + HP);
         HP--;
-        for(int i = 1; i < 5; i++)
+                if (HP == 0)
+                {
+                    Debug.Log("Coulé");
+                    CvsGN.setText(3, namex + " coulé");
+                }
+                else
+                {
+                    Debug.Log("Touché");
+                    CvsGN.setText(3, "touché");
+        }
+        if ((VM.getCameraVM(1).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(3).GetComponent<Camera>().enabled == true))
         {
-            if (VM.getCameraVM(i).GetComponent<Camera>().enabled == true)
+            if (VM.getShipM(2).getHPtotal() == 0)
             {
-                GameObject.Find("HitPanel").transform.position = new Vector3(VM.getCameraVM(i).transform.position.x, VM.getCameraVM(i).transform.position.y, 0);
-                return;
+                CvsGN.setText(2, "Le Joueur 1\n l'emporte!");
+                GameObject.Find("Victoire").transform.position = new Vector3(VM.getCameraVM(2).transform.position.x, VM.getCameraVM(2).transform.position.y, 0);
             }
         }
+        if ((VM.getCameraVM(2).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(4).GetComponent<Camera>().enabled == true))
+        {
+            if (VM.getShipM(1).getHPtotal() == 0)
+            {
+                CvsGN.setText(2, "Le Joueur 2\n l'emporte!");
+                GameObject.Find("Victoire").transform.position = new Vector3(VM.getCameraVM(1).transform.position.x, VM.getCameraVM(1).transform.position.y, 0);
+            }
+
+        }
+    }
+
+    public int getHP()
+    {
+        return HP;
     }
 }

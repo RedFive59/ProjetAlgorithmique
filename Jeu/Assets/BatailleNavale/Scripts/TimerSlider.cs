@@ -22,6 +22,10 @@ public class TimerSlider : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F1))
         {
             timeRemain = timeMax;
+        }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            timeRemain = timeMax;
 
         }
 

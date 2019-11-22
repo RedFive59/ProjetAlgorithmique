@@ -6,9 +6,12 @@ public class ShipManager
 {
     private GameObject SM;
     private List<Ship> LShip;
+    private VisualManager VM;
+    private int totalHP = 0;
 
     public ShipManager(string nom, Vector3 pos)
     {
+        VM = GameObject.FindObjectOfType<VisualManager>();
         SM = new GameObject(nom);
         LShip = new List<Ship>();
         Ship Torpilleur0 = new Ship(SM, "Torpilleur0", 2, new Vector3(2, 1, 1), "txtTp", "ShipLayer");
@@ -25,6 +28,7 @@ public class ShipManager
         for (int i = 0; i < 5; i++)
         {
             SM.transform.GetChild(i).transform.position = new Vector3(pos.x + 12.5f, pos.y + 1 + i * 2, pos.z + 0);
+            totalHP = totalHP + LShip[i].getHP();
             getClassShip(i).updateG();
         }
     }
@@ -76,11 +80,12 @@ public class ShipManager
 
     public bool checkTir(Vector3 V)
     {
-        V = new Vector3(V.x, V.y - 30, V.z);
+        CanvasGenerator CvsGN = GameObject.FindObjectOfType<GameNavale>().getCvsGN();
         for (int i = 0; i < 5; i++)
         {
             for (int k = 0; k < LShip[i].getLength(); k++)
             {
+                Debug.Log(V + "  +  " + LShip[i].getVecteur().getVal(k));
                 if (Vector3.Distance(V, LShip[i].getVecteur().getVal(k)) == 0)
                 {
                     LShip[i].hit();
@@ -88,8 +93,18 @@ public class ShipManager
                 }
             }
         }
-        Debug.Log("Raté");
+        CvsGN.setText(3, "Raté");
         return false;
+    }
+
+    public int getHPtotal()
+    {
+        totalHP = 0;
+        for (int i = 0; i < 5; i++)
+        {
+            totalHP = totalHP + LShip[i].getHP();
+        }
+        return totalHP;
     }
 }
 

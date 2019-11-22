@@ -20,11 +20,22 @@ public class VisualManager : MonoBehaviour
     ShipManager SM2;
     MagManager MG1;
     MagManager MG2;
+    CanvasGenerator Cvs;
+    CanvasGenerator Cvs2;
 
     // Start is called before the first frame update
     void Start()
     {
         GenPlateau();
+        GameObject CanvasVM = new GameObject("CanvasVM");
+        Cvs = new CanvasGenerator("CanvasInstruMarker", new Vector3(0, 0, 0), new Vector2(1, 1), RenderMode.WorldSpace, C1.GetComponent<Camera>(), 10, "PanelLayer", CanvasVM);
+        Cvs.addPanel("Markertab1", new Vector3(-3, 10.1f, 0), new Vector2(4, 1), new Color32(192, 72, 73, 255));
+        Cvs.addText(Cvs.getPanel(0), "textMarker1", Cvs.getPanel(0).transform.position, new Vector2(12f, 4.2f), 1,0.3f, "Afficher Grille\nmarquage\n(Press TAB)", Color.black, TextAnchor.MiddleCenter);
+        Cvs2 = new CanvasGenerator("CanvasInstruMarker", new Vector3(0, 0, 0), new Vector2(1, 1), RenderMode.WorldSpace, C2.GetComponent<Camera>(), 10, "PanelLayer", CanvasVM);
+        Cvs2.addPanel("Markertab1", new Vector3(27, 10.1f, 0), new Vector2(4, 1), new Color32(192, 72, 73, 255));
+        Cvs2.addText(Cvs.getPanel(0), "textMarker1", Cvs2.getPanel(0).transform.position, new Vector2(12f, 4.2f), 1, 0.3f, "Afficher Grille\nmarquage\n(Press TAB)", Color.black, TextAnchor.MiddleCenter);
+        Cvs.getCanvas().GetComponent<Canvas>().enabled = false;
+        Cvs2.getCanvas().GetComponent<Canvas>().enabled = false;
     }
 
     void GenPlateau()
@@ -116,44 +127,56 @@ public class VisualManager : MonoBehaviour
         {
             GMN1.getCamera().GetComponent<Camera>().enabled = false;
             GMN3.getCamera().GetComponent<Camera>().enabled = true;
+            Cvs.ChangeCam(GMN3.getCamera().GetComponent<Camera>());
             return;
         }
         if(GMN3.getCamera().GetComponent<Camera>().enabled == true)
         {
             GMN3.getCamera().GetComponent<Camera>().enabled = false;
             GMN1.getCamera().GetComponent<Camera>().enabled = true;
+            Cvs.ChangeCam(GMN1.getCamera().GetComponent<Camera>());
             return;
         }
         if (GMN2.getCamera().GetComponent<Camera>().enabled == true)
         {
             GMN2.getCamera().GetComponent<Camera>().enabled = false;
             GMN4.getCamera().GetComponent<Camera>().enabled = true;
+            Cvs.ChangeCam(GMN4.getCamera().GetComponent<Camera>());
             return;
         }
         if (GMN4.getCamera().GetComponent<Camera>().enabled == true)
         {
             GMN4.getCamera().GetComponent<Camera>().enabled = false;
             GMN2.getCamera().GetComponent<Camera>().enabled = true;
+            Cvs.ChangeCam(GMN2.getCamera().GetComponent<Camera>());
             return;
         }
     }
 
     public void switchPlayer()
     {
-        if (C1.GetComponent<Camera>().enabled == true)
+        if ((C1.GetComponent<Camera>().enabled == true)||(C3.GetComponent<Camera>().enabled == true))
         {
             C1.GetComponent<Camera>().enabled = false;
             C2.GetComponent<Camera>().enabled = true;
+            C3.GetComponent<Camera>().enabled = false;
+            C4.GetComponent<Camera>().enabled = false;
             return;
         }
         else
         {
             C1.GetComponent<Camera>().enabled = true;
             C2.GetComponent<Camera>().enabled = false;
+            C3.GetComponent<Camera>().enabled = false;
+            C4.GetComponent<Camera>().enabled = false;
         }
     }
 
-    public
+    public void EnableCvs()
+    {
+        Cvs.getCanvas().GetComponent<Canvas>().enabled = true;
+        Cvs2.getCanvas().GetComponent<Canvas>().enabled = true;
+    }
 
     // Update is called once per frame
     void Update()

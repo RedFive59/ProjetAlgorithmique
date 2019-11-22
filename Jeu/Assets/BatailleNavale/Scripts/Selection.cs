@@ -7,12 +7,13 @@ public class Selection : MonoBehaviour
     private Color startColor; //var qui contiendra la couleur originale du sprite ciblé
     private static bool selected = false;
     private VisualManager VM;
+    private GameObject stk = null;
     private GameNavale GN;
 
     void Start()
     {
-        VM = GameObject.FindObjectOfType<VisualManager>();
         GN = GameObject.FindObjectOfType<GameNavale>();
+        VM = GameObject.FindObjectOfType<VisualManager>();
         startColor = this.GetComponent<SpriteRenderer>().color;   //récupère la couleur original depuis le rendu du sprite auquel le script est attaché
     }
 
@@ -29,6 +30,7 @@ public class Selection : MonoBehaviour
         if (selected != true)
         {
             selected = true;
+            stk = this.gameObject;
             this.GetComponent<SpriteRenderer>().color = Color.green;
         }
     }
@@ -52,37 +54,59 @@ public class Selection : MonoBehaviour
         {
             this.GetComponent<SpriteRenderer>().color = startColor;
             selected = false;
+            stk = null;
         }
 
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            checkTirS();
+            if (selected == true)
+            {
+                if (stk ?? false)
+                {
+                    checkTirS();
+                    selected = false;
+                    stk = null;
+                    GN.switchX();
+                }
+            }
         }
     }
 
     public bool checkTirS()
     {
-        if(this.gameObject.GetComponent<BoxCollider2D>().enabled == false){
-           return false;
-        }
-        this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-        if (VM.getCameraVM(3).GetComponent<Camera>().enabled == true)
+        if (stk.GetComponent<BoxCollider2D>().enabled == false)
         {
-            VM.getShipM(2).checkTir(this.gameObject.transform.position);
+            return false;
         }
-        if (VM.getCameraVM(4).GetComponent<Camera>().enabled == true)
+        stk.GetComponent<BoxCollider2D>().enabled = false;
+
+        if ((VM.getCameraVM(1).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(3).GetComponent<Camera>().enabled == true))
         {
-            if (VM.getShipM(1).checkTir(this.gameObject.transform.position) == true)
+           // VM.getShipM(2).checkTir(new Vector3(stk.transform.position.x + 30, stk.transform.position.y - 30, stk.transform.position.z));
+            if (VM.getShipM(2).checkTir(new Vector3(stk.transform.position.x + 30, stk.transform.position.y - 30, stk.transform.position.z)) == true)
             {
-                this.gameObject.GetComponent<SpriteRenderer>().color = new Color32(192, 72, 73, 255);
+                stk.GetComponent<SpriteRenderer>().color = Color.red;
+                startColor = Color.red;
                 return true;
             }
-            else
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
-                return false;
-            }
+            startColor = Color.grey;
+            stk.GetComponent<SpriteRenderer>().color = Color.grey;
+            return false;
         }
+        if ((VM.getCameraVM(2).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(4).GetComponent<Camera>().enabled == true))
+        {
+            //VM.getShipM(1).checkTir(new Vector3(stk.transform.position.x - 30, stk.transform.position.y - 30, stk.transform.position.z));
+            if (VM.getShipM(1).checkTir(new Vector3(stk.transform.position.x - 30, stk.transform.position.y - 30, stk.transform.position.z)) == true)
+            {
+                stk.GetComponent<SpriteRenderer>().color = Color.red;
+                startColor = Color.red;
+                return true;
+            }
+            startColor = Color.grey;
+            stk.GetComponent<SpriteRenderer>().color = Color.grey;
+            return false;
+        }
+        Debug.Log("FAIL CONDITION");
         return false;
     }
 }

@@ -73,28 +73,32 @@ public class MagManager
 
     public bool FinPlacement()
     {
-        if (cam.enabled == false)
+        if (Cvs.getCanvas().GetComponent<Canvas>().enabled == true)
         {
-            return false;
-        }
-
-        int count = 0;
-        for (int i = 0; i < 5; i++)
-        {
-            if (SM.getShip(i).GetComponent<Draggable>().getMag() == false)
+            if (cam.enabled == false)
             {
-                count++;
+                return false;
             }
-        }
-        if (count == 5)
-        {
+
+            int count = 0;
             for (int i = 0; i < 5; i++)
             {
-                SM.getShip(i).GetComponent<BoxCollider>().enabled = false;
+                if (SM.getShip(i).GetComponent<Draggable>().getMag() == false)
+                {
+                    count++;
+                }
             }
-            VM.switchPlayer();
-            Cvs.disable();
-            return true;
+            if (count == 5)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    SM.getShip(i).GetComponent<BoxCollider>().enabled = false;
+                }
+                VM.switchPlayer();
+                Cvs.disable();
+                VM.EnableCvs();
+                return true;
+            }
         }
         return false;
     }

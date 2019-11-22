@@ -61,50 +61,52 @@ public class Selection : MonoBehaviour
         {
             if (selected == true)
             {
-                checkTirS();
-                selected = false;
-                GN.switchX();
+                if (stk ?? false)
+                {
+                    checkTirS();
+                    selected = false;
+                    Debug.Log("SWITCH");
+                    GN.switchX();
+                }
             }
         }
     }
 
     public bool checkTirS()
     {
-        if (stk != null)
+        if (stk.GetComponent<BoxCollider2D>().enabled == false)
         {
-            if (stk.GetComponent<BoxCollider2D>().enabled == false)
-            {
-                return false;
-            }
-            stk.GetComponent<BoxCollider2D>().enabled = false;
-
-            if (VM.getCameraVM(3).GetComponent<Camera>().enabled == true)
-            {
-                VM.getShipM(2).checkTir(stk.transform.position);
-                if (VM.getShipM(2).checkTir(stk.transform.position)==true)
-                {
-                    stk.GetComponent<SpriteRenderer>().color = new Color32(192, 72, 73, 255);
-                    startColor = new Color32(192, 72, 73, 255);
-                    return true;
-                }
-                startColor = Color.grey;
-                stk.GetComponent<SpriteRenderer>().color = Color.grey;
-                return false;
-            }
-            if (VM.getCameraVM(4).GetComponent<Camera>().enabled == true)
-            {
-                VM.getShipM(1).checkTir(stk.transform.position);
-                if (VM.getShipM(1).checkTir(stk.transform.position))
-                {
-                    stk.GetComponent<SpriteRenderer>().color = new Color32(192, 72, 73, 255);
-                    startColor = new Color32(192, 72, 73, 255);
-                    return true;
-                }
-                startColor = Color.grey;
-                stk.GetComponent<SpriteRenderer>().color = Color.grey;
-                return false;
-            }
+            return false;
         }
+        stk.GetComponent<BoxCollider2D>().enabled = false;
+
+        if ((VM.getCameraVM(1).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(3).GetComponent<Camera>().enabled == true))
+        {
+            VM.getShipM(2).checkTir(new Vector3(stk.transform.position.x + 30, stk.transform.position.y - 30, stk.transform.position.z));
+            if (VM.getShipM(2).checkTir(new Vector3(stk.transform.position.x + 30, stk.transform.position.y - 30, stk.transform.position.z)) == true)
+            {
+                stk.GetComponent<SpriteRenderer>().color = Color.red;
+                startColor = Color.red;
+                return true;
+            }
+            startColor = Color.grey;
+            stk.GetComponent<SpriteRenderer>().color = Color.grey;
+            return false;
+        }
+        if ((VM.getCameraVM(2).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(4).GetComponent<Camera>().enabled == true))
+        {
+            VM.getShipM(1).checkTir(new Vector3(stk.transform.position.x - 30, stk.transform.position.y - 30, stk.transform.position.z));
+            if (VM.getShipM(1).checkTir(new Vector3(stk.transform.position.x - 30, stk.transform.position.y - 30, stk.transform.position.z)) == true)
+            {
+                stk.GetComponent<SpriteRenderer>().color = Color.red;
+                startColor = Color.red;
+                return true;
+            }
+            startColor = Color.grey;
+            stk.GetComponent<SpriteRenderer>().color = Color.grey;
+            return false;
+        }
+        Debug.Log("FAIL CONDITION");
         return false;
     }
 }

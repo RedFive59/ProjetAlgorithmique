@@ -21,6 +21,7 @@ public class GameNavale : MonoBehaviour
         Cvs.addPanel("MarkerInstru2", new Vector3(27, 40.1f, 0), new Vector2(4, 1), new Color32(192, 72, 73, 255));
         Cvs.addText(Cvs.getPanel(1), "textMarker2", Cvs.getPanel(1).transform.position, new Vector2(11, 4), 1, 0.4f, "F2 : confirmer\nF3 : editer", Color.black, TextAnchor.MiddleCenter);
         Cvs.addPanel("Victoire", new Vector3(-10, -10, 0), new Vector2(4, 1), Color.white);
+        Cvs.addText(Cvs.getPanel(2), "textVictoire", Cvs.getPanel(2).transform.position, new Vector2(16, 5), 1, 1, "Victoire", Color.black, TextAnchor.MiddleCenter);
         Cvs.addPanel("Changement", new Vector3(-10, -10, 0), new Vector2(21f, 12f), Color.white);
         Cvs.addText(Cvs.getPanel(3), "textchangement", Cvs.getPanel(3).transform.position, new Vector2(16, 5), 1, 1, "Changement Joueur", Color.black, TextAnchor.MiddleCenter);
         Cvs.addPanel("HitPanel", new Vector3(-10, -10, 0), new Vector2(5f, 3f), new Color32(255, 255, 255, 150));
@@ -70,7 +71,7 @@ public class GameNavale : MonoBehaviour
 
     public void switchX()
     {
-        if ((VM.getCameraVM(1).GetComponent<Camera>() == true) || (VM.getCameraVM(3).GetComponent<Camera>() == true)){
+        if ((VM.getCameraVM(1).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(3).GetComponent<Camera>().enabled == true)){
             VM.switchPlayer();
             Cvs.getPanel(3).transform.position = new Vector3(VM.getCameraVM(2).transform.position.x, VM.getCameraVM(2).transform.position.y, 0);
         }
@@ -79,5 +80,9 @@ public class GameNavale : MonoBehaviour
                 VM.switchPlayer();
                 Cvs.getPanel(3).transform.position = new Vector3(VM.getCameraVM(1).transform.position.x, VM.getCameraVM(1).transform.position.y, 0);
             }
+    }
+
+    public CanvasGenerator getCvsGN() {
+        return Cvs;
     }
 }

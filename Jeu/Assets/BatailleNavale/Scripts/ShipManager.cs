@@ -7,6 +7,7 @@ public class ShipManager
     private GameObject SM;
     private List<Ship> LShip;
     private VisualManager VM;
+    private int totalHP=0;
 
     public ShipManager(string nom, Vector3 pos)
     {
@@ -27,6 +28,7 @@ public class ShipManager
         for (int i = 0; i < 5; i++)
         {
             SM.transform.GetChild(i).transform.position = new Vector3(pos.x + 12.5f, pos.y + 1 + i * 2, pos.z + 0);
+            totalHP=totalHP+LShip[i].getHP();
             getClassShip(i).updateG();
         }
     }
@@ -78,7 +80,7 @@ public class ShipManager
 
     public bool checkTir(Vector3 V)
     {
-        V = new Vector3(V.x, V.y - 30, V.z);
+        CanvasGenerator CvsGN = GameObject.FindObjectOfType<GameNavale>().getCvsGN();
         for (int i = 0; i < 5; i++)
         {
             for (int k = 0; k < LShip[i].getLength(); k++)
@@ -91,14 +93,7 @@ public class ShipManager
                 }
             }
         }
-        for (int i = 1; i < 5; i++)
-        {
-            if (VM.getCameraVM(i).GetComponent<Camera>().enabled == true)
-            {
-                GameObject.Find("MissPanel").transform.position = new Vector3(VM.getCameraVM(i).transform.position.x, VM.getCameraVM(i).transform.position.y, 0);
-                return false;
-            }
-        }
+        CvsGN.setText(3,"Raté");
         return false;
     }
 }

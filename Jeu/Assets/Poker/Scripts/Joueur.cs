@@ -15,7 +15,7 @@ public class Joueur : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        bourse = GameObject.Find("Poker").GetComponent<Poker>().BOURSEDEPART;
+       
     }
     // Update is called once per frame
     void Update()

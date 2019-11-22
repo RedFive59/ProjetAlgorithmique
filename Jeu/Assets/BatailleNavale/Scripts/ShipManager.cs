@@ -6,9 +6,11 @@ public class ShipManager
 {
     private GameObject SM;
     private List<Ship> LShip;
+    private VisualManager VM;
 
     public ShipManager(string nom, Vector3 pos)
     {
+        VM = GameObject.FindObjectOfType<VisualManager>();
         SM = new GameObject(nom);
         LShip = new List<Ship>();
         Ship Torpilleur0 = new Ship(SM, "Torpilleur0", 2, new Vector3(2, 1, 1), "txtTp", "ShipLayer");
@@ -81,6 +83,7 @@ public class ShipManager
         {
             for (int k = 0; k < LShip[i].getLength(); k++)
             {
+                Debug.Log(V + "  +  " + LShip[i].getVecteur().getVal(k));
                 if (Vector3.Distance(V, LShip[i].getVecteur().getVal(k)) == 0)
                 {
                     LShip[i].hit();
@@ -88,7 +91,14 @@ public class ShipManager
                 }
             }
         }
-        Debug.Log("Raté");
+        for (int i = 1; i < 5; i++)
+        {
+            if (VM.getCameraVM(i).GetComponent<Camera>().enabled == true)
+            {
+                GameObject.Find("MissPanel").transform.position = new Vector3(VM.getCameraVM(i).transform.position.x, VM.getCameraVM(i).transform.position.y, 0);
+                return false;
+            }
+        }
         return false;
     }
 }

@@ -21,24 +21,21 @@ public class Draggable : MonoBehaviour
         VM = GameObject.FindObjectOfType<VisualManager>();
         test=this.gameObject.name;
         string test2 = this.gameObject.transform.parent.name;
-       // Debug.Log("NOM : "+ test2);
         if (test2[10] == '1')
         {
-           // Debug.Log("debug : " + test2[10]);
             SM = VM.getShipM(1);
             mag = VM.getMagM(1);
             pos = VM.getposGVM(1);
-            C = VM.getCameraVM(1);
+            C = VM.getCameraVM(1).GetComponent<Camera>();
         }
         else
         {
             if (test2[10] == '2')
             {
-               // Debug.Log("debug : " + test2[10]);
                 SM = VM.getShipM(2);
                 mag = VM.getMagM(2);
                 pos = VM.getposGVM(2);
-                C = VM.getCameraVM(2);
+                C = VM.getCameraVM(2).GetComponent<Camera>();
             }
             else
             {
@@ -52,8 +49,6 @@ public class Draggable : MonoBehaviour
 
         void OnMouseDown()
     {
-        Debug.Log(this.gameObject.name);
-        Debug.Log(this.gameObject.transform.position);
         //SM.getClassShip(test[test.Length - 1] - 48).updateG();
         magv = false;
         mOffset = this.gameObject.transform.position - GetMouseWorldPos();//enregistre l'offset entre la souris et l'objet
@@ -74,7 +69,6 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseUp()
     {
-        Debug.Log(this.gameObject.transform.position);
         this.gameObject.transform.position = cutVector(this.gameObject.transform.position);
         this.gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer2";
         SM.getClassShip(test[test.Length-1]-48).updateG();
@@ -174,8 +168,6 @@ public class Draggable : MonoBehaviour
 
     private void checkPos()
     {
-        Debug.Log("POSDRAG: " + pos);
-        Debug.Log("POSSHIP: " + this.gameObject.transform.position);
         Debug.Log(test[test.Length - 1]);
         if ((this.gameObject.transform.position.x < pos.x + 0) || (this.gameObject.transform.position.x > pos.x + 9) || (this.gameObject.transform.position.y < pos.y + 0) || (this.gameObject.transform.position.y > pos.y + 9))
         {

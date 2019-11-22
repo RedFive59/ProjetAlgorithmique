@@ -19,11 +19,10 @@ public class CameraManager
         //la position initiale n'est pas changée la caméra est centrée sur l'origine de la scène
     }
 
-
-    public Camera getCamera()
+    public GameObject getCameraC()
     {
         {
-            return CameraM.GetComponent<Camera>();
+            return CameraM;
         }
     }
 }

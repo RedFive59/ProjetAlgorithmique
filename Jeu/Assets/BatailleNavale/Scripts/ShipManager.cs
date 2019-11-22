@@ -7,12 +7,11 @@ public class ShipManager
     private GameObject SM;
     private List<Ship> LShip;
 
-    // Start is called before the first frame update
     public ShipManager(string nom, Vector3 pos)
     {
         SM = new GameObject(nom);
         LShip = new List<Ship>();
-        Ship Torpilleur0 = new Ship(SM, "Torpilleur0", 2, new Vector3(2, 1, 1),  "txtTp", "ShipLayer");
+        Ship Torpilleur0 = new Ship(SM, "Torpilleur0", 2, new Vector3(2, 1, 1), "txtTp", "ShipLayer");
         LShip.Add(Torpilleur0);
         Ship ContreToprilleur1 = new Ship(SM, "ContreTorpilleur1", 3, new Vector3(3, 1, 1), "txtCtp", "ShipLayer");
         LShip.Add(ContreToprilleur1);
@@ -29,7 +28,6 @@ public class ShipManager
             getClassShip(i).updateG();
         }
     }
-
 
     public void moveShip(float x, float y, float z)
     {
@@ -57,30 +55,41 @@ public class ShipManager
 
     public bool checkContact(int ix)
     {
-        Debug.Log("VAL : " + ix);
-    for (int i = 0; i<5; i++)
+        for (int i = 0; i < 5; i++)
         {
-            if (LShip[i].Equals(LShip[ix])!=true)//!
+            if (LShip[i].Equals(LShip[ix]) != true)//!
             {
                 for (int j = 0; j < LShip[ix].getLength(); j++)
                 {
-                    for (int k =0; k < LShip[i].getLength(); k++)
+                    for (int k = 0; k < LShip[i].getLength(); k++)
                     {
-                        Debug.Log(LShip[ix].getVecteur().getVal(j) + " + " + LShip[i].getVecteur().getVal(k));
                         if (Vector3.Distance(LShip[ix].getVecteur().getVal(j), LShip[i].getVecteur().getVal(k)) == 0)
                         {
-                            Debug.Log(LShip[ix].getVecteur().getVal(j) + " + " + LShip[i].getVecteur().getVal(k));
                             return true;
                         }
                     }
                 }
-        }
+            }
         }
         return false;
     }
-    // Update is called once per frame
-    void Update()
-    {
-    }
 
+    public bool checkTir(Vector3 V)
+    {
+        V = new Vector3(V.x, V.y - 30, V.z);
+        for (int i = 0; i < 5; i++)
+        {
+            for (int k = 0; k < LShip[i].getLength(); k++)
+            {
+                if (Vector3.Distance(V, LShip[i].getVecteur().getVal(k)) == 0)
+                {
+                    LShip[i].hit();
+                    return true;
+                }
+            }
+        }
+        Debug.Log("Raté");
+        return false;
+    }
 }
+

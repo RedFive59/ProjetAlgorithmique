@@ -24,7 +24,7 @@ public class GridManagerNavale
     void GenGrille(Vector3 pos)
     {
         //Camera//
-        CameraM= new CameraManager("Cam"+pos.x,pos);
+        CameraM= new CameraManager("Cam"+(GridHolder.name[GridHolder.name.Length - 1]-48), pos);
 
         this.grille = new Grille<int>(rows - 1, cols - 1);
         this.col0 = new Grille<int>(cols - 1);
@@ -36,7 +36,7 @@ public class GridManagerNavale
              row0.setVal(i, i + 65); //convertit un entier en char
         }
         grille.initVal(0);
-        Cvs = new CanvasGenerator("CanvasCases"+pos.x, new Vector3(pos.x, pos.y, pos.z), new Vector2(1, 1), RenderMode.WorldSpace, CameraM.getCamera(), 10, "SpriteLayer", GridHolder);
+        Cvs = new CanvasGenerator("CanvasCases"+pos.x, new Vector3(pos.x, pos.y, pos.z), new Vector2(1, 1), RenderMode.WorldSpace, CameraM.getCameraC().GetComponent<Camera>(), 10, "SpriteLayer", GridHolder);
         ShowGrid(pos, col0, row0, grille);
     }
 
@@ -78,8 +78,11 @@ public class GridManagerNavale
         GameObject t = new GameObject("X:" + i + "Y:" + j);//creer un gameObject sprite avec un nom donné
         t.transform.position = new Vector3(pos.x+i, pos.y+j,pos.z+0);//place le gameObject dans la scene
         t.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/WaterDiffuseMini2");//creer et attache un rendu au sprite et lui attribut la texture de l'eau
-        t.AddComponent<BoxCollider2D>().autoTiling=true;//attache un collider 2D au sprite en le resizant automatiquement au sprite auquel il est attaché
-        t.AddComponent<Selection>();//attache au sprite le script selection
+        if ((GridHolder.name[GridHolder.name.Length - 1] == '3') || ((GridHolder.name[GridHolder.name.Length - 1] == '4')))
+        {
+            t.AddComponent<BoxCollider2D>().autoTiling = true;//attache un collider 2D au sprite en le resizant automatiquement au sprite auquel il est attaché
+            t.AddComponent<Selection>();//attache au sprite le script selection
+        }
         t.transform.parent = GridHolder.transform;//range les cases d'eau dans l'objet auquel le script est lié (GridHodler)
     }
 
@@ -90,18 +93,19 @@ public class GridManagerNavale
         if (v > 10)
         {
             temp=System.Convert.ToString(System.Convert.ToChar(v));//convertit le int en char puis en string
-            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2,2),1, temp, Color.black, TextAnchor.MiddleCenter);
+            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2,2),1,0.5f, temp, Color.black, TextAnchor.MiddleCenter);
         }
         else
         {
             temp=System.Convert.ToString(10-v);
-            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2, 2), 1, temp, Color.black, TextAnchor.MiddleCenter);
+            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2, 2), 1,0.5f, temp, Color.black, TextAnchor.MiddleCenter);
         }
     }
 
-    public Camera getCamera()
+    public GameObject getCamera()
     {
-        return CameraM.getCamera();
+        GameObject C= CameraM.getCameraC();
+        return C;
     }
     public Grille<int>  getGrille()
     {

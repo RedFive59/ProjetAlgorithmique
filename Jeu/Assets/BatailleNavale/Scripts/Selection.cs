@@ -8,9 +8,11 @@ public class Selection : MonoBehaviour
     private static bool selected = false;
     private VisualManager VM;
     private GameObject stk = null;
+    private GameNavale GN;
 
     void Start()
     {
+        GN = GameObject.FindObjectOfType<GameNavale>();
         VM = GameObject.FindObjectOfType<VisualManager>();
         startColor = this.GetComponent<SpriteRenderer>().color;   //récupère la couleur original depuis le rendu du sprite auquel le script est attaché
     }
@@ -61,7 +63,7 @@ public class Selection : MonoBehaviour
             {
                 checkTirS();
                 selected = false;
-                VM.switchPlayer();
+                GN.switchX();
             }
         }
     }

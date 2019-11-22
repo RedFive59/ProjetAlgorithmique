@@ -156,12 +156,16 @@ public class VisualManager : MonoBehaviour
         {
             C1.GetComponent<Camera>().enabled = false;
             C2.GetComponent<Camera>().enabled = true;
+            C3.GetComponent<Camera>().enabled = false;
+            C4.GetComponent<Camera>().enabled = false;
             return;
         }
         else
         {
             C1.GetComponent<Camera>().enabled = true;
             C2.GetComponent<Camera>().enabled = false;
+            C3.GetComponent<Camera>().enabled = false;
+            C4.GetComponent<Camera>().enabled = false;
         }
     }
 

@@ -65,7 +65,7 @@ public class Selection : MonoBehaviour
                 {
                     checkTirS();
                     selected = false;
-                    Debug.Log("SWITCH");
+                    stk = null;
                     GN.switchX();
                 }
             }
@@ -82,7 +82,7 @@ public class Selection : MonoBehaviour
 
         if ((VM.getCameraVM(1).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(3).GetComponent<Camera>().enabled == true))
         {
-            VM.getShipM(2).checkTir(new Vector3(stk.transform.position.x + 30, stk.transform.position.y - 30, stk.transform.position.z));
+           // VM.getShipM(2).checkTir(new Vector3(stk.transform.position.x + 30, stk.transform.position.y - 30, stk.transform.position.z));
             if (VM.getShipM(2).checkTir(new Vector3(stk.transform.position.x + 30, stk.transform.position.y - 30, stk.transform.position.z)) == true)
             {
                 stk.GetComponent<SpriteRenderer>().color = Color.red;
@@ -95,7 +95,7 @@ public class Selection : MonoBehaviour
         }
         if ((VM.getCameraVM(2).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(4).GetComponent<Camera>().enabled == true))
         {
-            VM.getShipM(1).checkTir(new Vector3(stk.transform.position.x - 30, stk.transform.position.y - 30, stk.transform.position.z));
+            //VM.getShipM(1).checkTir(new Vector3(stk.transform.position.x - 30, stk.transform.position.y - 30, stk.transform.position.z));
             if (VM.getShipM(1).checkTir(new Vector3(stk.transform.position.x - 30, stk.transform.position.y - 30, stk.transform.position.z)) == true)
             {
                 stk.GetComponent<SpriteRenderer>().color = Color.red;

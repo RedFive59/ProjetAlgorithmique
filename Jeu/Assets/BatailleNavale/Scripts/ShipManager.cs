@@ -7,7 +7,7 @@ public class ShipManager
     private GameObject SM;
     private List<Ship> LShip;
     private VisualManager VM;
-    private int totalHP=0;
+    private int totalHP = 0;
 
     public ShipManager(string nom, Vector3 pos)
     {
@@ -28,7 +28,7 @@ public class ShipManager
         for (int i = 0; i < 5; i++)
         {
             SM.transform.GetChild(i).transform.position = new Vector3(pos.x + 12.5f, pos.y + 1 + i * 2, pos.z + 0);
-            totalHP=totalHP+LShip[i].getHP();
+            totalHP = totalHP + LShip[i].getHP();
             getClassShip(i).updateG();
         }
     }
@@ -93,8 +93,18 @@ public class ShipManager
                 }
             }
         }
-        CvsGN.setText(3,"Raté");
+        CvsGN.setText(3, "Raté");
         return false;
+    }
+
+    public int getHPtotal()
+    {
+        totalHP = 0;
+        for (int i = 0; i < 5; i++)
+        {
+            totalHP = totalHP + LShip[i].getHP();
+        }
+        return totalHP;
     }
 }
 

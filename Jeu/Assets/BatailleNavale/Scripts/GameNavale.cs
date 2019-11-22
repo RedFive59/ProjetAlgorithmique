@@ -20,14 +20,11 @@ public class GameNavale : MonoBehaviour
         Cvs.addText(Cvs.getPanel(0), "textMarker1", Cvs.getPanel(0).transform.position, new Vector2(11, 4), 1, 0.4f, "F2 : confirmer\nF3 : editer", Color.black, TextAnchor.MiddleCenter);
         Cvs.addPanel("MarkerInstru2", new Vector3(27, 40.1f, 0), new Vector2(4, 1), new Color32(192, 72, 73, 255));
         Cvs.addText(Cvs.getPanel(1), "textMarker2", Cvs.getPanel(1).transform.position, new Vector2(11, 4), 1, 0.4f, "F2 : confirmer\nF3 : editer", Color.black, TextAnchor.MiddleCenter);
-        Cvs.addPanel("Victoire", new Vector3(-10, -10, 0), new Vector2(4, 1), Color.white);
-        Cvs.addText(Cvs.getPanel(2), "textVictoire", Cvs.getPanel(2).transform.position, new Vector2(16, 5), 1, 1, "Victoire", Color.black, TextAnchor.MiddleCenter);
+        Cvs.addPanel("Victoire", new Vector3(-10, -10, 0), new Vector2(22f, 13f), Color.white);
+        Cvs.getPanel(2).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Panel");
+        Cvs.addText(Cvs.getPanel(2), "textVictoire", Cvs.getPanel(2).transform.position, new Vector2(17, 6), 1, 1, "Victoire", Color.white ,TextAnchor.MiddleCenter);
         Cvs.addPanel("Changement", new Vector3(-10, -10, 0), new Vector2(21f, 12f), Color.white);
         Cvs.addText(Cvs.getPanel(3), "textchangement", Cvs.getPanel(3).transform.position, new Vector2(16, 5), 1, 1, "Changement Joueur", Color.black, TextAnchor.MiddleCenter);
-        Cvs.addPanel("HitPanel", new Vector3(-10, -10, 0), new Vector2(5f, 3f), new Color32(255, 255, 255, 150));
-        Cvs.addText(Cvs.getPanel(4), "texthit", Cvs.getPanel(4).transform.position, new Vector2(6, 2), 1, 1, "Touché", Color.black, TextAnchor.MiddleCenter);
-        Cvs.addPanel("MissPanel", new Vector3(-10, -10, 0), new Vector2(5f, 3f), new Color32(255, 255, 255, 150));
-        Cvs.addText(Cvs.getPanel(5), "textMiss", Cvs.getPanel(5).transform.position, new Vector2(6, 2), 1, 1, "Raté", Color.black, TextAnchor.MiddleCenter);
         Cvs.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Panel");
         Cvs.getPanel(3).AddComponent<TimerSlider>();
         Slider1 = GameObject.Find("Slider1");

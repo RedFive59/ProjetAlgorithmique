@@ -8,7 +8,7 @@ using System.IO;
 
 public class JeuBingo : MonoBehaviour
 {
-    private int ligne = 3, colonne = 9, nbgrilles = 1, score = 0, modeJeu = 0;
+    private int ligne = 3, colonne = 9, nbgrilles = 1, score = 0, modeJeu = 0, nombreTirage = 0;
     private string userName = "Anonyme";
     private Cartons[] grilles;
     private Cartons[] grillesSelection;
@@ -41,6 +41,7 @@ public class JeuBingo : MonoBehaviour
             this.fillImg = GameObject.Find("WaitBar").GetComponent<Image>();
 
             getStats();
+            //this.waitTime = 0;
 
             initBingo();
             creerBingo();
@@ -79,7 +80,7 @@ public class JeuBingo : MonoBehaviour
         if (gagne(this.modeJeu))
         {
             this.fini = true;
-            afficherBINGO(this.ObjectMenuGagne);
+            menuEndGame(this.ObjectMenuGagne, 1);
             //GameObject.Find("Bingo").SetActive(false);
             updateScore();
             if (this.userName != "Anonyme")
@@ -87,9 +88,14 @@ public class JeuBingo : MonoBehaviour
         }
         else
         {
-            this.score--;
-            GameObject score = GameObject.Find("Score");
-            score.transform.GetComponent<TextMeshProUGUI>().text = this.score.ToString();
+            if (this.tirage.Count == 0)
+                menuEndGame(this.ObjectMenuGagne, 8);
+            else
+            {
+                this.score--;
+                GameObject score = GameObject.Find("Score");
+                score.transform.GetComponent<TextMeshProUGUI>().text = this.score.ToString();
+            }
         }
     }
 
@@ -105,10 +111,11 @@ public class JeuBingo : MonoBehaviour
         name.transform.GetComponent<TextMeshProUGUI>().text = this.userName;
     }
 
-    private void afficherBINGO(GameObject parent)
+    private void menuEndGame(GameObject parent, int indexMenu)
     {
         Transform[] go = parent.GetComponentsInChildren<RectTransform>(true);
-        go[1].gameObject.SetActive(true);
+        go[indexMenu].gameObject.SetActive(true);
+        Debug.Log(go[indexMenu].name);
         GameObject.Find("Bingo").SetActive(false);
     }
 
@@ -332,7 +339,7 @@ public class JeuBingo : MonoBehaviour
         {
             int ind = Random.Range(0, this.tirage.Count);
             this.gridTirage.UpdateVal(this.tirage[ind]);
-            this.tire.Add(this.tirage[ind]);
+            this.nombreTirage = this.tirage[ind];
             this.tirage.RemoveAt(ind);
         }
     }
@@ -482,25 +489,28 @@ public class JeuBingo : MonoBehaviour
         int numGrille = ind[0] - 48;
         int n = ind[1] - 48;
         int m = ind[2] - 48;
-
-        if(grillesSelection[numGrille].getVal(n, m) != -1)
-        {
-            if (isSelect(numGrille, n, m))
-            {
-                grillesSelection[numGrille].setVal(n, m, 0);
-                changeColor(sprite, Color.white);
-            }
-            else
-            {
-                grillesSelection[numGrille].setVal(n, m, grilles[numGrille].getVal(n, m));
-                changeColor(sprite, Color.Lerp(Color.black, Color.grey, 0.6f));
-            }
-        }
-
         //debug pour verifier si la fonction gagne() fonctionne
-        //this.tire.Add(grilles[numGrille].getVal(n, m));
+        this.nombreTirage = grilles[numGrille].getVal(n, m);
 
-        if (!this.tire.Contains(grilles[numGrille].getVal(n, m)) && grilles[numGrille].getVal(n, m) != -1)
+        if (grilles[numGrille].getVal(n, m) == this.nombreTirage)
+        {
+            if (grillesSelection[numGrille].getVal(n, m) != -1)
+            {
+                if (isSelect(numGrille, n, m))
+                {
+                    grillesSelection[numGrille].setVal(n, m, 0);
+                    changeColor(sprite, Color.white);
+                }
+                else
+                {
+                    grillesSelection[numGrille].setVal(n, m, grilles[numGrille].getVal(n, m));
+                    changeColor(sprite, Color.Lerp(Color.black, Color.grey, 0.6f));
+                }
+            }
+            this.tire.Add(this.nombreTirage);
+            this.score++;
+        }
+        else
             this.score--;
     }
 

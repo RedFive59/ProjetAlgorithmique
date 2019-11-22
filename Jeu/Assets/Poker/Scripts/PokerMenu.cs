@@ -288,4 +288,20 @@ public class PokerMenu : MonoBehaviour
     {
         Destroy(gameSettings);
     }
+
+    public void switchLeaderboard()
+    {
+        GameObject Leaderboard = GameObject.Find("AffichageLeaderboard");
+        GameObject arrow = GameObject.Find("Fleche");
+        RectTransform pos = Leaderboard.GetComponent<RectTransform>();
+        if(pos.position.x == 0)
+        {
+            arrow.GetComponent<RectTransform>().transform.rotation = new Quaternion(0, 0, 90, 0);
+            pos.position = new Vector3(-460, 0, 0);
+        } else
+        {
+            arrow.GetComponent<RectTransform>().transform.rotation = new Quaternion(0, 0, 270, 0);
+            pos.position = new Vector3(0, 0, 0);
+        }
+    }
 }

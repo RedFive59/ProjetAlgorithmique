@@ -21,11 +21,14 @@ public class GameNavale : MonoBehaviour
         Cvs.addPanel("MarkerInstru2", new Vector3(27, 40.1f, 0), new Vector2(4, 1), new Color32(192, 72, 73, 255));
         Cvs.addText(Cvs.getPanel(1), "textMarker2", Cvs.getPanel(1).transform.position, new Vector2(11, 4), 1, 0.4f, "F2 : confirmer\nF3 : editer", Color.black, TextAnchor.MiddleCenter);
         Cvs.addPanel("Victoire", new Vector3(-10, -10, 0), new Vector2(22f, 13f), Color.white);
-        Cvs.getPanel(2).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Panel");
+        Cvs.getPanel(2).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/FinPartie");
         Cvs.addText(Cvs.getPanel(2), "textVictoire", Cvs.getPanel(2).transform.position, new Vector2(17, 6), 1, 1, "Victoire", Color.white ,TextAnchor.MiddleCenter);
         Cvs.addPanel("Changement", new Vector3(-10, -10, 0), new Vector2(21f, 12f), Color.white);
         Cvs.addText(Cvs.getPanel(3), "textchangement", Cvs.getPanel(3).transform.position, new Vector2(16, 5), 1, 1, "Changement Joueur", Color.black, TextAnchor.MiddleCenter);
         Cvs.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Panel");
+        Cvs.addPanel("Menu", new Vector3(VM.getCameraVM(1).transform.position.x,VM.getCameraVM(1).transform.position.y,0), new Vector2(21f, 12f), Color.white);
+        Cvs.addText(Cvs.getPanel(4), "textMenu", new Vector3(Cvs.getPanel(4).transform.position.x, Cvs.getPanel(4).transform.position.y+3,0), new Vector2(16, 5), 1, 1, "Lancer Partie\n->PRESS SPACE<-", Color.black, TextAnchor.UpperCenter);
+        Cvs.getPanel(4).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/MenuTest");
         Cvs.getPanel(3).AddComponent<TimerSlider>();
         Slider1 = GameObject.Find("Slider1");
         Slider1.transform.SetParent(Cvs.getPanel(3).transform, false);
@@ -37,6 +40,11 @@ public class GameNavale : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            GameObject.Find("Menu").transform.position = new Vector3(-50, -50, 0);
+        }
+
         if (Input.GetKeyDown(KeyCode.F1))
         {
 
@@ -82,4 +90,5 @@ public class GameNavale : MonoBehaviour
     public CanvasGenerator getCvsGN() {
         return Cvs;
     }
+
 }

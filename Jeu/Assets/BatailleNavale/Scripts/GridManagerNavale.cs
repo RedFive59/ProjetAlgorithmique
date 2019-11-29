@@ -81,9 +81,10 @@ public class GridManagerNavale
         if ((GridHolder.name[GridHolder.name.Length - 1] == '3') || ((GridHolder.name[GridHolder.name.Length - 1] == '4')))
         {
             t.AddComponent<BoxCollider2D>().autoTiling = true;//attache un collider 2D au sprite en le resizant automatiquement au sprite auquel il est attaché
+            t.GetComponent<BoxCollider2D>().enabled = false;
             t.AddComponent<Selection>();//attache au sprite le script selection
         }
-        t.transform.parent = GridHolder.transform;//range les cases d'eau dans l'objet auquel le script est lié (GridHodler)
+        t.transform.SetParent(GridHolder.transform, false);//range les cases d'eau dans l'objet auquel le script est lié (GridHodler)
     }
 
     void GenText(Vector3 pos, int i, int j, int v)
@@ -107,8 +108,8 @@ public class GridManagerNavale
         GameObject C= CameraM.getCameraC();
         return C;
     }
-    public Grille<int>  getGrille()
+    public GameObject getGO()
     {
-        return grille;
+        return GridHolder;
     }
 }

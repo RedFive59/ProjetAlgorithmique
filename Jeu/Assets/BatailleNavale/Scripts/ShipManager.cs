@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShipManager
 {
@@ -94,6 +95,7 @@ public class ShipManager
             }
         }
         CvsGN.setText(3, "Raté");
+        CvsGN.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Miss");
         return false;
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Selection : MonoBehaviour
 {
     private Color startColor; //var qui contiendra la couleur originale du sprite ciblé
+    private Sprite startSprite;
     private static bool selected = false;
     private VisualManager VM;
     private GameObject stk = null;
@@ -15,6 +16,7 @@ public class Selection : MonoBehaviour
         GN = GameObject.FindObjectOfType<GameNavale>();
         VM = GameObject.FindObjectOfType<VisualManager>();
         startColor = this.GetComponent<SpriteRenderer>().color;   //récupère la couleur original depuis le rendu du sprite auquel le script est attaché
+        startSprite= Resources.Load<Sprite>("Textures/WaterDiffuseMini2"); ;
     }
 
     void OnMouseOver()
@@ -44,7 +46,7 @@ public class Selection : MonoBehaviour
     {
         if (selected != true)
         {
-            this.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/WaterDiffuseMini2"); //la souris sort du sprite il reprend sa couleur d'origine
+            this.GetComponent<SpriteRenderer>().sprite = startSprite;
         }
     }
 
@@ -52,7 +54,7 @@ public class Selection : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            this.GetComponent<SpriteRenderer>().color = startColor;
+            this.GetComponent<SpriteRenderer>().sprite = startSprite;
             selected = false;
             stk = null;
         }
@@ -85,10 +87,13 @@ public class Selection : MonoBehaviour
            // VM.getShipM(2).checkTir(new Vector3(stk.transform.position.x + 30, stk.transform.position.y - 30, stk.transform.position.z));
             if (VM.getShipM(2).checkTir(new Vector3(stk.transform.position.x + 30, stk.transform.position.y - 30, stk.transform.position.z)) == true)
             {
+                this.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/CibleMini3");
+                startSprite = Resources.Load<Sprite>("Textures/CibleMini2"); ;
                 stk.GetComponent<SpriteRenderer>().color = Color.red;
                 startColor = Color.red;
                 return true;
             }
+            this.GetComponent<SpriteRenderer>().sprite = startSprite;
             startColor = Color.grey;
             stk.GetComponent<SpriteRenderer>().color = Color.grey;
             return false;
@@ -98,10 +103,14 @@ public class Selection : MonoBehaviour
             //VM.getShipM(1).checkTir(new Vector3(stk.transform.position.x - 30, stk.transform.position.y - 30, stk.transform.position.z));
             if (VM.getShipM(1).checkTir(new Vector3(stk.transform.position.x - 30, stk.transform.position.y - 30, stk.transform.position.z)) == true)
             {
+                this.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/CibleMini3");
+                startSprite = Resources.Load<Sprite>("Textures/CibleMini2");
                 stk.GetComponent<SpriteRenderer>().color = Color.red;
                 startColor = Color.red;
+                startSprite = Resources.Load<Sprite>("Textures/CibleMini3");
                 return true;
             }
+            this.GetComponent<SpriteRenderer>().sprite = startSprite;
             startColor = Color.grey;
             stk.GetComponent<SpriteRenderer>().color = Color.grey;
             return false;

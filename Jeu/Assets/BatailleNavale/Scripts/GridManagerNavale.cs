@@ -84,6 +84,7 @@ public class GridManagerNavale
             t.GetComponent<BoxCollider2D>().enabled = false;
             t.AddComponent<Selection>();//attache au sprite le script selection
         }
+        t.GetComponent<SpriteRenderer>().sortingLayerName = "SpriteLayer";
         t.transform.SetParent(GridHolder.transform, false);//range les cases d'eau dans l'objet auquel le script est lié (GridHodler)
     }
 
@@ -94,12 +95,12 @@ public class GridManagerNavale
         if (v > 10)
         {
             temp=System.Convert.ToString(System.Convert.ToChar(v));//convertit le int en char puis en string
-            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2,2),1,0.5f, temp, Color.black, TextAnchor.MiddleCenter);
+            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2,2),1,0.7f, temp, Color.white, TextAnchor.MiddleCenter);
         }
         else
         {
             temp=System.Convert.ToString(10-v);
-            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2, 2), 1,0.5f, temp, Color.black, TextAnchor.MiddleCenter);
+            Cvs.addText(Cvs.getCanvas(),"Cadre" + i + j, new Vector3(pos.x+i, pos.y+ j, pos.z+0), new Vector2(2, 2), 1,0.7f, temp, Color.white, TextAnchor.MiddleCenter);
         }
     }
 

@@ -5,10 +5,20 @@ using UnityEngine;
 public class Hitbox : MonoBehaviour
 {
     bool dessus = false;//Booléen indiquant si la souris est sur l'objet
+
+    FlipCard flipper;
+    Carte modele;
+
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+
+    void Awake()
+    {
+        modele = this.GetComponent<Carte>();
+        flipper = this.GetComponent<FlipCard>();
     }
 
     // Update is called once per frame
@@ -26,23 +36,24 @@ public class Hitbox : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             //GameObject tile = GameObject.Find(hit.transform.gameObject.name);
-            if(this.name == hit.transform.gameObject.name){
-                if (!dessus)
-                {//À modifier pour l'animation
-                    gameObject.GetComponent<SpriteRenderer>().sprite = gameObject.GetComponent<Carte>().cardFace;
+            if (this.name == hit.transform.gameObject.name)
+            {
+                if (!dessus) //!dessus
+                {
+                    flipper.flipCard(modele.cardBack, modele.cardFace);
                     //print("Flip " + hit.transform.gameObject.name);
                     dessus = true;
                 }
-            }   
+            }
         }
-        else
-        {
-            if (dessus)
-            {//À modifier pour l'animation
-                gameObject.GetComponent<SpriteRenderer>().sprite = gameObject.GetComponent<Carte>().cardBack;
+        //else
+        //{
+            if (dessus) //dessus //Input.GetKeyDown(KeyCode.DownArrow)
+            {
+                flipper.flipCard(modele.cardFace, modele.cardBack);
                 //print("Flip inverse " + this.name);
                 dessus = false;
             }
-        }
+        //}
     }
 }

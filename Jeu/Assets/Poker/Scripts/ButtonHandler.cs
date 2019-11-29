@@ -17,6 +17,7 @@ public class ButtonHandler : MonoBehaviour
     }
     public void seCoucher()
     {
+        GestionSons.Instance.SonFlip();
         Poker p = FindObjectOfType<Poker>();
         int tour = p.getTour();
         p.joueursManche.Remove(p.joueursManche[tour]);
@@ -54,6 +55,7 @@ public class ButtonHandler : MonoBehaviour
     }
     public void suivre()
     {
+        GestionSons.Instance.SonJetons();
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
         Joueur j = p.joueursManche[p.getTour()].GetComponent<Joueur>(); 
         int x = j.getBourse() - (Poker.miseManche - j.mise);
@@ -71,6 +73,7 @@ public class ButtonHandler : MonoBehaviour
     }
     public void relancer()
     {
+        GestionSons.Instance.SonJetons();
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
         Joueur j = p.joueursManche[p.getTour()].GetComponent<Joueur>();
         Slider s = GameObject.Find("Slider").GetComponent<Slider>();
@@ -82,6 +85,7 @@ public class ButtonHandler : MonoBehaviour
     }
     public void ts()
     {
+        GestionSons.Instance.SonJetons();
         Poker p = FindObjectOfType<Poker>();
         int tour = p.getTour();
         if (tour == p.joueursManche.Count - 1)

@@ -12,7 +12,7 @@ public class Hitbox : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     void Awake()
@@ -29,6 +29,12 @@ public class Hitbox : MonoBehaviour
             select();
         } 
     }
+
+    void OnMouseEnter()
+    {
+        GestionSons.Instance.SonFlip();
+    }
+
     private void select()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

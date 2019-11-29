@@ -96,7 +96,7 @@ public class MagManager
                 }
                 VM.switchPlayer();
                 Cvs.disable();
-                VM.EnableCvs();
+                VM.EnableCvs(cam.gameObject.name[cam.gameObject.name.Length-1]-48);
                 return true;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ship
 {
@@ -116,11 +117,13 @@ public class Ship
                 {
                     Debug.Log("Coulé");
                     CvsGN.setText(3, namex + " coulé");
-                }
+                    CvsGN.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Sinking");
+        }
                 else
                 {
                     Debug.Log("Touché");
                     CvsGN.setText(3, "touché");
+                    CvsGN.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Hit");
         }
         if ((VM.getCameraVM(1).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(3).GetComponent<Camera>().enabled == true))
         {

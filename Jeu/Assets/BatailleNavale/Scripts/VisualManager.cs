@@ -172,10 +172,23 @@ public class VisualManager : MonoBehaviour
         }
     }
 
-    public void EnableCvs()
+    public void EnableCvs(int x)
     {
-        Cvs.getCanvas().GetComponent<Canvas>().enabled = true;
-        Cvs2.getCanvas().GetComponent<Canvas>().enabled = true;
+        if ((x == 1)||(x == 3))
+        {
+            for (int i = 1; i < 10 * 10+1; i++)
+            {
+                GMN3.getGO().transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            }
+        }
+        else
+        {
+            for (int i = 1; i < 10 * 10+1; i++)
+            {
+                GMN4.getGO().transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            }
+        }
+
     }
 
     // Update is called once per frame

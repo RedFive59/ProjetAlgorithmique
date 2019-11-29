@@ -42,6 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BGLayer
+    uniqueID: 3043957521
+    locked: 0
   - name: SpriteLayer
     uniqueID: 2611808935
     locked: 0
@@ -53,4 +56,7 @@ TagManager:
     locked: 0
   - name: ShipLayer
     uniqueID: 2777634333
+    locked: 0
+  - name: UILayer
+    uniqueID: 4177976937
     locked: 0

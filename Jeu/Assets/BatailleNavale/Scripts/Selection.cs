@@ -21,7 +21,7 @@ public class Selection : MonoBehaviour
     {
         if (selected != true)
         {
-            this.GetComponent<SpriteRenderer>().color = new Color32(133, 75, 222, 255); ; //la souris est sur le sprite sa nouvelle couleur devient rouge
+            this.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/CibleMini2"); //la souris est sur le sprite sa nouvelle couleur devient rouge
         }
     }
 
@@ -31,7 +31,7 @@ public class Selection : MonoBehaviour
         {
             selected = true;
             stk = this.gameObject;
-            this.GetComponent<SpriteRenderer>().color = Color.green;
+            this.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/CibleMini3");
         }
     }
 
@@ -44,7 +44,7 @@ public class Selection : MonoBehaviour
     {
         if (selected != true)
         {
-            this.GetComponent<SpriteRenderer>().color = startColor; //la souris sort du sprite il reprend sa couleur d'origine
+            this.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/WaterDiffuseMini2"); //la souris sort du sprite il reprend sa couleur d'origine
         }
     }
 

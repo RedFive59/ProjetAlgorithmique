@@ -107,7 +107,7 @@ public class Selection : MonoBehaviour
                 startSprite = Resources.Load<Sprite>("Textures/CibleMini2");
                 stk.GetComponent<SpriteRenderer>().color = Color.red;
                 startColor = Color.red;
-                startSprite = Resources.Load<Sprite>("Textures/CibleMini3");
+               // startSprite = Resources.Load<Sprite>("Textures/CibleMini3");
                 return true;
             }
             this.GetComponent<SpriteRenderer>().sprite = startSprite;

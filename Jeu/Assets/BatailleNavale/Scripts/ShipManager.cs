@@ -102,7 +102,8 @@ public class ShipManager
         GameObject marquer = new GameObject("rate" +V.x+V.y);
         marquer.transform.position = V;
         marquer.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/WaterDiffuseMini2");
-        marquer.GetComponent<SpriteRenderer>().color = new Color32(255, 165, 81, 255);
+        //marquer.GetComponent<SpriteRenderer>().color = new Color32(255, 165, 81, 255);
+        marquer.GetComponent<SpriteRenderer>().color = Color.grey; ;
         marquer.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
         CvsGN.setText(3, "Raté");
         CvsGN.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Miss");

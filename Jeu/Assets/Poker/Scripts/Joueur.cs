@@ -9,6 +9,10 @@ public class Joueur : MonoBehaviour
     public List<GameObject> main;//Main du joueur
     public int mise = 0;//Mise d'argent que le joueur a misé cette manche
     private int bourse;//Bourse totale du joueur
+    public bool aPasse = false;//Indique si le joueur a passé
+    public bool aJoue = false;//Indique si le joueur a joué
+    public bool isSmallBlind = false;//Indique si le joueur possède le jeton de la petite blinde
+    public bool isBigBlind = false;//Indique si le joueur possède le jeton de la grosse blinde
     public Combinaison combinaison = Combinaison.Hauteur;//Combinaison la plus haute que possède le joueur
     public List<Carte> l = new List<Carte>();//Liste des cartes composant la combinaison 
 
@@ -52,7 +56,7 @@ public class Joueur : MonoBehaviour
             mise = this.bourse;
         }
     }
-    public void determinaisonCombinaison()
+    public void determinaisonCombinaison()//Détermine la combinaison du joueur
     {
         List<Carte> liste = new List<Carte>();
         foreach (GameObject g in this.main)
@@ -362,7 +366,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public static Carte max(List<Carte> liste)
+    public static Carte max(List<Carte> liste)//Détermine la carte la plus haute de ma liste
     {
         Carte max = liste[0];
         for(int i = 1; i < liste.Count; i++)

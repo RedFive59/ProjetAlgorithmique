@@ -455,13 +455,16 @@ public class Poker : MonoBehaviour
         panel.SetActive(true);
         text.GetComponent<TextMeshProUGUI>().text = gagnant + " a gagné";
         text.GetComponent<TextMeshProUGUI>().enabled = true;
+        GameObject.Find("IncBlind").GetComponent<TextMeshProUGUI>().text = "Augmentation des blindes : " + smallBlind + " / " + bigBlind;
+        GameObject.Find("IncBlind").GetComponent<TextMeshProUGUI>().enabled = true;
         foreach (GameObject c in joueurs[tour].GetComponent<Joueur>().main)
         {
             c.GetComponent<BoxCollider>().enabled = false;
         }
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
         panel.SetActive(false);
         text.GetComponent<TextMeshProUGUI>().enabled = false;
+        GameObject.Find("IncBlind").GetComponent<TextMeshProUGUI>().enabled = false;
         foreach (GameObject c in joueurs[tour].GetComponent<Joueur>().main)
         {
             c.GetComponent<BoxCollider>().enabled = true;

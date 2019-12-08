@@ -100,23 +100,23 @@ public class Affichage : MonoBehaviour
         int x = Poker.miseManche - j.mise;
         if (x == j.getBourse())
         {
-            GameObject.Find("Suivre").transform.GetChild(0).GetComponent<Text>().text = "Tapis";
+            GameObject.Find("Suivre").transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Tapis";
             GameObject.Find("Relancer").GetComponent<Button>().interactable = false;
             //GameObject.Find("Se coucher").GetComponent<Button>().interactable = false;
         }
         else
         {
-            GameObject.Find("Suivre").transform.GetChild(0).GetComponent<Text>().text = "Suivre : " + (Poker.miseManche - j.mise);
+            GameObject.Find("Suivre").transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Suivre : " + (Poker.miseManche - j.mise);
             GameObject.Find("Relancer").GetComponent<Button>().interactable = true;
             GameObject.Find("Se coucher").GetComponent<Button>().interactable = true;
         }
         if(s.value != 0 && s.value == s.maxValue)
         {
-            GameObject.Find("Relancer").transform.GetChild(0).GetComponent<Text>().text = "Tapis";
+            GameObject.Find("Relancer").transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Tapis";
         }
         else
         {
-            GameObject.Find("Relancer").transform.GetChild(0).GetComponent<Text>().text = "Relancer : " + (int)s.value;
+            GameObject.Find("Relancer").transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Relancer : " + (int)s.value;
         }
     }
     public void updateAffichageNomJoueur()//Permet l'affichage du bon nom du joueur

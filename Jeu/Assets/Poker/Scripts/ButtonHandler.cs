@@ -88,5 +88,6 @@ public class ButtonHandler : MonoBehaviour
                 p.setTour((p.getTour() + 1) % liste.Count);
             } while (liste[p.getTour()].GetComponent<Joueur>().aPasse);
         }
+        liste[p.getTour()].GetComponent<Joueur>().determinaisonCombinaison();
     }
 }

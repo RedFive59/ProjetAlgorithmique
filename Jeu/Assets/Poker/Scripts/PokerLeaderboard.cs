@@ -21,7 +21,7 @@ public class PokerLeaderboard : MonoBehaviour
     void Start()
     {
         nombreColonnes = 3; // Nombre de colonnes de votre leaderboard
-        filePath = "fichier Leaderboard Poker"; // Définition du chemin du fichier     AJOUTER LE CHEMIN DU FICHIER
+        filePath = Path.Combine(Application.dataPath, "StreamingAssets/Leaderboard/leaderboardPoker.json"); // Définition du chemin du fichier     AJOUTER LE CHEMIN DU FICHIER
         leaderboard = GameObject.Find("Leaderboard");
         boardRef = GameObject.Find("BoardReference");
         parent = GameObject.Find("Content");
@@ -29,7 +29,7 @@ public class PokerLeaderboard : MonoBehaviour
         {
             var loadedData = JSON.Parse(File.ReadAllText(filePath)); // Répartition des données dans loadedData
             history = new string[loadedData["history"].Count, nombreColonnes];
-            updateLeaderboard();
+            if(gameObject.name != "Poker") updateLeaderboard();
         }
         else Debug.LogError("Chargement de " + filePath + " impossible");
     }
@@ -181,5 +181,31 @@ public class PokerLeaderboard : MonoBehaviour
             res = _sortArray[x, col].CompareTo(_sortArray[y, col]);
             return res;
         }
+    }
+    public void ajoutDonneesLeaderboard(string nom, string classement, string nbManche, int score)
+    {
+        Poker p = GameObject.Find("Poker").GetComponent<Poker>();
+        if (File.Exists(filePath))
+        {
+            var loadedData = JSON.Parse(File.ReadAllText(filePath)); // Répartition des données dans loadedData
+            if (loadedData["history"] || loadedData["history"].Count == 0)
+            {
+                string res = "{\n\t//Historique des games de Sudoku\n\t\"history\": [\n\t\t[ \"" + nom + "\", \"" + classement + "\", \"" + nbManche + "\", \"" + score.ToString() + "\" ]\n\t]\n}";
+                File.WriteAllText(filePath, res);
+            }
+            else
+            {
+                int line_to_edit = 3 + loadedData["history"].Count;
+                string newText = (",\n\t\t[ \"" + nom + "\", \"" + classement + "\", \"" + nbManche + "\", \"" + score.ToString() + "\" ]");
+                lineChanger(newText, filePath, line_to_edit);
+            }
+        }
+        else Debug.Log("Fichier " + filePath + " introuvable");
+    }
+    static void lineChanger(string newText, string fileName, int line_to_edit)
+    {
+        string[] arrLine = File.ReadAllLines(fileName);
+        arrLine[line_to_edit - 1] = arrLine[line_to_edit - 1] + newText;
+        File.WriteAllLines(fileName, arrLine);
     }
 }

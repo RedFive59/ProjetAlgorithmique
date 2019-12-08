@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Poker : MonoBehaviour
 {
@@ -23,12 +24,14 @@ public class Poker : MonoBehaviour
     public int bigBlind;//Valeur de la grosse blinde
     public GameObject panel;//GameObject permettant de bloquer toutes interactions
     public GameObject text;//Texte d'affichage du/des gagnant(s)
+    public string nomDuGagnant;//Stocke le nom du gagnant de la partie
 
     // Start is called before the first frame update
     void Start()
     {
         updateInfosMenu();
         startGame();
+        DontDestroyOnLoad(gameObject);
         //StartCoroutine(affichageGagnant("Nicolas"));
     }
 
@@ -256,7 +259,7 @@ public class Poker : MonoBehaviour
             y--;
         }
     }
-    public string quiGagne()//Désigne le joueur gagnant et modifie sa bourse en conséquence
+    public List<Joueur> quiGagne()//Désigne le joueur gagnant et modifie sa bourse en conséquence
     {
         List<GameObject> joueursManche = new List<GameObject>();
         foreach(GameObject g in joueurs)
@@ -306,10 +309,10 @@ public class Poker : MonoBehaviour
                 return victoire(gagnants);
         }
     }
-    public string victoire(List<Joueur> j)//Attribue au joueur j une nouvelle bourse correspondant à la somme de toutes les mises
+    public List<Joueur> victoire(List<Joueur> j)//Attribue au joueur j une nouvelle bourse correspondant à la somme de toutes les mises
     {
         int x = 0;
-        string s = "Victoire de ";
+        List<Joueur> gagnant = new List<Joueur>();
         foreach(GameObject g in this.joueurs)
         {
             x += g.GetComponent<Joueur>().mise;
@@ -318,31 +321,25 @@ public class Poker : MonoBehaviour
         foreach (Joueur a in j)
         {
             a.setBourse(a.getBourse() + x/j.Count);
+            gagnant.Add(a);
         }
-        for (int i = 0; i < j.Count; i++)
-        {
-            if(i == j.Count - 1)
-            {
-                s = j[i].GetComponent<Joueur>().nom;
-            }
-            else
-            {
-                s = j[i].GetComponent<Joueur>().nom + " et ";
-            }
-        }
-        return s;
+        return gagnant;
     }
     public void nouvelleManche()//Gère la fin d'une manche en décidant si on relance une partie ou si le jeu s'arrête car un joueur a gagné
     {
-        string s = quiGagne();
+        List<Joueur> list = quiGagne();
         int joueursRestant = 0;
+        bool b = true;
+        if (nombreDeJoueurPasse() == nbJoueurs - 1) b = false;
         foreach(GameObject g in joueurs)
         {
             if (g.GetComponent<Joueur>().getBourse() > 0)
             {
                 g.GetComponent<Joueur>().aPasse = false;
                 g.GetComponent<Joueur>().aJoue = false;
+                g.GetComponent<Joueur>().nbManche++;
                 joueursRestant++;
+                nomDuGagnant = g.GetComponent<Joueur>().nom;
             }
             else g.GetComponent<Joueur>().aPasse = true;
         }
@@ -356,8 +353,9 @@ public class Poker : MonoBehaviour
             shuffle(this.deck);
             moveBlind();
             distribution();
-            this.tour = 0;
-            StartCoroutine(affichageGagnant(s));
+            tour = nbJoueurs-1;
+            gameObject.GetComponent<ButtonHandler>().ts();
+            StartCoroutine(affichageGagnant(list,b,false));
             /*foreach (GameObject g in this.joueurs)
             {
                 Joueur j = g.GetComponent<Joueur>();
@@ -382,12 +380,21 @@ public class Poker : MonoBehaviour
         }
         else
         {
-            finDeJeu();
+            StartCoroutine(affichageGagnant(list, b,true));
         }
     }
     public void finDeJeu()//Fonction utilisée pour mettre fin au jeu
     {
-        print("Fin du jeu");
+        triClasssement();
+        for(int i = 0; i < nbJoueurs; i++)
+        {
+            
+            Joueur j = joueurs[i].GetComponent<Joueur>();
+            int score = ((j.nbManche*10)/(6 - nbJoueurs)) * (2500/BOURSEDEPART);
+            gameObject.GetComponent<PokerLeaderboard>().ajoutDonneesLeaderboard(j.nom,(i+1) + " / " + nbJoueurs,j.nbManche.ToString(),score);
+            print(j.nom);
+        }
+        SceneManager.LoadScene("Victoire");
     }
     public int nombreDeJoueurPasse()//Indique le nombre de joueur qui se sont couchés
     {
@@ -440,34 +447,105 @@ public class Poker : MonoBehaviour
     public void moveBlind()//Passe la blinde au joueur suivant
     {
         int small = 0, big = 0;
+        bool c1 = true, c2 = true;
         for(int i = 0; i < nbJoueurs; i++)
         {
-            if (joueurs[i].GetComponent<Joueur>().isSmallBlind) small = i;
-            if (joueurs[i].GetComponent<Joueur>().isBigBlind) big = i;
+            if (joueurs[i].GetComponent<Joueur>().isSmallBlind)
+            {
+                small = i;
+                joueurs[i].GetComponent<Joueur>().isSmallBlind = false;
+            }
+            if (joueurs[i].GetComponent<Joueur>().isBigBlind)
+            {
+                big = i;
+                joueurs[i].GetComponent<Joueur>().isBigBlind = false;
+            }
         }
-        joueurs[big].GetComponent<Joueur>().isBigBlind = false;
-        joueurs[(nbJoueurs + big - 1) % nbJoueurs].GetComponent<Joueur>().isBigBlind = true;
-        joueurs[small].GetComponent<Joueur>().isSmallBlind = false;
-        joueurs[(nbJoueurs + small - 1) % nbJoueurs].GetComponent<Joueur>().isSmallBlind = true;
+        for(int i = 1; i <= nbJoueurs - 1; i++)
+        {
+            if (!joueurs[(nbJoueurs + small - i) % nbJoueurs].GetComponent<Joueur>().aPasse && c1)
+            {
+                c1 = false;
+                joueurs[(nbJoueurs + small - i) % nbJoueurs].GetComponent<Joueur>().isSmallBlind = true;
+                joueurs[(nbJoueurs + small - i) % nbJoueurs].GetComponent<Joueur>().isBigBlind = false;
+            }
+            if (!joueurs[(nbJoueurs + big - i) % nbJoueurs].GetComponent<Joueur>().aPasse && c2)
+            {
+                c2 = false;
+                joueurs[(nbJoueurs + big - i) % nbJoueurs].GetComponent<Joueur>().isSmallBlind = false;
+                joueurs[(nbJoueurs + big - i) % nbJoueurs].GetComponent<Joueur>().isBigBlind = true;
+            }
+            if (!c1 && !c2) break;
+        }
     }
-    public IEnumerator affichageGagnant(string gagnant)//Transition quand quelqu'un gagne
+    public IEnumerator affichageGagnant(List<Joueur> j, bool b, bool d)//Transition quand quelqu'un gagne
     {
+        string comb="", gagnant = "";
+        for (int i=0; i < j.Count; i++)
+        {
+            if(i == j.Count - 1)
+            {
+                gagnant = gagnant + j[i].nom;
+                comb = j[i].combinaison.ToString();
+            }
+            else gagnant = gagnant + j[i].nom +", ";
+        }
         panel.SetActive(true);
+        if (b)
+        {
+            GameObject.Find("Combinaison").GetComponent<TextMeshProUGUI>().text = "Avec " + j[0].combinaisonToString();
+        }
+        else
+        {
+            GameObject.Find("Combinaison").GetComponent<TextMeshProUGUI>().text = "Car tout le monde s'est couché";
+        }
+        GameObject.Find("Combinaison").GetComponent<TextMeshProUGUI>().enabled = true;
         text.GetComponent<TextMeshProUGUI>().text = gagnant + " a gagné";
         text.GetComponent<TextMeshProUGUI>().enabled = true;
-        GameObject.Find("IncBlind").GetComponent<TextMeshProUGUI>().text = "Augmentation des blindes : " + smallBlind + " / " + bigBlind;
-        GameObject.Find("IncBlind").GetComponent<TextMeshProUGUI>().enabled = true;
+        if (!d)
+        {
+            GameObject.Find("IncBlind").GetComponent<TextMeshProUGUI>().text = "Augmentation des blindes : " + smallBlind + " / " + bigBlind;
+            GameObject.Find("IncBlind").GetComponent<TextMeshProUGUI>().enabled = true;
+        }
         foreach (GameObject c in joueurs[tour].GetComponent<Joueur>().main)
         {
             c.GetComponent<BoxCollider>().enabled = false;
         }
-        yield return new WaitForSeconds(2);
+        if (d)
+        {
+            rassemblementDeck();
+        }
+        yield return new WaitForSeconds(3);
         panel.SetActive(false);
         text.GetComponent<TextMeshProUGUI>().enabled = false;
         GameObject.Find("IncBlind").GetComponent<TextMeshProUGUI>().enabled = false;
+        GameObject.Find("Combinaison").GetComponent<TextMeshProUGUI>().enabled = false;
         foreach (GameObject c in joueurs[tour].GetComponent<Joueur>().main)
         {
             c.GetComponent<BoxCollider>().enabled = true;
+        }
+        if (d)
+        {
+            finDeJeu();
+        }
+    }
+    public void triClasssement()//Tri les joueurs dans l'ordre du gagnant au perdant
+    {
+        int max;
+        GameObject tempo;
+        for (int i = 0; i < nbJoueurs - 1; i++)
+        {
+            max = i;
+            for(int j = i; j < nbJoueurs; j++)
+            {
+                if(joueurs[j].GetComponent<Joueur>().nbManche >= joueurs[max].GetComponent<Joueur>().nbManche)
+                {
+                    max = j;
+                }
+            }
+            tempo = joueurs[i];
+            joueurs[i] = joueurs[max];
+            joueurs[max] = tempo;
         }
     }
 }

@@ -14,7 +14,9 @@ public class Joueur : MonoBehaviour
     public bool isSmallBlind = false;//Indique si le joueur possède le jeton de la petite blinde
     public bool isBigBlind = false;//Indique si le joueur possède le jeton de la grosse blinde
     public Combinaison combinaison = Combinaison.Hauteur;//Combinaison la plus haute que possède le joueur
-    public List<Carte> l = new List<Carte>();//Liste des cartes composant la combinaison 
+    public List<Carte> l = new List<Carte>();//Liste des cartes composant la combinaison
+    public int nbManche = 0;//Indique le nombre de manches jouées
+
 
     // Start is called before the first frame update
     void Start()
@@ -374,5 +376,19 @@ public class Joueur : MonoBehaviour
             if (liste[i].superieurA(max)) max = liste[i];
         }
         return max;
+    }
+    public string combinaisonToString()
+    {
+        string s = combinaison.ToString();
+        /*if (combinaison == Combinaison.Hauteur)
+        {
+            s += " de " + main[0].name+ " et " + main[1].name;
+        }
+        else
+        {
+            s += " de " + l[0].getValeur();
+        }*/
+        print(s);
+        return s;
     }
 }

@@ -6,6 +6,7 @@ public class Joueur : MonoBehaviour
 {
     //Attributs
     public string nom;//Nom du joueur
+    public bool couche = false;//Indique si le joueur est couché ou non
     public List<GameObject> main;//Main du joueur
     public int mise = 0;//Mise d'argent que le joueur a misé cette manche
     private int bourse;//Bourse totale du joueur

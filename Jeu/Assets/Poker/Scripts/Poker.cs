@@ -72,12 +72,12 @@ public class Poker : MonoBehaviour
         }
         else //Paramètres si lancement sans menu
         {
-            nbJoueurs = 5;
+            nbJoueurs = 2;
             this.nomJoueur = new string[nbJoueurs];
             BOURSEDEPART = 3000;
             for(int i = 0; i < nbJoueurs; i++)
             {
-                this.nomJoueur[i] = "Joueur " + (i+1);
+                this.nomJoueur[i] = "Joueur  " + (i+1);
             }
         }
         Destroy(gameSettings);
@@ -388,7 +388,6 @@ public class Poker : MonoBehaviour
         triClasssement();
         for(int i = 0; i < nbJoueurs; i++)
         {
-            
             Joueur j = joueurs[i].GetComponent<Joueur>();
             int score = ((j.nbManche*10)/(6 - nbJoueurs)) * (2500/BOURSEDEPART);
             gameObject.GetComponent<PokerLeaderboard>().ajoutDonneesLeaderboard(j.nom,(i+1) + " / " + nbJoueurs,j.nbManche.ToString(),score);

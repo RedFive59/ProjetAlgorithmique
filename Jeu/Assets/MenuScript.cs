@@ -16,16 +16,19 @@ public class MenuScript : MonoBehaviour
     
     void Start()
     {
-        filePathSudoku = defineSudoku.cheminLeaderboard; // Définition du chemin du fichier
-        leaderboard = GameObject.Find("Leaderboard");
-        boardRef = GameObject.Find("BoardReference");
-        parent = GameObject.Find("Content");
-        if (File.Exists(filePathSudoku))
+        if(SceneManager.GetActiveScene().name == "MainMenu")
         {
-            var loadedData = JSON.Parse(File.ReadAllText(filePathSudoku)); // Répartition des données dans loadedData
-            updateLeaderboard();
+            filePathSudoku = defineSudoku.cheminLeaderboard; // Définition du chemin du fichier
+            leaderboard = GameObject.Find("Leaderboard");
+            boardRef = GameObject.Find("BoardReference");
+            parent = GameObject.Find("Content");
+            if (File.Exists(filePathSudoku))
+            {
+                var loadedData = JSON.Parse(File.ReadAllText(filePathSudoku)); // Répartition des données dans loadedData
+                updateLeaderboard();
+            }
+            else Debug.LogError("Chargement de " + filePathSudoku + " impossible");
         }
-        else Debug.LogError("Chargement de " + filePathSudoku + " impossible");
     }
     private void Awake()
     {

@@ -20,7 +20,7 @@ public class LeaderboardManager : MonoBehaviour
     // Méthode appelé au lancement de la scène SudokuMenu
     void Start()
     {
-        nombreColonnes = 3; // Nombre de colonnes de votre leaderboard
+        nombreColonnes = 4; // Nombre de colonnes de votre leaderboard
         filePath = defineSudoku.cheminLeaderboard; // Définition du chemin du fichier
         leaderboard = GameObject.Find("Leaderboard");
         boardRef = GameObject.Find("BoardReference");

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ValueChanger : MonoBehaviour
 {
@@ -12,18 +13,18 @@ public class ValueChanger : MonoBehaviour
 
     public void changeValueFromSlider()
     {
-        GameObject.Find(placeholderName).GetComponent<Text>().text = "";
-        GameObject.Find(inputName).GetComponent<InputField>().text = GameObject.Find(sliderName).GetComponent<Slider>().value.ToString();
+        GameObject.Find(placeholderName).GetComponent<TextMeshProUGUI>().text = "";
+        GameObject.Find(inputName).GetComponent<TMP_InputField>().text = GameObject.Find(sliderName).GetComponent<Slider>().value.ToString();
         valeur = (int) GameObject.Find(sliderName).GetComponent<Slider>().value;
     }
 
     public void changeValueFromInput()
     {
-        if(GameObject.Find(inputName).GetComponent<InputField>().text != "")
+        if(GameObject.Find(inputName).GetComponent<TMP_InputField>().text != "")
         {
-            if (int.Parse(GameObject.Find(inputName).GetComponent<InputField>().text) > GameObject.Find(sliderName).GetComponent<Slider>().maxValue) GameObject.Find(inputName).GetComponent<InputField>().text = ((int)GameObject.Find(sliderName).GetComponent<Slider>().maxValue).ToString();
-            GameObject.Find(sliderName).GetComponent<Slider>().value = int.Parse(GameObject.Find(inputName).GetComponent<InputField>().text);
-            valeur = int.Parse(GameObject.Find(inputName).GetComponent<InputField>().text);
+            if (int.Parse(GameObject.Find(inputName).GetComponent<TMP_InputField>().text) > GameObject.Find(sliderName).GetComponent<Slider>().maxValue) GameObject.Find(inputName).GetComponent<TMP_InputField>().text = ((int)GameObject.Find(sliderName).GetComponent<Slider>().maxValue).ToString();
+            GameObject.Find(sliderName).GetComponent<Slider>().value = int.Parse(GameObject.Find(inputName).GetComponent<TMP_InputField>().text);
+            valeur = int.Parse(GameObject.Find(inputName).GetComponent<TMP_InputField>().text);
         }
     }
 

@@ -14,11 +14,10 @@ public class OptionSlider : MonoBehaviour
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
         Slider s = GameObject.Find("Slider").GetComponent<Slider>();
-        Joueur j = p.joueursManche[p.getTour()].GetComponent<Joueur>();
+        Joueur j = p.joueurs[p.getTour()].GetComponent<Joueur>();
         int maxvalue = j.getBourse() - (Poker.miseManche - j.mise);
         if (maxvalue >= 0)
         {
-            print(j.getBourse());
             s.maxValue = maxvalue;
         }
         else

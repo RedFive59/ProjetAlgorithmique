@@ -5,57 +5,26 @@ using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
-    public void max()
+    public void max()//Mets le slider à sa valeur maximale
     {
         Slider s = GameObject.Find("Slider").GetComponent<Slider>();
         s.value = s.maxValue;
     }
-    public void min()
+    public void min()//Mets le slider à sa valeur minimale
     {
         Slider s = GameObject.Find("Slider").GetComponent<Slider>();
         s.value = s.minValue;
     }
-    public void seCoucher()
+    public void seCoucher()//Permet au joueur de se coucher
     {
         Poker p = FindObjectOfType<Poker>();
-        int tour = p.getTour();
-        p.joueursManche.Remove(p.joueursManche[tour]);
-        if(p.joueursManche.Count == 1)
-        {
-            while(p.tourGlobal < 3)
-            {
-                if(p.tourGlobal == 0)
-                {
-                    p.flopper(); p.flopper();
-                }
-                p.flopper();
-                p.tourGlobal++;
-            }
-            p.nouvelleManche();
-        }
-        else if(tour == p.joueursManche.Count)
-            {
-                if (p.tourGlobal == 0)
-                {
-                    p.tourGlobal++;
-                    p.flopper(); p.flopper(); p.flopper();
-                }
-                else if (p.tourGlobal < 3 )
-                     {
-                        p.tourGlobal++;
-                        p.flopper();
-                     }
-                     else
-                     {
-                        p.nouvelleManche();
-                     }
-                p.setTour(0);
-            }
+        p.joueurs[p.getTour()].GetComponent<Joueur>().aPasse = true;
+        ts();
     }
-    public void suivre()
+    public void suivre()//Permet au joueur de suivre la mise
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
-        Joueur j = p.joueursManche[p.getTour()].GetComponent<Joueur>(); 
+        Joueur j = p.joueurs[p.getTour()].GetComponent<Joueur>(); 
         int x = j.getBourse() - (Poker.miseManche - j.mise);
         if(x >= 0)
         {
@@ -67,42 +36,58 @@ public class ButtonHandler : MonoBehaviour
             j.mise += j.getBourse();
             j.diminuerBourse(j.getBourse());
         }
+        j.aJoue = true;
         ts();
     }
-    public void relancer()
+    public void relancer()//Permet au joueur de relancer d'une mise égale au montant du slider
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
-        Joueur j = p.joueursManche[p.getTour()].GetComponent<Joueur>();
+        Joueur j = p.joueurs[p.getTour()].GetComponent<Joueur>();
         Slider s = GameObject.Find("Slider").GetComponent<Slider>();
         int valeur = (int)s.value;
+        p.setJoueursAJoue(false);
         suivre();
         j.diminuerBourse(valeur);
         Poker.miseManche += valeur;
         j.mise = Poker.miseManche;
     }
-    public void ts()
+    public void ts()//Permet de passer au joueur suivant
     {
         Poker p = FindObjectOfType<Poker>();
-        int tour = p.getTour();
-        if (tour == p.joueursManche.Count - 1)
+        List<GameObject> liste = p.joueurs;
+        if (p.tourGlobal >= 3 || p.nombreDeJoueurPasse() == liste.Count - 1)
         {
-            if(p.tourGlobal == 0)
-            {
-                p.tourGlobal++;
-                p.flopper(); p.flopper(); p.flopper();
-            }
-            else if(p.tourGlobal < 3)
-            {
-                p.tourGlobal++;
-                p.flopper();
-            }
-            else
-            {
-                p.nouvelleManche();
-                return;
-            }
-            
+            p.nouvelleManche();
         }
-        p.setTour((tour + 1) % p.joueursManche.Count);
+        else
+        {
+            do
+            {
+                if (p.toutLeMondeAJoue())
+                {
+                    if (p.tourGlobal == 0)
+                    {
+                        p.flopper(3);
+                        p.setJoueursAJoue(false);
+                    }
+                    else
+                    {
+                        if (p.tourGlobal < 3)
+                        {
+                            p.flopper(1);
+                            p.setJoueursAJoue(false);
+                        }
+                        else
+                        {
+                            p.nouvelleManche();
+                            break;
+                        }
+                    }
+                    p.tourGlobal++;
+                }
+                p.setTour((p.getTour() + 1) % liste.Count);
+            } while (liste[p.getTour()].GetComponent<Joueur>().aPasse);
+        }
+        liste[p.getTour()].GetComponent<Joueur>().determinaisonCombinaison();
     }
 }

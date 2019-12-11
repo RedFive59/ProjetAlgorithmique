@@ -6,22 +6,24 @@ using TMPro;
 
 public class PokerMenu : MonoBehaviour
 {
-    private GameObject nomJoueurRef;
-    private GameObject parent;
-    private GameObject mise;
-    private int maxMise = 10000;
-    private int minMise = 2500;
-    private GameObject alerteMise;
-    private GameObject alerteNom;
-    private GameObject lancerPartie;
+    private GameObject nomJoueurRef; // Référence à l'input de référence
+    private GameObject parent; // Référence à l'objet qui contiendra les inputs
+    private GameObject mise; // Référence à l'input qui gère la mise
+    private int maxMise = 10000; // Valeur maximale défini pour la mise
+    private int minMise = 2500; // Valeur minimale défini pour la mise
+    private GameObject alerteMise; // Référence à l'objet alerte mise
+    private GameObject alerteNom; // Référence à l'objet alerte nom
+    private GameObject lancerPartie; // Référence au bouton Lancer la partie
+    // Coroutines pour avoir un timer au lancement de la méthode
     private Coroutine currentCoroutine = null;
     private Coroutine currentCoroutine2 = null;
-    private bool canLaunchGame = false;
-    private bool animationDone = false;
-    private GameObject gameSettings;
-    private int nbJoueurs;
-    private string[] listNom;
+    private bool canLaunchGame = false; // Booléen qui détermine si on peut lancer la partie
+    private bool animationDone = false; // Booléen pour vérifier si une animation est en cours
+    private GameObject gameSettings; // Référence à l'objet qui transmet les infos de la partie
+    private int nbJoueurs; // Nombre de joueurs
+    private string[] listNom; // Liste des noms de joueurs
 
+    // Initialisation des objets et création des 2 inputs par défaut
     void Start()
     {
         nomJoueurRef = GameObject.Find("NomJoueurRef");
@@ -37,12 +39,14 @@ public class PokerMenu : MonoBehaviour
         DontDestroyOnLoad(gameSettings);
     }
 
+    // Méthode appelée à chaque frame pour vérifier si l'on peut lancer la partie ou pas
     private void Update()
     {
         if (!canLaunchGame) lancerPartie.GetComponent<Button>().interactable = false;
         else lancerPartie.GetComponent<Button>().interactable = true;
     }
 
+    // Méthode de création des inputs name
     public void createInputNameField()
     {
         destroyAllInputNameField();
@@ -60,6 +64,7 @@ public class PokerMenu : MonoBehaviour
         nomJoueurRef.SetActive(false);
     }
 
+    // Méthode appelé à chaque frame pour vérifier si les noms sont bien entrés
     public void verifInputs()
     {
         canLaunchGame = false;
@@ -110,6 +115,7 @@ public class PokerMenu : MonoBehaviour
         }
     }
 
+    // Méthode qui permet de détruire tous les inputs name afin de pouvoir en recréer un certain nombre
     private void destroyAllInputNameField()
     {
         int nbChild = parent.transform.childCount;
@@ -128,6 +134,7 @@ public class PokerMenu : MonoBehaviour
         canLaunchGame = false;
     }
 
+    // Méthode qui vérifie si la mise est correcte (1)
     public void verifMiseOnChange()
     {
         int value;
@@ -150,7 +157,8 @@ public class PokerMenu : MonoBehaviour
         if(!ok) mise.GetComponent<TMP_InputField>().text = "0";
         if(listNom != null && nbJoueurs != 0) updateGameSettingsObject(nbJoueurs, listNom, valeurMise());
     }
-
+    
+    // Méthode qui vérifie si la mise est correcte (2)
     public void verifMiseOnEndEdit()
     {
         int value;
@@ -173,6 +181,7 @@ public class PokerMenu : MonoBehaviour
         if (listNom != null && nbJoueurs != 0) updateGameSettingsObject(nbJoueurs, listNom, valeurMise());
     }
 
+    // Méthode qui retourne la valeur de la mise
     private int valeurMise()
     {
         string miseText = mise.GetComponent<TMP_InputField>().text;
@@ -180,6 +189,7 @@ public class PokerMenu : MonoBehaviour
         else return int.Parse(miseText);
     }
 
+    // Animation de changement de texte
     private IEnumerator updateAlerteMise(string message)
     {
         if (message != "")
@@ -203,12 +213,13 @@ public class PokerMenu : MonoBehaviour
                 }
                 i++;
                 countDown -= Time.smoothDeltaTime;
-                yield return null;
+                yield return new WaitForSeconds(0.01f);
             }
             alerteMise.SetActive(false);
         }
     }
 
+    // Animation de disparition de l'alerte liée aux noms
     private IEnumerator disableAlerteNom()
     {
         if (alerteNom.activeSelf)
@@ -228,12 +239,13 @@ public class PokerMenu : MonoBehaviour
                 }
                 i++;
                 countDown -= Time.smoothDeltaTime;
-                yield return null;
+                yield return new WaitForSeconds(0.01f);
             }
             alerteNom.SetActive(false);
         }
     }
 
+    // Méthode pour enregistrer les données entrées sur la scène dans l'objet GameSettings
     public void updateGameSettingsObject(int nbJoueurs, string[] listNom, int miseMax)
     {
         gameSettings.GetComponent<PokerValue>().nbJoueurs = nbJoueurs;
@@ -281,6 +293,31 @@ public class PokerMenu : MonoBehaviour
                         break;
                 }
             }
+        }
+    }
+
+    // Méthode pour supprimer l'objet contenant le choix de la difficulté en cas de retour au menu
+    public void destroySaveObject()
+    {
+        Destroy(gameSettings);
+    }
+
+    // Méthode qui permet de changer la position du leaderboard sur la place afin de le faire apparaître et disparaître
+    public void switchLeaderboard()
+    {
+        int posDepart = 425, posFin = 0;
+        GameObject Leaderboard = GameObject.Find("AffichageLeaderboard");
+        GameObject arrow = GameObject.Find("Fleche");
+        if (Leaderboard.transform.localPosition.x == posDepart)
+        {
+            arrow.GetComponent<RectTransform>().transform.localRotation = new Quaternion(0f, 0f, 1f, 1f);
+            Leaderboard.transform.localPosition = new Vector3(posFin, 0, 0);
+        }
+        else
+        if (Leaderboard.transform.localPosition.x == posFin)
+        {
+            arrow.GetComponent<RectTransform>().transform.localRotation = new Quaternion(0f, 0f, 0.7f, -0.7f);
+            Leaderboard.transform.localPosition = new Vector3(posDepart, 0, 0);
         }
     }
 }

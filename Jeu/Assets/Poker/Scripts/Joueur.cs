@@ -6,11 +6,18 @@ public class Joueur : MonoBehaviour
 {
     //Attributs
     public string nom;//Nom du joueur
+    public bool couche = false;//Indique si le joueur est couché ou non
     public List<GameObject> main;//Main du joueur
     public int mise = 0;//Mise d'argent que le joueur a misé cette manche
     private int bourse;//Bourse totale du joueur
+    public bool aPasse = false;//Indique si le joueur a passé
+    public bool aJoue = false;//Indique si le joueur a joué
+    public bool isSmallBlind = false;//Indique si le joueur possède le jeton de la petite blinde
+    public bool isBigBlind = false;//Indique si le joueur possède le jeton de la grosse blinde
     public Combinaison combinaison = Combinaison.Hauteur;//Combinaison la plus haute que possède le joueur
-    public List<Carte> l = new List<Carte>();//Liste des cartes composant la combinaison 
+    public List<Carte> l = new List<Carte>();//Liste des cartes composant la combinaison
+    public int nbManche = 0;//Indique le nombre de manches jouées
+
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +59,7 @@ public class Joueur : MonoBehaviour
             mise = this.bourse;
         }
     }
-    public void determinaisonCombinaison()
+    public void determinaisonCombinaison()//Détermine la combinaison du joueur
     {
         List<Carte> liste = new List<Carte>();
         foreach (GameObject g in this.main)
@@ -362,7 +369,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public static Carte max(List<Carte> liste)
+    public static Carte max(List<Carte> liste)//Détermine la carte la plus haute de ma liste
     {
         Carte max = liste[0];
         for(int i = 1; i < liste.Count; i++)
@@ -370,5 +377,19 @@ public class Joueur : MonoBehaviour
             if (liste[i].superieurA(max)) max = liste[i];
         }
         return max;
+    }
+    public string combinaisonToString()
+    {
+        string s = combinaison.ToString();
+        /*if (combinaison == Combinaison.Hauteur)
+        {
+            s += " de " + main[0].name+ " et " + main[1].name;
+        }
+        else
+        {
+            s += " de " + l[0].getValeur();
+        }*/
+        print(s);
+        return s;
     }
 }

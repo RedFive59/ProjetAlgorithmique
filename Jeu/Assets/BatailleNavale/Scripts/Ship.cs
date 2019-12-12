@@ -118,6 +118,28 @@ public class Ship
                     Debug.Log("Coulé");
                     CvsGN.setText(3, namex + " coulé");
                     CvsGN.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Sinking");
+
+            if ((VM.getCameraVM(1).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(3).GetComponent<Camera>().enabled == true))
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    GameObject skull = new GameObject("Skull " + namex + i);
+                    skull.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/Skull");
+                    skull.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
+                    skull.transform.position = new Vector3(G.getVal(i).x-30, G.getVal(i).y+30, G.getVal(i).z);
+                }
+            }
+
+            if ((VM.getCameraVM(2).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(4).GetComponent<Camera>().enabled == true))
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    GameObject skull = new GameObject("Skull " + namex + i);
+                    skull.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/Skull");
+                    skull.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
+                    skull.transform.position = new Vector3(G.getVal(i).x+30, G.getVal(i).y+30, G.getVal(i).z);
+                }
+            }
         }
                 else
                 {

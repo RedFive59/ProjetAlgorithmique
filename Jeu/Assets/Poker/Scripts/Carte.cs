@@ -96,4 +96,14 @@ public class Carte : MonoBehaviour
         if (this.valeur > c.valeur) return true;
         return false;
     }
+    override public string ToString()
+    {
+        return this.valeur.ToString();
+    }
+    public static List<Carte> copie(List<Carte> l)
+    {
+        List<Carte> tempo = new List<Carte>();
+        foreach (Carte c in l) tempo.Add(c);
+        return tempo;
+    }
 }

@@ -16,6 +16,7 @@ public class Joueur : MonoBehaviour
     public bool isBigBlind = false;//Indique si le joueur possède le jeton de la grosse blinde
     public Combinaison combinaison = Combinaison.Hauteur;//Combinaison la plus haute que possède le joueur
     public List<Carte> l = new List<Carte>();//Liste des cartes composant la combinaison
+    public List<Carte> tempo = new List<Carte>();//Copie de l
     public int nbManche = 0;//Indique le nombre de manches jouées
 
     public int getBourse()//Retourne la bourse du joueur
@@ -97,6 +98,7 @@ public class Joueur : MonoBehaviour
                 }
             }
         }
+        this.tempo = Carte.copie(l);
     }
     public bool paire(List<Carte> liste)//Retourne true si il y a une paire dans "liste"
     {

@@ -260,6 +260,7 @@ public class Poker : MonoBehaviour
         foreach(GameObject g in joueurs)
         {
             if (!g.GetComponent<Joueur>().aPasse) joueursManche.Add(g);
+            
         }
         Combinaison c = joueursManche[0].GetComponent<Joueur>().combinaison;
         Combinaison c2;
@@ -279,29 +280,80 @@ public class Poker : MonoBehaviour
             case 1 :
                 return victoire(gagnants);
             default :
-                do
+                if(c == Combinaison.Hauteur)
                 {
-                    List<Joueur> liste = new List<Joueur>();
-                    Carte max = Joueur.max(gagnants[0].l);
-                    Carte tempo;
-                    foreach (Joueur j in gagnants)//On cherche la meilleur combinaison
+                    for (int i = 0; i < gagnants.Count; i++)
                     {
-                        tempo = Joueur.max(j.l);
-                        if (tempo.superieurA(max)) max = tempo;
-                    }
-                    foreach (Joueur j in gagnants)
-                    {
-                        tempo = Joueur.max(j.l);
-                        if (max.Equals(tempo))
+                        gagnants[i].tempo.Clear();
+                        for (int j = 0; j < 2; j++)
                         {
-                            liste.Add(j);
-                            j.l.Remove(tempo);
+                            gagnants[i].tempo.Add(gagnants[i].main[j].GetComponent<Carte>());
                         }
                     }
-                    gagnants.Clear();
-                    gagnants = liste;
-                } while (gagnants.Count != 1 && gagnants.Count != 0);
-                return victoire(gagnants);
+                    while (gagnants.Count > 1 && gagnants[0].tempo.Count > 0)
+                    {
+                        Joueur joueur = gagnants[0];
+                        for (int i = 1; i < gagnants.Count; i++)//Cherche la carte la plus haute
+                        {
+                            if (Joueur.max(gagnants[i].tempo).valeur > Joueur.max(joueur.tempo).valeur) joueur = gagnants[i];
+                        }
+                        for (int i = 0; i < gagnants.Count; i++)//Supprime tous les joueurs une carte inférieure
+                        {
+                            if (Joueur.max(gagnants[i].tempo).valeur < Joueur.max(joueur.tempo).valeur) gagnants.Remove(gagnants[i]);
+                        }
+                        for (int i = 0; i < gagnants.Count; i++)//Supprime la carte la plus haute de tous les joueurs restants
+                        {
+                            gagnants[i].tempo.Remove(Joueur.max(gagnants[i].tempo));
+                        }
+                    }
+                }
+                else
+                {
+                    while (gagnants.Count > 1 && gagnants[0].tempo.Count > 0)
+                    {
+                        Joueur joueur = gagnants[0];
+                        for (int i = 1; i < gagnants.Count; i++)//Cherche la carte la plus haute
+                        {
+                            if (Joueur.max(gagnants[i].tempo).valeur > Joueur.max(joueur.tempo).valeur) joueur = gagnants[i];
+                        }
+                        for (int i = 0; i < gagnants.Count; i++)//Supprime tous les joueurs une carte inférieure
+                        {
+                            if (Joueur.max(gagnants[i].tempo).valeur < Joueur.max(joueur.tempo).valeur) gagnants.Remove(gagnants[i]);
+                        }
+                        for (int i = 0; i < gagnants.Count; i++)//Supprime la carte la plus haute de tous les joueurs restants
+                        {
+                            gagnants[i].tempo.Remove(Joueur.max(gagnants[i].tempo));
+                        }
+                    }
+                    if(gagnants.Count > 1)
+                    {
+                        for (int i = 0; i < gagnants.Count; i++)
+                        {
+                            gagnants[i].tempo.Clear();
+                            for (int j = 0; j < 2; j++)
+                            {
+                                gagnants[i].tempo.Add(gagnants[i].main[j].GetComponent<Carte>());
+                            }
+                        }
+                        while (gagnants.Count > 1 && gagnants[0].tempo.Count > 0)
+                        {
+                            Joueur joueur = gagnants[0];
+                            for (int i = 1; i < gagnants.Count; i++)//Cherche la carte la plus haute
+                            {
+                                if (Joueur.max(gagnants[i].tempo).valeur > Joueur.max(joueur.tempo).valeur) joueur = gagnants[i];
+                            }
+                            for (int i = 0; i < gagnants.Count; i++)//Supprime tous les joueurs une carte inférieure
+                            {
+                                if (Joueur.max(gagnants[i].tempo).valeur < Joueur.max(joueur.tempo).valeur) gagnants.Remove(gagnants[i]);
+                            }
+                            for (int i = 0; i < gagnants.Count; i++)//Supprime la carte la plus haute de tous les joueurs restants
+                            {
+                                gagnants[i].tempo.Remove(Joueur.max(gagnants[i].tempo));
+                            }
+                        }
+                    }
+                }
+                return gagnants;
         }
     }
     public List<Joueur> victoire(List<Joueur> j)//Répartie les mises de tous les joueurs au(x) gagnant(s) et renvoie la liste contenant le(s) gagnant(s)
@@ -322,7 +374,6 @@ public class Poker : MonoBehaviour
     }
     public void nouvelleManche()//Permet de passer à la manche suivante s'il reste plus d'un joueur. Sinon, appelle la fonction finDeJeu
     {
-        print("Partie 1");
         List<Joueur> list = quiGagne();
         int joueursRestant = 0;
         bool b = true;
@@ -331,7 +382,6 @@ public class Poker : MonoBehaviour
         {
             if (g.GetComponent<Joueur>().getBourse() > 0)
             {
-                print("Partie 2");
                 g.GetComponent<Joueur>().aPasse = false;
                 g.GetComponent<Joueur>().aJoue = false;
                 g.GetComponent<Joueur>().nbManche++;
@@ -341,24 +391,16 @@ public class Poker : MonoBehaviour
             }
             else g.GetComponent<Joueur>().aPasse = true;
         }
-        print("Partie 3");
         if (joueursRestant > 1)
         {
             Poker.miseManche = 0;
             this.tourGlobal = 0;
             smallBlind = smallBlind + 25;
             bigBlind = 2 * smallBlind;
-            rassemblementDeck();
-            shuffle(this.deck);
-            moveBlind();
-            distribution();
-            tour = nbJoueurs-1;
-            gameObject.GetComponent<ButtonHandler>().ts();
-            StartCoroutine(affichageGagnant(list,b,false));
+            StartCoroutine(affichageGagnant(list, b, false));
         }
         else
         {
-            print("Partie 4");
             StartCoroutine(affichageGagnant(list, b,true));
         }
     }
@@ -458,20 +500,26 @@ public class Poker : MonoBehaviour
     }
     public IEnumerator affichageGagnant(List<Joueur> j, bool b, bool d)//Gère l'écran de transition indiquant quel(s) joueur(s) a(ont) gagné la manche
     {
-        string comb="", gagnant = "";
+        string gagnant = "";
         for (int i=0; i < j.Count; i++)
         {
             if(i == j.Count - 1)
             {
                 gagnant = gagnant + j[i].nom;
-                comb = j[i].combinaison.ToString();
             }
             else gagnant = gagnant + j[i].nom +", ";
         }
+        foreach (GameObject g in this.flop)
+        {
+            g.transform.position = this.cardPrefab.transform.position;
+            g.GetComponent<SpriteRenderer>().sprite = g.GetComponent<Carte>().cardBack;
+            this.deck.Add(g);
+        }
+        this.flop.Clear();
         panel.SetActive(true);
         if (b)
         {
-            GameObject.Find("Combinaison").GetComponent<TextMeshProUGUI>().text = "Avec " + j[0].combinaisonToString();
+            GameObject.Find("Combinaison").GetComponent<TextMeshProUGUI>().text = "Avec " + j[0].combinaison + " de " + Joueur.max(j[0].l);
         }
         else
         {
@@ -489,10 +537,6 @@ public class Poker : MonoBehaviour
         {
             c.GetComponent<BoxCollider>().enabled = false;
         }
-        if (d)
-        {
-            rassemblementDeck();
-        }
         yield return new WaitForSeconds(3);
         panel.SetActive(false);
         text.GetComponent<TextMeshProUGUI>().enabled = false;
@@ -505,6 +549,15 @@ public class Poker : MonoBehaviour
         if (d)
         {
             finDeJeu();
+        }
+        else
+        {
+            rassemblementDeck();
+            shuffle(this.deck);
+            moveBlind();
+            distribution();
+            tour = nbJoueurs - 1;
+            gameObject.GetComponent<ButtonHandler>().ts();
         }
     }
     public void triClasssement()//Tri la liste "joueurs" en fonction du nombre de manches survécues par les joueurs. i = 0 -> 1er; i = 1 -> 2ème ...

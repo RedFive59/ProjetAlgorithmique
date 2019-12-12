@@ -17,14 +17,12 @@ public class ButtonHandler : MonoBehaviour
     }
     public void seCoucher()//Permet au joueur de se coucher
     {
-        GestionSons.Instance.SonFlip();
         Poker p = FindObjectOfType<Poker>();
         p.joueurs[p.getTour()].GetComponent<Joueur>().aPasse = true;
         ts();
     }
     public void suivre()//Permet au joueur de suivre la mise
     {
-        GestionSons.Instance.SonJetons();
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
         Joueur j = p.joueurs[p.getTour()].GetComponent<Joueur>(); 
         int x = j.getBourse() - (Poker.miseManche - j.mise);
@@ -43,7 +41,6 @@ public class ButtonHandler : MonoBehaviour
     }
     public void relancer()//Permet au joueur de relancer d'une mise égale au montant du slider
     {
-        GestionSons.Instance.SonJetons();
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
         Joueur j = p.joueurs[p.getTour()].GetComponent<Joueur>();
         Slider s = GameObject.Find("Slider").GetComponent<Slider>();
@@ -56,7 +53,6 @@ public class ButtonHandler : MonoBehaviour
     }
     public void ts()//Permet de passer au joueur suivant
     {
-        GestionSons.Instance.SonJetons();
         Poker p = FindObjectOfType<Poker>();
         List<GameObject> liste = p.joueurs;
         if (p.tourGlobal >= 3 || p.nombreDeJoueurPasse() == liste.Count - 1)

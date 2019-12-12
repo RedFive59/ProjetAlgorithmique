@@ -231,62 +231,28 @@ public class Joueur : MonoBehaviour
         List<Carte> copie = new List<Carte>();
         List<Carte> tempo = new List<Carte>();
         l = new List<Carte>();
-        //int occurence = 0;
         foreach (Carte c in liste)
         {
             copie.Add(c);
         }
-        if (paire(liste))
+        if (brelan(liste))
         {
             foreach(Carte c in l)
             {
                 tempo.Add(c);
                 copie.Remove(c);
             }
-            if (brelan(copie))
+            if (paire(copie))
             {
                 foreach(Carte c in tempo)
                 {
-                    l.Add(c);
+                    if(!l.Contains(c))l.Add(c);
                 }
                 return true;
             }
         }
+        l.Clear();
         return false;
-        /*foreach (Carte c1 in copie)
-        {
-            foreach (Carte c2 in copie)
-            {
-                if (!c1.Equals(c2))
-                {
-                    if (c1.getValeur() == c2.getValeur())
-                    {
-                        occurence++;
-                        if (occurence == 3)
-                        {
-                            Valeur v = c1.getValeur();
-                            foreach (Carte c3 in liste)
-                            {
-                                if (c3.getValeur() != v)
-                                {
-                                    foreach (Carte c4 in liste)
-                                    {
-                                        if (!c3.Equals(c4))
-                                        {
-                                            if (c3.getValeur() == c4.getValeur())
-                                                return true;
-                                        }
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }
-            occurence = 1;
-        }
-        return false;*/
     }
     public bool carre(List<Carte> liste)//Retourne true s'il y a un carré dans la "liste"
     {

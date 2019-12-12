@@ -15,15 +15,15 @@ public class ShipManager
         VM = GameObject.FindObjectOfType<VisualManager>();
         SM = new GameObject(nom);
         LShip = new List<Ship>();
-        Ship Torpilleur0 = new Ship(SM, "Torpilleur0", 2, new Vector3(2, 1, 1), "txtTp", "ShipLayer");
+        Ship Torpilleur0 = new Ship(SM, "Torpilleur 0", 2, new Vector3(2, 1, 1), "txtTp", "ShipLayer");
         LShip.Add(Torpilleur0);
-        Ship ContreToprilleur1 = new Ship(SM, "ContreTorpilleur1", 3, new Vector3(3, 1, 1), "txtCtp", "ShipLayer");
+        Ship ContreToprilleur1 = new Ship(SM, "ContreTorpilleur 1", 3, new Vector3(3, 1, 1), "txtCtp", "ShipLayer");
         LShip.Add(ContreToprilleur1);
-        Ship SousMarin2 = new Ship(SM, "SousMarin2", 3, new Vector3(3, 1, 1), "txtSm", "ShipLayer");
+        Ship SousMarin2 = new Ship(SM, "SousMarin 2", 3, new Vector3(3, 1, 1), "txtSm", "ShipLayer");
         LShip.Add(SousMarin2);
-        Ship Croiseur3 = new Ship(SM, "Croiseur3", 4, new Vector3(4, 1, 1), "txtCs", "ShipLayer");
+        Ship Croiseur3 = new Ship(SM, "Croiseur 3", 4, new Vector3(4, 1, 1), "txtCs", "ShipLayer");
         LShip.Add(Croiseur3);
-        Ship PorteAvion4 = new Ship(SM, "PorteAvion4", 5, new Vector3(5, 1, 1), "txtPa", "ShipLayer");
+        Ship PorteAvion4 = new Ship(SM, "PorteAvion 4", 5, new Vector3(5, 1, 1), "txtPa", "ShipLayer");
         LShip.Add(PorteAvion4);
 
         for (int i = 0; i < 5; i++)
@@ -105,9 +105,11 @@ public class ShipManager
         //marquer.GetComponent<SpriteRenderer>().color = new Color32(255, 165, 81, 255);
         marquer.GetComponent<SpriteRenderer>().color = Color.grey; ;
         marquer.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
-        CvsGN.setText(4, "Raté");
+        CvsGN.setText(4, "");
+        GameObject.Find("TextSlider1").GetComponent<Text>().text = "Raté";
         CvsGN.getPanel(4).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Miss");
-        CvsGN.setText(5, "Raté");
+        CvsGN.setText(5, "");
+        GameObject.Find("TextSlider2").GetComponent<Text>().text = "Raté";
         CvsGN.getPanel(5).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Miss");
         return false;
     }

@@ -7,6 +7,7 @@ public class Ship
 {
     private GameObject Sp;
     private string namex;
+    private string[] namey;
     private int length;
     private Vector3 pos;
     private int HP;
@@ -29,6 +30,7 @@ public class Ship
         Sp.AddComponent<Draggable>();
         Sp.GetComponent<SpriteRenderer>().sortingLayerName = slayer;
         rot = false;
+        namey = namex.Split(' ');
     }
 
     public int getLength()
@@ -111,8 +113,10 @@ public class Ship
                 if (HP == 0)
                 {
                     Debug.Log("Coulé");
-                    CvsGN.setText(4, namex + " coulé");
-                    CvsGN.setText(5, namex + " coulé");
+                    GameObject.Find("TextSlider1").GetComponent<Text>().text = namey[0] + " coulé";
+                    CvsGN.setText(4, "");
+                    GameObject.Find("TextSlider2").GetComponent<Text>().text = namex[0] + " coulé";
+                    CvsGN.setText(5, "");
                     CvsGN.getPanel(4).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Sinking");
                     CvsGN.getPanel(5).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Sinking");
 
@@ -140,9 +144,11 @@ public class Ship
         }
                 else
                 {
-                    CvsGN.setText(4, "touché");
+                    CvsGN.setText(4, "");
+                    GameObject.Find("TextSlider1").GetComponent<Text>().text = "Touché";
                     CvsGN.getPanel(4).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Hit");
-                    CvsGN.setText(5, "touché");
+                    CvsGN.setText(5, "");
+                    GameObject.Find("TextSlider2").GetComponent<Text>().text = "Touché";
                     CvsGN.getPanel(5).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Hit");
         }
         if ((VM.getCameraVM(1).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(3).GetComponent<Camera>().enabled == true))

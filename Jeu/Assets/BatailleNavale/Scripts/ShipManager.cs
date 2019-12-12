@@ -105,8 +105,10 @@ public class ShipManager
         //marquer.GetComponent<SpriteRenderer>().color = new Color32(255, 165, 81, 255);
         marquer.GetComponent<SpriteRenderer>().color = Color.grey; ;
         marquer.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
-        CvsGN.setText(3, "Raté");
-        CvsGN.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Miss");
+        CvsGN.setText(4, "Raté");
+        CvsGN.getPanel(4).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Miss");
+        CvsGN.setText(5, "Raté");
+        CvsGN.getPanel(5).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Miss");
         return false;
     }
 

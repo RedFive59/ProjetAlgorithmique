@@ -40,11 +40,6 @@ public class Ship
         return G;
     }
 
-    public string getName()
-    {
-        return namex;
-    }
-
     public void updateG()
     {
         pos = Sp.transform.position;
@@ -116,21 +111,48 @@ public class Ship
                 if (HP == 0)
                 {
                     Debug.Log("Coulé");
-                    CvsGN.setText(3, namex + " coulé");
-                    CvsGN.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Sinking");
+                    CvsGN.setText(4, namex + " coulé");
+                    CvsGN.setText(5, namex + " coulé");
+                    CvsGN.getPanel(4).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Sinking");
+                    CvsGN.getPanel(5).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Sinking");
+
+            if ((VM.getCameraVM(1).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(3).GetComponent<Camera>().enabled == true))
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    GameObject skull = new GameObject("Skull " + namex + i);
+                    skull.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/Skull");
+                    skull.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
+                    skull.transform.position = new Vector3(G.getVal(i).x-30, G.getVal(i).y+30, G.getVal(i).z);
+                }
+            }
+
+            if ((VM.getCameraVM(2).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(4).GetComponent<Camera>().enabled == true))
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    GameObject skull = new GameObject("Skull " + namex + i);
+                    skull.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/Skull");
+                    skull.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
+                    skull.transform.position = new Vector3(G.getVal(i).x+30, G.getVal(i).y+30, G.getVal(i).z);
+                }
+            }
         }
                 else
                 {
-                    Debug.Log("Touché");
-                    CvsGN.setText(3, "touché");
-                    CvsGN.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Hit");
+                    CvsGN.setText(4, "touché");
+                    CvsGN.getPanel(4).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Hit");
+                    CvsGN.setText(5, "touché");
+                    CvsGN.getPanel(5).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Hit");
         }
         if ((VM.getCameraVM(1).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(3).GetComponent<Camera>().enabled == true))
         {
             if (VM.getShipM(2).getHPtotal() == 0)
             {
                 CvsGN.setText(2, "Le Joueur 1\n l'emporte!");
+                CvsGN.setText(3, "Le Joueur 1\n l'emporte!");
                 GameObject.Find("Victoire").transform.position = new Vector3(VM.getCameraVM(2).transform.position.x, VM.getCameraVM(2).transform.position.y, 0);
+                GameObject.Find("Victoire2").transform.position = new Vector3(VM.getCameraVM(4).transform.position.x, VM.getCameraVM(4).transform.position.y, 0);
             }
         }
         if ((VM.getCameraVM(2).GetComponent<Camera>().enabled == true) || (VM.getCameraVM(4).GetComponent<Camera>().enabled == true))
@@ -138,7 +160,9 @@ public class Ship
             if (VM.getShipM(1).getHPtotal() == 0)
             {
                 CvsGN.setText(2, "Le Joueur 2\n l'emporte!");
+                CvsGN.setText(3, "Le Joueur 2\n l'emporte!");
                 GameObject.Find("Victoire").transform.position = new Vector3(VM.getCameraVM(1).transform.position.x, VM.getCameraVM(1).transform.position.y, 0);
+                GameObject.Find("Victoire2").transform.position = new Vector3(VM.getCameraVM(3).transform.position.x, VM.getCameraVM(3).transform.position.y, 0);
             }
 
         }

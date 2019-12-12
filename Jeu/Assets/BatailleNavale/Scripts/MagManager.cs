@@ -12,10 +12,12 @@ public class MagManager
     private ShipManager SM;
     private VisualManager VM;
     private Camera cam;
+    private int value;
 
     public MagManager(string nom, Vector3 posvm, ShipManager SMx, Camera camx)
     {
         VM = GameObject.FindObjectOfType<VisualManager>();
+        value = 1;
         MagHolder = new GameObject(nom);
         pos = new Vector3(posvm.x, posvm.y, posvm.z);
         this.SM = SMx;
@@ -97,9 +99,23 @@ public class MagManager
                 VM.switchPlayer();
                 Cvs.disable();
                 VM.EnableCvs(cam.gameObject.name[cam.gameObject.name.Length-1]-48);
+                Debug.Log(cam.name) ;
+                if ((cam.name[cam.name.Length - 1]-48) == 1)
+                {
+                    GameObject.Find("MarkerTab2").transform.position = new Vector3(27, 10.1f, 0);
+                }
+                else
+                {
+                    GameObject.Find("MarkerTab1").transform.position = new Vector3(-3, 10.1f, 0);             
+                }
+                value = 0;
                 return true;
             }
         }
         return false;
+    }
+    public int getvalue()
+    {
+        return value;
     }
 }

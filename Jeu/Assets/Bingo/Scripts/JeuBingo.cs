@@ -26,14 +26,12 @@ public class JeuBingo : MonoBehaviour
     
     //definie des objets physique
     GameObject tile;
-    GameObject scroll;
     GameObject ObjectMenuGagne;
 
     //Appel au moment ou le jeu est sur l'ecran
     void Awake()
     {
         this.tile = GameObject.Find(0 + ":Case" + 0 + "_" + 0);
-        this.scroll = GameObject.Find("Scrollbar");
         this.ObjectMenuGagne = GameObject.Find("ObjectToHide");
 
         if (!this.tile)
@@ -41,7 +39,6 @@ public class JeuBingo : MonoBehaviour
             this.fillImg = GameObject.Find("WaitBar").GetComponent<Image>();
 
             getStats();
-            //this.waitTime = 0;
 
             initBingo();
             creerBingo();
@@ -71,6 +68,15 @@ public class JeuBingo : MonoBehaviour
             {
                 finDuJeu();
             }
+            if (Input.GetKeyDown("s"))
+            {
+                this.waitTime = 0;
+            }
+            if (Input.GetKeyDown("n"))
+            {
+                this.waitTime = PlayerStats.WaitTime;
+            }
+
         }
     }
 
@@ -81,15 +87,30 @@ public class JeuBingo : MonoBehaviour
         {
             this.fini = true;
             menuEndGame(this.ObjectMenuGagne, 1);
-            //GameObject.Find("Bingo").SetActive(false);
             updateScore();
+            Debug.Log("score " + this.score);
+            if (this.score < 0)
+                this.score = 0;
+            this.score = (this.score * 100) / 140;
             if (this.userName != "Anonyme")
                 ajoutDonneesLeaderboard(this.userName, this.score.ToString());
         }
         else
         {
             if (this.tirage.Count == 0)
+            {
+                this.fini = true;
+                menuEndGame(this.ObjectMenuGagne, 1);
+                updateScore();
+                Debug.Log("score " + this.score);
+                if (this.score < 0)
+                    this.score = 0;
+                this.score = (this.score *100) / 140;
+                if (this.userName != "Anonyme")
+                    ajoutDonneesLeaderboard(this.userName, this.score.ToString());
+
                 menuEndGame(this.ObjectMenuGagne, 8);
+            }
             else
             {
                 this.score--;
@@ -115,8 +136,8 @@ public class JeuBingo : MonoBehaviour
     {
         Transform[] go = parent.GetComponentsInChildren<RectTransform>(true);
         go[indexMenu].gameObject.SetActive(true);
-        Debug.Log(go[indexMenu].name);
-        GameObject.Find("Bingo").SetActive(false);
+        if(GameObject.Find("Bingo"))
+            GameObject.Find("Bingo").SetActive(false);
     }
 
     //Ajoute le nouveau score
@@ -198,7 +219,7 @@ public class JeuBingo : MonoBehaviour
         {
             copieValCol(vals, i);
             genRand(vals, 9 + i * 10, i * 10);
-            //trieVal(vals);
+            trieVal(vals);
             setValCol(vals, i);
         }
     }
@@ -490,7 +511,7 @@ public class JeuBingo : MonoBehaviour
         int n = ind[1] - 48;
         int m = ind[2] - 48;
         //debug pour verifier si la fonction gagne() fonctionne
-        this.nombreTirage = grilles[numGrille].getVal(n, m);
+        //this.nombreTirage = grilles[numGrille].getVal(n, m);
 
         if (grilles[numGrille].getVal(n, m) == this.nombreTirage)
         {
@@ -508,10 +529,11 @@ public class JeuBingo : MonoBehaviour
                 }
             }
             this.tire.Add(this.nombreTirage);
-            this.score++;
         }
         else
+        {
             this.score--;
+        }
     }
 
     //change la couleur de la case selectionnée

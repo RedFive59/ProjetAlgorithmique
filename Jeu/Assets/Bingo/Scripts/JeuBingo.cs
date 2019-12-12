@@ -120,6 +120,9 @@ public class JeuBingo : MonoBehaviour
         if (this.score < 0)
             this.score = 0;
         this.score = (this.score * 100) / 140;
+
+        if (i == 8)
+            this.score = 0;
         if (this.userName != "Anonyme")
             ajoutDonneesLeaderboard(this.userName, this.score.ToString());
     }

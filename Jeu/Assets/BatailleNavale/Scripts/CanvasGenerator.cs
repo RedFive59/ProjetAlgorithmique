@@ -6,10 +6,10 @@ using UnityEngine.UI;
 //public class CanvasGenerator
 public class CanvasGenerator{
 
-    private GameObject Cvs;
-    private Canvas mCvs;
-    private List<GameObject> LText;
-    private List<GameObject> LPanel;
+    private GameObject Cvs;//GO maitre
+    private Canvas mCvs;//Canvas
+    private List<GameObject> LText;//Liste des textes du canvasGenerator
+    private List<GameObject> LPanel;//Liste des panneaux du canvasGenerator
 
     //Class generant un canvas
     //Si pas de sortingLayer mettre default

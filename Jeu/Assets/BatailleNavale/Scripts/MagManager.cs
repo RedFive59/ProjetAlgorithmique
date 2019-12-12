@@ -36,7 +36,6 @@ public class MagManager
 
     public void MoveMagasin()//fonction qui répond à l'action du bouton du panel2
     {
-        Debug.Log("MAGASIN");
         if (Magasinpos == 0)//si les panneaux sont rangés, déplace les deux panneaux pour l'ouverture
         {
             this.setOuvrir();
@@ -52,7 +51,7 @@ public class MagManager
         }
     }
 
-    public void setFermer()
+    public void setFermer()//Fonction que ferme le magasin (decallage sur la droite)
     {
         Cvs.MovePanel(0, 6, 0, 0);
         Cvs.MovePanel(1, 6, 0, 0);
@@ -60,7 +59,7 @@ public class MagManager
         SM.moveShip(4.5f, 0, 0);
     }
 
-    public void setOuvrir()
+    public void setOuvrir()//Fonction qui ouvre le magasin (decallage sur la gauche)
     {
         Cvs.MovePanel(0, -6, 0, 0);
         Cvs.MovePanel(1, -6, 0, 0);
@@ -68,12 +67,12 @@ public class MagManager
         SM.moveShip(-4.5f, 0, 0);
     }
 
-    public int getMagasinpos()
+    public int getMagasinpos()//Retourne un booleen si le magasin est ouvert (true) ou fermé (false)
     {
         return Magasinpos;
     }
 
-    public bool FinPlacement()
+    public bool FinPlacement()//(Confirme le placement des bateaux et ferme (et delete) définitivement le magasin
     {
         if (Cvs.getCanvas().GetComponent<Canvas>().enabled == true)
         {
@@ -99,7 +98,6 @@ public class MagManager
                 VM.switchPlayer();
                 Cvs.disable();
                 VM.EnableCvs(cam.gameObject.name[cam.gameObject.name.Length-1]-48);
-                Debug.Log(cam.name) ;
                 if ((cam.name[cam.name.Length - 1]-48) == 1)
                 {
                     GameObject.Find("MarkerTab2").transform.position = new Vector3(27, 10.1f, 0);

@@ -11,7 +11,7 @@ public class CameraManager
         CameraM = new GameObject(nom);
         CameraM.AddComponent<Camera>();
         Camera Cam = CameraM.GetComponent<Camera>();
-        Cam.transform.position = new Vector3(pos.x + 5f, pos.y + 5f, pos.z - 10f);
+        Cam.transform.position = new Vector3(pos.x + 5f, pos.y + 5f, pos.z - 10f);//position cam
         Cam.backgroundColor = Color.black;
         Cam.enabled = true; //la camera est active
         Cam.orthographic = true; //camera est en mode orthographique

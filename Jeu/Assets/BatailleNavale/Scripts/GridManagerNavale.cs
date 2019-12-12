@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class GridManagerNavale
 {
-    private int rows = 11;
-    private int cols = 11;
+    private int rows = 11;//lignes
+    private int cols = 11;//colonnes
     private Grille<int> col0; //vecteur qui contiendra la colonne des chiffres (juste visuel) 
     private Grille<int> row0; //vecteur qui contiendra la ligne des lettres (juste visuel)
     private Grille<int> grille; //matrice qui contiendra les valeurs de l'eau/bateau, libre/raté/touché
-    private GameObject GridHolder;
-    private CanvasGenerator Cvs;
-    private CameraManager CameraM;
+    private GameObject GridHolder;//GO
+    private CanvasGenerator Cvs;//CANVAS
+    private CameraManager CameraM;//Camera visant la grille
 
     public GridManagerNavale(string nom,Vector3 pos)
     {

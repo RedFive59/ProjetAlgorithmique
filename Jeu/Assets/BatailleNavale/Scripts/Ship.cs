@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Ship
+public class Ship //Classe représentant un bateau
 {
-    private GameObject Sp;
-    private string namex;
-    private string[] namey;
-    private int length;
-    private Vector3 pos;
-    private int HP;
-    private Grille<Vector3> G;
-    private bool rot;
-    private VisualManager VM;
+    private GameObject Sp;//Ship Manager Maitre
+    private string namex;//Nom du bateau (avec un l'int de sa position à la fin)
+    private string[] namey;//Nom du bateau sans l'entier
+    private int length;//Longueur du bateau
+    private Vector3 pos;//position du centre du GO du bateau
+    private int HP;//points de vie
+    private Grille<Vector3> G;//Grille de coordonnées
+    private bool rot;//rotation du bateau hor/vert
+    private VisualManager VM;//VisualManager du jeu
 
-    public Ship(GameObject SM, string namex, int length, Vector3 scale, string texture, string slayer)
+    public Ship(GameObject SM, string namex, int length, Vector3 scale, string texture, string slayer) //Constructeur du bateau
     {
         VM = GameObject.FindObjectOfType<VisualManager>();
         Sp = new GameObject(namex);
@@ -30,14 +30,14 @@ public class Ship
         Sp.AddComponent<Draggable>();
         Sp.GetComponent<SpriteRenderer>().sortingLayerName = slayer;
         rot = false;
-        namey = namex.Split(' ');
+        namey = namex.Split(' ');//Permet de couper le nom du bateau, pour l'affichage
     }
 
-    public int getLength()
+    public int getLength()//Retourne la longueur d'un bateau
     {
         return length;
     }
-    public Grille<Vector3> getVecteur()
+    public Grille<Vector3> getVecteur()//Retourne la valeur (ici des positions) stocké dans un tableau
     {
         return G;
     }

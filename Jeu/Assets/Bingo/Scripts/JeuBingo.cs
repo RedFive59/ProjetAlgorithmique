@@ -8,7 +8,7 @@ using System.IO;
 
 public class JeuBingo : MonoBehaviour
 {
-    private int ligne = 3, colonne = 9, nbgrilles = 1, score = 0, modeJeu = 0;
+    private int ligne = 3, colonne = 9, nbgrilles = 1, score = 0, modeJeu = 0, nombreTirage = 0;
     private string userName = "Anonyme";
     private Cartons[] grilles;
     private Cartons[] grillesSelection;
@@ -26,14 +26,12 @@ public class JeuBingo : MonoBehaviour
     
     //definie des objets physique
     GameObject tile;
-    GameObject scroll;
     GameObject ObjectMenuGagne;
 
     //Appel au moment ou le jeu est sur l'ecran
     void Awake()
     {
         this.tile = GameObject.Find(0 + ":Case" + 0 + "_" + 0);
-        this.scroll = GameObject.Find("Scrollbar");
         this.ObjectMenuGagne = GameObject.Find("ObjectToHide");
 
         if (!this.tile)
@@ -70,6 +68,15 @@ public class JeuBingo : MonoBehaviour
             {
                 finDuJeu();
             }
+            if (Input.GetKeyDown("s"))
+            {
+                this.waitTime = 0;
+            }
+            if (Input.GetKeyDown("n"))
+            {
+                this.waitTime = PlayerStats.WaitTime;
+            }
+
         }
     }
 
@@ -79,17 +86,37 @@ public class JeuBingo : MonoBehaviour
         if (gagne(this.modeJeu))
         {
             this.fini = true;
-            afficherBINGO(this.ObjectMenuGagne);
-            //GameObject.Find("Bingo").SetActive(false);
+            menuEndGame(this.ObjectMenuGagne, 1);
             updateScore();
+            Debug.Log("score " + this.score);
+            if (this.score < 0)
+                this.score = 0;
+            this.score = (this.score * 100) / 140;
             if (this.userName != "Anonyme")
                 ajoutDonneesLeaderboard(this.userName, this.score.ToString());
         }
         else
         {
-            this.score--;
-            GameObject score = GameObject.Find("Score");
-            score.transform.GetComponent<TextMeshProUGUI>().text = this.score.ToString();
+            if (this.tirage.Count == 0)
+            {
+                this.fini = true;
+                menuEndGame(this.ObjectMenuGagne, 1);
+                updateScore();
+                Debug.Log("score " + this.score);
+                if (this.score < 0)
+                    this.score = 0;
+                this.score = (this.score *100) / 140;
+                if (this.userName != "Anonyme")
+                    ajoutDonneesLeaderboard(this.userName, this.score.ToString());
+
+                menuEndGame(this.ObjectMenuGagne, 8);
+            }
+            else
+            {
+                this.score--;
+                GameObject score = GameObject.Find("Score");
+                score.transform.GetComponent<TextMeshProUGUI>().text = this.score.ToString();
+            }
         }
     }
 
@@ -105,11 +132,12 @@ public class JeuBingo : MonoBehaviour
         name.transform.GetComponent<TextMeshProUGUI>().text = this.userName;
     }
 
-    private void afficherBINGO(GameObject parent)
+    private void menuEndGame(GameObject parent, int indexMenu)
     {
         Transform[] go = parent.GetComponentsInChildren<RectTransform>(true);
-        go[1].gameObject.SetActive(true);
-        GameObject.Find("Bingo").SetActive(false);
+        go[indexMenu].gameObject.SetActive(true);
+        if(GameObject.Find("Bingo"))
+            GameObject.Find("Bingo").SetActive(false);
     }
 
     //Ajoute le nouveau score
@@ -191,7 +219,7 @@ public class JeuBingo : MonoBehaviour
         {
             copieValCol(vals, i);
             genRand(vals, 9 + i * 10, i * 10);
-            //trieVal(vals);
+            trieVal(vals);
             setValCol(vals, i);
         }
     }
@@ -332,7 +360,7 @@ public class JeuBingo : MonoBehaviour
         {
             int ind = Random.Range(0, this.tirage.Count);
             this.gridTirage.UpdateVal(this.tirage[ind]);
-            this.tire.Add(this.tirage[ind]);
+            this.nombreTirage = this.tirage[ind];
             this.tirage.RemoveAt(ind);
         }
     }
@@ -482,26 +510,30 @@ public class JeuBingo : MonoBehaviour
         int numGrille = ind[0] - 48;
         int n = ind[1] - 48;
         int m = ind[2] - 48;
-
-        if(grillesSelection[numGrille].getVal(n, m) != -1)
-        {
-            if (isSelect(numGrille, n, m))
-            {
-                grillesSelection[numGrille].setVal(n, m, 0);
-                changeColor(sprite, Color.white);
-            }
-            else
-            {
-                grillesSelection[numGrille].setVal(n, m, grilles[numGrille].getVal(n, m));
-                changeColor(sprite, Color.Lerp(Color.black, Color.grey, 0.6f));
-            }
-        }
-
         //debug pour verifier si la fonction gagne() fonctionne
-        //this.tire.Add(grilles[numGrille].getVal(n, m));
+        //this.nombreTirage = grilles[numGrille].getVal(n, m);
 
-        if (!this.tire.Contains(grilles[numGrille].getVal(n, m)) && grilles[numGrille].getVal(n, m) != -1)
+        if (grilles[numGrille].getVal(n, m) == this.nombreTirage)
+        {
+            if (grillesSelection[numGrille].getVal(n, m) != -1)
+            {
+                if (isSelect(numGrille, n, m))
+                {
+                    grillesSelection[numGrille].setVal(n, m, 0);
+                    changeColor(sprite, Color.white);
+                }
+                else
+                {
+                    grillesSelection[numGrille].setVal(n, m, grilles[numGrille].getVal(n, m));
+                    changeColor(sprite, Color.Lerp(Color.black, Color.grey, 0.6f));
+                }
+            }
+            this.tire.Add(this.nombreTirage);
+        }
+        else
+        {
             this.score--;
+        }
     }
 
     //change la couleur de la case selectionnée

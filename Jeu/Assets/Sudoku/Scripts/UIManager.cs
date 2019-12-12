@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 using SimpleJSON;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -344,19 +345,42 @@ public class UIManager : MonoBehaviour
         if (File.Exists(filePath))
         {
             var loadedData = JSON.Parse(File.ReadAllText(filePath)); // Répartition des données dans loadedData
+            int score = calculScore(timer, difficulty);
             if (loadedData["history"] || loadedData["history"].Count == 0)
             {
-                string res = "{\n\t//Historique des games de Sudoku\n\t\"history\": [\n\t\t[ \"" + difficulty + "\", \"" + numGrille + "\", \"" + timer + "\" ]\n\t]\n}";
+                string res = "{\n\t//Historique des games de Sudoku\n\t\"history\": [\n\t\t[ \"" + difficulty + "\", \"" + numGrille + "\", \"" + timer + "\", \"" + score + "\" ]\n\t]\n}";
                 File.WriteAllText(filePath, res);
             }
             else
             {
                 int line_to_edit = 3 + loadedData["history"].Count;
-                string newText = (",\n\t\t[ \"" + difficulty + "\", \"" + numGrille + "\", \"" + timer + "\" ]");
+                string newText = (",\n\t\t[ \"" + difficulty + "\", \"" + numGrille + "\", \"" + timer + "\", \"" + score + "\" ]");
                 lineChanger(newText, filePath, line_to_edit);
             }
         }
         else Debug.Log("Fichier " + filePath + " introuvable");
+    }
+
+    private int calculScore(string timer, string difficulty)
+    {
+        string[] temp = Regex.Split(timer, ":");
+        int minutes = int.Parse(temp[0]);
+        if (difficulty == "Facile")
+        {
+            if (minutes > 33) return 0;
+            else return 33 - minutes;
+        }
+        if (difficulty == "Intermédiaire")
+        {
+            if (minutes > 66) return 0;
+            else return 66 - minutes;
+        }
+        if (difficulty == "Difficile")
+        {
+            if (minutes > 100) return 0;
+            else return 100 - minutes;
+        }
+        return 0;
     }
 
     // Méthode pour changer une ligne spécifique dans un fichier

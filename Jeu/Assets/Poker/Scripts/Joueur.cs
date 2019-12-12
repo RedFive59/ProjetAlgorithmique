@@ -6,31 +6,27 @@ public class Joueur : MonoBehaviour
 {
     //Attributs
     public string nom;//Nom du joueur
+    public bool couche = false;//Indique si le joueur est couché ou non
     public List<GameObject> main;//Main du joueur
     public int mise = 0;//Mise d'argent que le joueur a misé cette manche
     private int bourse;//Bourse totale du joueur
+    public bool aPasse = false;//Indique si le joueur a passé
+    public bool aJoue = false;//Indique si le joueur a joué
+    public bool isSmallBlind = false;//Indique si le joueur possède le jeton de la petite blinde
+    public bool isBigBlind = false;//Indique si le joueur possède le jeton de la grosse blinde
     public Combinaison combinaison = Combinaison.Hauteur;//Combinaison la plus haute que possède le joueur
-    public List<Carte> l = new List<Carte>();//Liste des cartes composant la combinaison 
+    public List<Carte> l = new List<Carte>();//Liste des cartes composant la combinaison
+    public int nbManche = 0;//Indique le nombre de manches jouées
 
-    // Start is called before the first frame update
-    void Start()
-    {
-       
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        //determinaisonCombinaison();
-    }
     public int getBourse()//Retourne la bourse du joueur
     {
         return this.bourse;
     }
-    public void setBourse(int bourse)//Retourne la bourse du joueur
+    public void setBourse(int bourse)//Affecte l'entier bourse passé en paramètre à l'attribut "bourse"
     {
         this.bourse = bourse;
     }
-    public void diminuerBourse(int valeur)//Diminue la bourse du joueur de la valeur passée en paramètre
+    public void diminuerBourse(int valeur)//Diminue la bourse du joueur de la valeur "valeur" passée en paramètre
     {
         if (this.bourse - valeur >= 0) this.bourse -= valeur;
     }
@@ -52,7 +48,7 @@ public class Joueur : MonoBehaviour
             mise = this.bourse;
         }
     }
-    public void determinaisonCombinaison()
+    public void determinaisonCombinaison()//Détermine la combinaison du joueur
     {
         List<Carte> liste = new List<Carte>();
         foreach (GameObject g in this.main)
@@ -102,7 +98,7 @@ public class Joueur : MonoBehaviour
             }
         }
     }
-    public bool paire(List<Carte> liste)//Retourne true si il y a une paire dans la liste
+    public bool paire(List<Carte> liste)//Retourne true si il y a une paire dans "liste"
     {
         if (liste.Count < 2) return false;
         l = new List<Carte>();
@@ -123,7 +119,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public bool doublePaire(List<Carte> liste)//Retourne true s'il y a une double paire dans la liste
+    public bool doublePaire(List<Carte> liste)//Retourne true s'il y a une double paire dans "liste"
     {
         if (liste.Count < 4) return false;
         l = new List<Carte>();
@@ -143,7 +139,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public bool brelan(List<Carte> liste)//Retourne true s'il y a un brelan dans la liste
+    public bool brelan(List<Carte> liste)//Retourne true s'il y a un brelan dans "liste"
     {
         if (liste.Count < 3) return false;
         int occurence = 1;
@@ -165,7 +161,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public bool quinte(List<Carte> liste)//Retourne true s'il y a une suite dans liste
+    public bool quinte(List<Carte> liste)//Retourne true s'il y a une suite dans "liste"
     {
         if (liste.Count < 5) return false;
         l = new List<Carte>();
@@ -205,7 +201,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public bool couleur(List<Carte> liste)//Retourne true s'il y a une couleur dans la liste
+    public bool couleur(List<Carte> liste)//Retourne true s'il y a une couleur dans "liste"
     {
         if (liste.Count < 5) return false;
         int couleur = 1;
@@ -227,7 +223,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public bool full(List<Carte> liste)//Retourne true s'il y a un full dans liste
+    public bool full(List<Carte> liste)//Retourne true s'il y a un full dans "liste"
     {
         if (liste.Count < 5) return false;
         List<Carte> copie = new List<Carte>();
@@ -290,7 +286,7 @@ public class Joueur : MonoBehaviour
         }
         return false;*/
     }
-    public bool carre(List<Carte> liste)//Retourne true s'il y a un carré dans la liste
+    public bool carre(List<Carte> liste)//Retourne true s'il y a un carré dans la "liste"
     {
         if (liste.Count < 4) return false;
         int occurence = 1;
@@ -311,7 +307,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public bool quinteFlush(List<Carte> liste)//Retourne true s'il y a une quinte flush dans liste
+    public bool quinteFlush(List<Carte> liste)//Retourne true s'il y a une quinte flush dans "liste"
     {
         if (liste.Count < 5) return false;
         l = new List<Carte>();
@@ -326,7 +322,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public bool quinteFlushRoyale(List<Carte> liste)//Retourne true s'il y a une quinte flush royale dans liste
+    public bool quinteFlushRoyale(List<Carte> liste)//Retourne true s'il y a une quinte flush royale dans "liste"
     {
         if (liste.Count < 5) return false;
         bool a, k, q, j, t;
@@ -362,7 +358,7 @@ public class Joueur : MonoBehaviour
         }
         return false;
     }
-    public static Carte max(List<Carte> liste)
+    public static Carte max(List<Carte> liste)//Détermine la carte la plus haute de "liste"
     {
         Carte max = liste[0];
         for(int i = 1; i < liste.Count; i++)
@@ -370,5 +366,10 @@ public class Joueur : MonoBehaviour
             if (liste[i].superieurA(max)) max = liste[i];
         }
         return max;
+    }
+    public string combinaisonToString()//Retourne une chaîne de caractère correspondant à la combinaison du joueur
+    {
+        string s = combinaison.ToString();
+        return s;
     }
 }

@@ -5,14 +5,13 @@ using UnityEngine.UI;
 
 public class ShipManager
 {
-    private GameObject SM;
-    private List<Ship> LShip;
-    private VisualManager VM;
-    private int totalHP = 0;
+    private GameObject SM;//GO
+    private List<Ship> LShip;//Liste de bateaux
+    private int totalHP = 0;//Hp totaux de la flotte
 
     public ShipManager(string nom, Vector3 pos)
     {
-        VM = GameObject.FindObjectOfType<VisualManager>();
+        //Creation des bateaux pour le ShipManager (script) en cours
         SM = new GameObject(nom);
         LShip = new List<Ship>();
         Ship Torpilleur0 = new Ship(SM, "Torpilleur 0", 2, new Vector3(2, 1, 1), "txtTp", "ShipLayer");
@@ -26,7 +25,7 @@ public class ShipManager
         Ship PorteAvion4 = new Ship(SM, "PorteAvion 4", 5, new Vector3(5, 1, 1), "txtPa", "ShipLayer");
         LShip.Add(PorteAvion4);
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++) //Set les points de vie et positions initiales de tout les bateaux
         {
             SM.transform.GetChild(i).transform.position = new Vector3(pos.x + 12.5f, pos.y + 1 + i * 2, pos.z + 0);
             totalHP = totalHP + LShip[i].getHP();
@@ -34,7 +33,7 @@ public class ShipManager
         }
     }
 
-    public void moveShip(float x, float y, float z)
+    public void moveShip(float x, float y, float z) //Déplace les 5 bateaux en fonction des coords x y z en entrée.
     {
         Vector3 V;
         for (int i = 0; i < 5; i++)
@@ -47,18 +46,18 @@ public class ShipManager
         }
     }
 
-    public Ship getClassShip(int i)
+    public Ship getClassShip(int i) //Retourne le bateau de la liste à l'indice donné
     {
         return LShip[i];
     }
 
-    public GameObject getShip(int i)
+    public GameObject getShip(int i) //Retourne le GO du bateau en fonction de l'indice donné
     {
         return SM.transform.GetChild(i).gameObject;
     }
 
 
-    public bool checkContact(int ix)
+    public bool checkContact(int ix) //Vérifie que deux bateaux ne se chevauche l'un l'autre (placement), renvoie True si chevauchage, false sinon
     {
         for (int i = 0; i < 5; i++)
         {
@@ -79,7 +78,7 @@ public class ShipManager
         return false;
     }
 
-    public bool checkTir(Vector3 V)
+    public bool checkTir(Vector3 V) //Vérifie qu'un tir a touché un bateau adverse, place un sprite touché ou raté sur la grille marquage du tireur et sur la grille de base de la cible, retourne true si touché, false sinon.
     {
         CanvasGenerator CvsGN = GameObject.FindObjectOfType<GameNavale>().getCvsGN();
         for (int i = 0; i < 5; i++)
@@ -93,7 +92,6 @@ public class ShipManager
                     GameObject marquet = new GameObject("Touche" + i + k);
                     marquet.transform.position = V;
                     marquet.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/Flame");
-                   // marquet.GetComponent<SpriteRenderer>().color = new Color32(255, 44, 44, 255);
                     marquet.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
                     return true;
                 }
@@ -102,7 +100,6 @@ public class ShipManager
         GameObject marquer = new GameObject("rate" +V.x+V.y);
         marquer.transform.position = V;
         marquer.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/WaterDiffuseMini2");
-        //marquer.GetComponent<SpriteRenderer>().color = new Color32(255, 165, 81, 255);
         marquer.GetComponent<SpriteRenderer>().color = Color.grey; ;
         marquer.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
         CvsGN.setText(4, "");
@@ -114,7 +111,7 @@ public class ShipManager
         return false;
     }
 
-    public int getHPtotal()
+    public int getHPtotal()// Retourne le nombre de point de vie total de la flotte
     {
         totalHP = 0;
         for (int i = 0; i < 5; i++)

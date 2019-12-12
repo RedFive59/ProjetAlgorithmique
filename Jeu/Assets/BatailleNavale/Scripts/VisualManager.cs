@@ -26,7 +26,7 @@ public class VisualManager : MonoBehaviour
     void Start()
     {
         GenPlateau();
-        GameObject CanvasMarker = new GameObject("CanvasMarkerHolder");
+        GameObject CanvasMarker = new GameObject("CanvasMarkerHolder"); //GO Canvas des "Press Tab pour afficher la grille de marquage"
 
         Cvs = new CanvasGenerator("CvsMarker", new Vector3(0, 0, 0), new Vector2(1, 1), RenderMode.WorldSpace, null, 10, "PanelLayer", CanvasMarker);
         Cvs.addPanel("MarkerTab1", new Vector3(-10, -10, 0), new Vector2(4, 1), new Color32(192, 72, 73, 255));
@@ -36,12 +36,12 @@ public class VisualManager : MonoBehaviour
         Cvs.addText(Cvs.getPanel(1), "textMarker2", Cvs.getPanel(1).transform.position, new Vector2(12f, 4.2f), 1, 0.3f, "Afficher Grille\nmarquage\n(Press TAB)", Color.black, TextAnchor.MiddleCenter);
     }
 
-    public int magValue()
+    public int magValue() //retourne 0 si tout les 2 magasins sont fermés, sinon 1 ou 2
     {
         return MG1.getvalue() + MG2.getvalue();
     }
 
-    void GenPlateau()
+    void GenPlateau() //Genere les 4 Grilles de jeu et récupère leurs caméra, démarre ensuite la caméra du joueur 1
     {
         GMN1= new GridManagerNavale("GridHolderNavale1",pos1);
         GMN2 = new GridManagerNavale("GridHolderNavale2",pos2);
@@ -64,7 +64,7 @@ public class VisualManager : MonoBehaviour
         MG2 = new MagManager("MagHolder2",pos2,SM2,C2.GetComponent<Camera>());
     }
 
-    public MagManager getMagM(int i)
+    public MagManager getMagM(int i) //Retourne le Magasin demandé en fonction de l'index donné
     {
         if (i == 1)
         {
@@ -76,7 +76,7 @@ public class VisualManager : MonoBehaviour
         return MG1;
     }
 
-    public ShipManager getShipM(int i)
+    public ShipManager getShipM(int i) //Retourne le manager de bateaux (flotte) demandé en fonction de l'index donné
     {
         if (i == 1)
         {
@@ -89,7 +89,7 @@ public class VisualManager : MonoBehaviour
         return SM1;
     }
 
-    public Vector3 getposGVM(int i)
+    public Vector3 getposGVM(int i) //Retourne la position de départ de la grille J1 ou J2 en fonction de l'index donné
     {
         if (i == 1)
         {
@@ -102,7 +102,7 @@ public class VisualManager : MonoBehaviour
         return pos1;
     }
 
-    public GameObject getCameraVM(int i)
+    public GameObject getCameraVM(int i) //Reoturne une caméra de la scène en fonction de l'index donné
     {
         if (i == 1)
         {
@@ -124,7 +124,7 @@ public class VisualManager : MonoBehaviour
     }
 
 
-    public void switchCam()
+    public void switchCam() //Fait switch les camera sur C1(joueur1) si C2 ou C4 (joueur2) sont activées, ou sur C2 si C1 ou C3 sont activées
     {
         if (GMN1.getCamera().GetComponent<Camera>().enabled == true)
         {
@@ -152,7 +152,7 @@ public class VisualManager : MonoBehaviour
         }
     }
 
-    public void switchPlayer()
+    public void switchPlayer() //permet de changer de joueur en modifiant l'activation/desactivation des caméras
     {
         if ((C1.GetComponent<Camera>().enabled == true)||(C3.GetComponent<Camera>().enabled == true))
         {
@@ -171,7 +171,7 @@ public class VisualManager : MonoBehaviour
         }
     }
 
-    public void EnableCvs(int x)
+    public void EnableCvs(int x) //Fonction qui Active les BoxColliders des Grilles de marquage
     {
         if ((x == 1)||(x == 3))
         {

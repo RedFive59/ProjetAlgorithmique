@@ -12,30 +12,30 @@ public class TimerSlider : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sliderx = GameObject.Find("Slider1").GetComponent<Slider>();
-        sliderx2 = GameObject.Find("Slider2").GetComponent<Slider>();
+        sliderx = GameObject.Find("Slider1").GetComponent<Slider>(); //Slider 1 dans la scene
+        sliderx2 = GameObject.Find("Slider2").GetComponent<Slider>(); //Slider 2 dans la sene
     }
 
     // Update is called once per frame
     void Update()
     {
-        sliderx.value = calculSliderValue();
-        sliderx2.value = calculSliderValue();
+        sliderx.value = calculTime(); //fonction qui à chaque frame calcul le temps restant du slider
+        sliderx2.value = calculTime(); //fonction qui à chaque frame calcul le temps restant du slider
 
-        if (Input.GetKeyDown(KeyCode.F1))
+        if (Input.GetKeyDown(KeyCode.F1)&&(timeRemain==0))
         {
-            timeRemain = timeMax;
+            timeRemain = timeMax; //la touche F1 est pressée le timer se lance
         }
-        if (Input.GetKeyDown(KeyCode.F2))
+        if (Input.GetKeyDown(KeyCode.F2) && (timeRemain == 0))
         {
-            timeRemain = timeMax;
+            timeRemain = timeMax; //la touche F2 est pressée le timer se lance
 
         }
 
         if (timeRemain <= 0)
         {
             timeRemain = 0;
-            gameObject.transform.position = new Vector3(-10, -10, 0);
+            gameObject.transform.position = new Vector3(-10, -10, 0); //deplace à chaque frame le slider vers la gauche en fonction du temps
         }
             if (timeRemain > 0)
         {
@@ -43,7 +43,7 @@ public class TimerSlider : MonoBehaviour
         }
     }
 
-    float calculSliderValue()
+    float calculTime()
     {
         return (timeRemain / timeMax);
     }

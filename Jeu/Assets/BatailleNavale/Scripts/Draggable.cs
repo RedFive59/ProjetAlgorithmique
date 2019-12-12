@@ -5,15 +5,15 @@ using UnityEngine.Events;
 
 public class Draggable : MonoBehaviour
 {
-    private bool magv = true;
-    private bool rotv = false;
-    private ShipManager SM;
-    private Vector3 OriginalPos;
-    private VisualManager VM;
-    private Vector3 pos;
+    private bool magv = true;//magasin ouvert ou fermé
+    private bool rotv = false;//Bateau attaché vert/hor
+    private ShipManager SM;//ShipManager du bateau attaché (flotte)
+    private Vector3 OriginalPos;//Position d'origine du bateau
+    private VisualManager VM;//Visual Manager (centralisation)
+    private Vector3 pos;//position du bateau à chaque frame
     private Vector3 mOffset;
-    private MagManager mag;
-    private Camera C;
+    private MagManager mag;//Mag Manager du bateau
+    private Camera C;//Camera en cours de fonctionnement (pour gérer l'offset souris)
     string test;
 
     private void Start()
@@ -21,7 +21,7 @@ public class Draggable : MonoBehaviour
         VM = GameObject.FindObjectOfType<VisualManager>();
         test=this.gameObject.name;
         string test2 = this.gameObject.transform.parent.name;
-        if (test2[10] == '1')
+        if (test2[10] == '1')//Fait correspondre les attributs en fonction du batea attaché
         {
             SM = VM.getShipM(1);
             mag = VM.getMagM(1);
@@ -37,28 +37,23 @@ public class Draggable : MonoBehaviour
                 pos = VM.getposGVM(2);
                 C = VM.getCameraVM(2).GetComponent<Camera>();
             }
-            else
-            {
-                Debug.Log("NO_LINK_FOUND");
-            }
         }
 
         initOrigin(this.gameObject.transform.position.x, this.gameObject.transform.position.y, this.gameObject.transform.position.z);
     }
 
 
-        void OnMouseDown()
+        void OnMouseDown()//Clic souris gauche
     {
-        //SM.getClassShip(test[test.Length - 1] - 48).updateG();
         magv = false;
         mOffset = this.gameObject.transform.position - GetMouseWorldPos();//enregistre l'offset entre la souris et l'objet
         if (mag.getMagasinpos() == 1)
         {
-            mag.setFermer();
+            mag.setFermer();//ferme le magasin pendant le drag and drop
         }
     }
 
-    private void OnMouseDrag()
+    private void OnMouseDrag()//Si le clic est enfoncé pendant que la souris se déplace
     {
         this.gameObject.transform.position = GetMouseWorldPos() + mOffset;
         if (Input.GetKeyDown(KeyCode.R))//Press tab pour rotate un bateau
@@ -67,13 +62,13 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    private void OnMouseUp()
+    private void OnMouseUp()//Relache du bouton souris
     {
         this.gameObject.transform.position = cutVector(this.gameObject.transform.position);
         this.gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer2";
         SM.getClassShip(test[test.Length-1]-48).updateG();
-        checkPos();
-        mag.setOuvrir();
+        checkPos();//Vérifie si le bateau ne chavauche pas/ ne sort pas de la grille
+        mag.setOuvrir();//Ré-ouvre le magasin
     }
 
     private Vector3 GetMouseWorldPos()
@@ -82,12 +77,12 @@ public class Draggable : MonoBehaviour
         return C.ScreenToWorldPoint(mousePoint);
     }
 
-    void initOrigin(float x, float y, float z)
+    void initOrigin(float x, float y, float z)//Permet de copier les coords d'origine sans pointeur
     {
         OriginalPos = new Vector3(x, y, z);
     }
 
-    public void changeMag()
+    public void changeMag()//Change la valeur d'ouverture/fermeture du magasin
     {
         if (magv == false)
         {
@@ -96,7 +91,7 @@ public class Draggable : MonoBehaviour
         else { magv = false; }
     }
 
-    public void changeRot()
+    public void changeRot()//Permet de tourner le bateau (vert/horiz)
     {
         if (rotv == false)
         {
@@ -122,7 +117,7 @@ public class Draggable : MonoBehaviour
         return rotv;
     }
 
-    public void moveShip(float x, float y, float z)
+    public void moveShip(float x, float y, float z) //Décale le bateau en fonction des coords d'entrées x y z
     {
         Vector3 V;
         if (magv)
@@ -133,7 +128,7 @@ public class Draggable : MonoBehaviour
     }
 
 
-    private int getTaille()
+    private int getTaille()//Retourne la taille du bateau en cours
     {
         if (this.gameObject.name == "Torpilleur 0")
         {
@@ -154,7 +149,7 @@ public class Draggable : MonoBehaviour
         return -1;
     }
 
-    private void resetPos()
+    private void resetPos()//reset la positoin et rotation du bateau à l'origine
     {
         magv = true;
         if (rotv)
@@ -166,7 +161,7 @@ public class Draggable : MonoBehaviour
         moveShip(4.5f, 0, 0);
     }
 
-    private void checkPos()
+    private void checkPos()//Vérifie si le bateaux ne déborde pas de la grille /ne chevauche pas les autres bateaux
     {
         if ((this.gameObject.transform.position.x < pos.x + 0) || (this.gameObject.transform.position.x > pos.x + 9) || (this.gameObject.transform.position.y < pos.y + 0) || (this.gameObject.transform.position.y > pos.y + 9))
         {
@@ -207,7 +202,7 @@ public class Draggable : MonoBehaviour
 
     }
 
-    private Vector3 cutVector(Vector3 V)
+    private Vector3 cutVector(Vector3 V) //Permet de découper les vecteurs de sorte à positionner les bateaux correctement dans les cases
     {
         int x;
         int y;

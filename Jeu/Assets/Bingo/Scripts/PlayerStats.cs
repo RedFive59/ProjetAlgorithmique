@@ -1,5 +1,6 @@
 ﻿public static class PlayerStats
 {
+    //fonction static permettant de stocker les valeurs des parametres
     private static int nbGrilles = 1, waitTime = 5, score = 0, gameMode = 0;
     private static string userName = "Anonyme";
 

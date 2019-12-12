@@ -10,6 +10,7 @@ public class SettingsMenu : MonoBehaviour
         updateSettings();
     }
 
+    //recupere le nombre de grilles du menu des options
     public void NumberOfGrid(float value)
     {
         int nouv = (int)(value * 6);
@@ -17,6 +18,7 @@ public class SettingsMenu : MonoBehaviour
         PlayerStats.NbGrilles = nouv;
     }
 
+    //met à jour le score avec le score contenu dans les stats du joueur
     public void updateScore()
     {
         GameObject score = GameObject.Find("Score");
@@ -24,6 +26,7 @@ public class SettingsMenu : MonoBehaviour
         score.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.Score.ToString();
     }
 
+    //recupere le temps d'attente du menu des options
     public void getTempsAttente(float value)
     {
         int nouv = (int)(value);
@@ -31,6 +34,7 @@ public class SettingsMenu : MonoBehaviour
         setTempsAttente();
     }
 
+    //affiche la valeur du temps d'attente selectionné
     public void setTempsAttente()
     {
         GameObject value = GameObject.Find("VariableAttenteDisp");
@@ -38,6 +42,7 @@ public class SettingsMenu : MonoBehaviour
         value.transform.GetComponent<TextMeshProUGUI>().text = PlayerStats.WaitTime.ToString();
     }
 
+    //recupere le mode de jeu du menu des options
     public void ModeDeJeu(float value)
     {
         int nouv = (int)(value * 3);
@@ -45,10 +50,11 @@ public class SettingsMenu : MonoBehaviour
         PlayerStats.GameMode = nouv - 1;
     }
 
+    //
     public void setInputName()
     {
         string username = GameObject.Find("InputName").transform.GetComponent<TextMeshProUGUI>().text;
-        if (username.Length > 4)
+        if (username.Length > 4 && username.Length < 21)
         {
             PlayerStats.UserName = username;
             if(GameObject.Find("ErreurNom"))
@@ -60,6 +66,7 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
+    //met à jour les paramètres avec les données du joueur
     public void updateSettings()
     {
         float temp;

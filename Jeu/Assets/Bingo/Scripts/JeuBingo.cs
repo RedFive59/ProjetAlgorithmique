@@ -116,13 +116,14 @@ public class JeuBingo : MonoBehaviour
     {
         this.fini = true;
         menuEndGame(this.ObjectMenuGagne, i);
+        if (i == 8)
+            this.score = 0;
         updateScore();
         if (this.score < 0)
             this.score = 0;
         this.score = (this.score * 100) / 140;
 
-        if (i == 8)
-            this.score = 0;
+
         if (this.userName != "Anonyme")
             ajoutDonneesLeaderboard(this.userName, this.score.ToString());
     }

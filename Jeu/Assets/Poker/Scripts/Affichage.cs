@@ -92,6 +92,14 @@ public class Affichage : MonoBehaviour
         Slider s = GameObject.Find("Slider").GetComponent<Slider>();
         Joueur j = p.joueurs[p.getTour()].GetComponent<Joueur>();
         int x = Poker.miseManche - j.mise;
+        if(s.value == 0)
+        {
+            GameObject.Find("Relancer").GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+
+        }
         if (x >= j.getBourse())
         {
             GameObject.Find("Suivre").transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Tapis";
@@ -100,7 +108,8 @@ public class Affichage : MonoBehaviour
         else
         {
             GameObject.Find("Suivre").transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Suivre : " + (Poker.miseManche - j.mise);
-            GameObject.Find("Relancer").GetComponent<Button>().interactable = true;
+            if(s.value != 0) GameObject.Find("Relancer").GetComponent<Button>().interactable = true;
+            else GameObject.Find("Relancer").GetComponent<Button>().interactable = false;
             GameObject.Find("Se coucher").GetComponent<Button>().interactable = true;
         }
         if(s.value != 0 && s.value == s.maxValue)

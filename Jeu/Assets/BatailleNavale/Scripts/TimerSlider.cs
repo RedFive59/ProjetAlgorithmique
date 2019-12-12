@@ -8,16 +8,19 @@ public class TimerSlider : MonoBehaviour
     private float timeRemain;
     private const float timeMax = 3f;
     public Slider sliderx;
+    public Slider sliderx2;
     // Start is called before the first frame update
     void Start()
     {
-        sliderx = GameObject.Find("Slider1").GetComponent<Slider>();   
+        sliderx = GameObject.Find("Slider1").GetComponent<Slider>();
+        sliderx2 = GameObject.Find("Slider2").GetComponent<Slider>();
     }
 
     // Update is called once per frame
     void Update()
     {
         sliderx.value = calculSliderValue();
+        sliderx2.value = calculSliderValue();
 
         if (Input.GetKeyDown(KeyCode.F1))
         {

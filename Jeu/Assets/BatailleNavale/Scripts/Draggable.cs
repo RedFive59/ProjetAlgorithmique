@@ -168,7 +168,6 @@ public class Draggable : MonoBehaviour
 
     private void checkPos()
     {
-        Debug.Log(test[test.Length - 1]);
         if ((this.gameObject.transform.position.x < pos.x + 0) || (this.gameObject.transform.position.x > pos.x + 9) || (this.gameObject.transform.position.y < pos.y + 0) || (this.gameObject.transform.position.y > pos.y + 9))
         {
             Debug.Log("HorsMap");
@@ -205,6 +204,7 @@ public class Draggable : MonoBehaviour
             resetPos();
             return;
         }
+
     }
 
     private Vector3 cutVector(Vector3 V)

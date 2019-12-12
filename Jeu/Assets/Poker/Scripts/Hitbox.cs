@@ -24,7 +24,7 @@ public class Hitbox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!FindObjectOfType<Poker>().flop.Contains(gameObject))//Si l'objet est dans la main du joueur à qui le tour est
+        if (!FindObjectOfType<Poker>().flop.Contains(gameObject))
         {
             select();
         } 

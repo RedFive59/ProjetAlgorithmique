@@ -51,11 +51,6 @@ public class Carte : MonoBehaviour
     {
         assignationTextureIdentite();
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void assignationTextureIdentite()//Permet d'affecter les bonnes textures et les bonnes valeurs/couleurs aux cartes
     {
         List<string> deck = Poker.generatedDeck();
@@ -82,7 +77,6 @@ public class Carte : MonoBehaviour
             }
             i++;
         }
-        //GetComponent<SpriteRenderer>().sprite = this.cardFace;
     }
     public Valeur getValeur()
     {
@@ -92,12 +86,12 @@ public class Carte : MonoBehaviour
     {
         return this.couleur;
     }
-    public bool Equals(Carte c)
+    public bool Equals(Carte c)//Retourne vrai si la carte "c" passé en paramètre possède la même valeur et la même couleur. Retourne faux sinon.
     {
         if (this.couleur == c.getCouleur() && this.valeur == c.getValeur()) return true;
         return false;
     }
-    public bool superieurA(Carte c)
+    public bool superieurA(Carte c)//Retourne vrai si la carte "c" passé en paramètre a une valeur strictement supérieur à cette carte
     {
         if (this.valeur > c.valeur) return true;
         return false;

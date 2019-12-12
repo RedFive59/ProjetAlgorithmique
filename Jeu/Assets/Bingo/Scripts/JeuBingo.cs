@@ -8,32 +8,37 @@ using System.IO;
 
 public class JeuBingo : MonoBehaviour
 {
-    private int ligne = 3, colonne = 9, nbgrilles = 1, score = 0, modeJeu = 0;
+    /* Attributs
+        userName, correspond au pseudo par defaut du joueur s'il n'a pas rentré de nom
+        grilles, correspond aux cartons des joueurs
+        grillesSelections, indique les éléments selectionné valides
+        grid ainsi que gridTirage, correspondent aux grilles qui seront affichées dans la scene
+    */ 
+    private int ligne = 3, colonne = 9, nbgrilles = 1, score = 0, modeJeu = 0, nombreTirage = 0;
     private string userName = "Anonyme";
     private Cartons[] grilles;
     private Cartons[] grillesSelection;
     private GridManagerBingo[] grid;
     private GridManagerBingo gridTirage;
 
+    //represente l'image du temps de cahrgement entre deux tirages
     private Image fillImg;
-
+    //listes correspondant aux nombres tirés et à tirer
     private List<int> tirage;
     private List<int> tire;
-
+    //correspond au temps d'attente entre deux tirage
     private float timer, waitTime = 0.0f;
-
+    
     private bool fini = false;
     
     //definie des objets physique
     GameObject tile;
-    GameObject scroll;
     GameObject ObjectMenuGagne;
 
     //Appel au moment ou le jeu est sur l'ecran
     void Awake()
     {
         this.tile = GameObject.Find(0 + ":Case" + 0 + "_" + 0);
-        this.scroll = GameObject.Find("Scrollbar");
         this.ObjectMenuGagne = GameObject.Find("ObjectToHide");
 
         if (!this.tile)
@@ -70,6 +75,17 @@ public class JeuBingo : MonoBehaviour
             {
                 finDuJeu();
             }
+            //permet de retirer la temporisation entre deux tirages pour alller plus vite
+            if (Input.GetKeyDown("s"))
+            {
+                this.waitTime = 0;
+            }
+            //permet de remettre la temporisation entre deux tirages pour alller plus vite
+            if (Input.GetKeyDown("n"))
+            {
+                this.waitTime = PlayerStats.WaitTime;
+            }
+
         }
     }
 
@@ -78,19 +94,34 @@ public class JeuBingo : MonoBehaviour
     {
         if (gagne(this.modeJeu))
         {
-            this.fini = true;
-            afficherBINGO(this.ObjectMenuGagne);
-            //GameObject.Find("Bingo").SetActive(false);
-            updateScore();
-            if (this.userName != "Anonyme")
-                ajoutDonneesLeaderboard(this.userName, this.score.ToString());
+            ajoutDuScore(1);
         }
         else
         {
-            this.score--;
-            GameObject score = GameObject.Find("Score");
-            score.transform.GetComponent<TextMeshProUGUI>().text = this.score.ToString();
+            if (this.tirage.Count == 0)
+            {
+                ajoutDuScore(8);
+            }
+            else
+            {
+                this.score--;
+                GameObject score = GameObject.Find("Score");
+                score.transform.GetComponent<TextMeshProUGUI>().text = this.score.ToString();
+            }
         }
+    }
+
+    //met à jour le score et le transforme pour qu'il puisse etre ajoute au scoreBoard
+    public void ajoutDuScore(int i)
+    {
+        this.fini = true;
+        menuEndGame(this.ObjectMenuGagne, i);
+        updateScore();
+        if (this.score < 0)
+            this.score = 0;
+        this.score = (this.score * 100) / 140;
+        if (this.userName != "Anonyme")
+            ajoutDonneesLeaderboard(this.userName, this.score.ToString());
     }
 
     //recupere le nombre de grille
@@ -105,11 +136,13 @@ public class JeuBingo : MonoBehaviour
         name.transform.GetComponent<TextMeshProUGUI>().text = this.userName;
     }
 
-    private void afficherBINGO(GameObject parent)
+    //permet d'afficher le menu de fin de jeu soit pour le gagnat soit pour le perdant
+    private void menuEndGame(GameObject parent, int indexMenu)
     {
         Transform[] go = parent.GetComponentsInChildren<RectTransform>(true);
-        go[1].gameObject.SetActive(true);
-        GameObject.Find("Bingo").SetActive(false);
+        go[indexMenu].gameObject.SetActive(true);
+        if(GameObject.Find("Bingo"))
+            GameObject.Find("Bingo").SetActive(false);
     }
 
     //Ajoute le nouveau score
@@ -191,7 +224,7 @@ public class JeuBingo : MonoBehaviour
         {
             copieValCol(vals, i);
             genRand(vals, 9 + i * 10, i * 10);
-            //trieVal(vals);
+            trieVal(vals);
             setValCol(vals, i);
         }
     }
@@ -332,7 +365,7 @@ public class JeuBingo : MonoBehaviour
         {
             int ind = Random.Range(0, this.tirage.Count);
             this.gridTirage.UpdateVal(this.tirage[ind]);
-            this.tire.Add(this.tirage[ind]);
+            this.nombreTirage = this.tirage[ind];
             this.tirage.RemoveAt(ind);
         }
     }
@@ -457,13 +490,17 @@ public class JeuBingo : MonoBehaviour
     et mettre la valeur contenu dans la case dans la grille de selection*/
     private void select()
     {
+        //voit si le joueur a pressé la souris
         if (Input.GetMouseButtonDown(0))
         {
+            //crée un objet Ray pardant du centre de la camera vers la souris pour savoir sur quoi l'utilisateur pointe
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
+            //si le rayon touche une boite de colision
             if (Physics.Raycast(ray, out hit))
             {
+                //on recupere l'objet grace à son nom
                 GameObject tile = GameObject.Find(hit.transform.gameObject.name);
                 
                 getind(tile);
@@ -479,29 +516,40 @@ public class JeuBingo : MonoBehaviour
         string name = sprite.name;
         string ind = Regex.Replace(name, "[^0-9]", "");
 
+        // recupere les indices correspondants au numéro de grille, la colonne et la ligne 
+        // de l'élément sélectionné et le converti en entier
         int numGrille = ind[0] - 48;
         int n = ind[1] - 48;
         int m = ind[2] - 48;
 
-        if(grillesSelection[numGrille].getVal(n, m) != -1)
+        // debug pour verifier si la fonction gagne() fonctionne
+        // this.nombreTirage = grilles[numGrille].getVal(n, m);
+
+        //si l'élément correspond au nombre tiré
+        if (grilles[numGrille].getVal(n, m) == this.nombreTirage)
         {
-            if (isSelect(numGrille, n, m))
+            if (grillesSelection[numGrille].getVal(n, m) != -1)
             {
-                grillesSelection[numGrille].setVal(n, m, 0);
-                changeColor(sprite, Color.white);
+                //s'il est déjà selectionné on change sa couleur et on le retire des éléments sélectionnés
+                if (isSelect(numGrille, n, m))
+                {
+                    grillesSelection[numGrille].setVal(n, m, 0);
+                    changeColor(sprite, Color.white);
+                }
+                //sinon on l'ajoute aux éléments sélectionnés
+                else
+                {
+                    grillesSelection[numGrille].setVal(n, m, grilles[numGrille].getVal(n, m));
+                    changeColor(sprite, Color.Lerp(Color.black, Color.grey, 0.6f));
+                }
             }
-            else
-            {
-                grillesSelection[numGrille].setVal(n, m, grilles[numGrille].getVal(n, m));
-                changeColor(sprite, Color.Lerp(Color.black, Color.grey, 0.6f));
-            }
+            this.tire.Add(this.nombreTirage);
         }
-
-        //debug pour verifier si la fonction gagne() fonctionne
-        //this.tire.Add(grilles[numGrille].getVal(n, m));
-
-        if (!this.tire.Contains(grilles[numGrille].getVal(n, m)) && grilles[numGrille].getVal(n, m) != -1)
+        //sinon on retire un point
+        else
+        {
             this.score--;
+        }
     }
 
     //change la couleur de la case selectionnée

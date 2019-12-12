@@ -90,12 +90,25 @@ public class ShipManager
                 if (Vector3.Distance(V, LShip[i].getVecteur().getVal(k)) == 0)
                 {
                     LShip[i].hit();
+                    GameObject marquet = new GameObject("Touche" + i + k);
+                    marquet.transform.position = V;
+                    marquet.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/Flame");
+                   // marquet.GetComponent<SpriteRenderer>().color = new Color32(255, 44, 44, 255);
+                    marquet.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
                     return true;
                 }
             }
         }
-        CvsGN.setText(3, "Raté");
-        CvsGN.getPanel(3).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Miss");
+        GameObject marquer = new GameObject("rate" +V.x+V.y);
+        marquer.transform.position = V;
+        marquer.AddComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/WaterDiffuseMini2");
+        //marquer.GetComponent<SpriteRenderer>().color = new Color32(255, 165, 81, 255);
+        marquer.GetComponent<SpriteRenderer>().color = Color.grey; ;
+        marquer.GetComponent<SpriteRenderer>().sortingLayerName = "ShipLayer";
+        CvsGN.setText(4, "Raté");
+        CvsGN.getPanel(4).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Miss");
+        CvsGN.setText(5, "Raté");
+        CvsGN.getPanel(5).GetComponent<Image>().sprite = Resources.Load<Sprite>("Textures/Miss");
         return false;
     }
 

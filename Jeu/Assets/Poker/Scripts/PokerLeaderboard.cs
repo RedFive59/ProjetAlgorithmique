@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using System;
 using System.Text.RegularExpressions;
 
-public class LeaderboardManager : MonoBehaviour
+public class PokerLeaderboard : MonoBehaviour
 {
     private GameObject leaderboard; // Référence à l'objet Leaderboard sur la scène
     private GameObject boardRef; // Référence à la ligne type du leaderboard
@@ -17,11 +17,11 @@ public class LeaderboardManager : MonoBehaviour
     private string[,] history; // Grille de strings dans lesquelles les données du leaderboard sont placés
     private int nombreColonnes;
 
-    // Méthode appelé au lancement de la scène SudokuMenu
+    // Start is called before the first frame update
     void Start()
     {
-        nombreColonnes = 4; // Nombre de colonnes de votre leaderboard
-        filePath = defineSudoku.cheminLeaderboard; // Définition du chemin du fichier
+        nombreColonnes = 3; // Nombre de colonnes de votre leaderboard
+        filePath = Path.Combine(Application.dataPath, "StreamingAssets/Leaderboard/leaderboardPoker.json"); // Définition du chemin du fichier     AJOUTER LE CHEMIN DU FICHIER
         leaderboard = GameObject.Find("Leaderboard");
         boardRef = GameObject.Find("BoardReference");
         parent = GameObject.Find("Content");
@@ -29,13 +29,11 @@ public class LeaderboardManager : MonoBehaviour
         {
             var loadedData = JSON.Parse(File.ReadAllText(filePath)); // Répartition des données dans loadedData
             history = new string[loadedData["history"].Count, nombreColonnes];
-            updateLeaderboard();
+            if(gameObject.name != "Poker") updateLeaderboard();
         }
         else Debug.LogError("Chargement de " + filePath + " impossible");
     }
-    
-    // Méthode qui permet l'ajout dans le tableau des scores de toutes les parties précédement jouées
-    private void updateLeaderboard()
+    private void updateLeaderboard()// Méthode qui permet l'ajout dans le tableau des scores de toutes les parties précédement jouées
     {
         if (boardRef)
         {
@@ -67,20 +65,22 @@ public class LeaderboardManager : MonoBehaviour
                     GameObject.Find("Scroll View").GetComponent<ScrollRect>().enabled = false;
                     GameObject.Find("Scrollbar Vertical").SetActive(false);
                 }
-            } else
+            }
+            else
             {
                 GameObject.Find("Scroll View").GetComponent<ScrollRect>().enabled = false;
                 GameObject.Find("Scrollbar Vertical").SetActive(false);
             }
             Destroy(boardRef);
-        } else
+        }
+        else
         {
             var loadedData = JSON.Parse(File.ReadAllText(filePath)); // Répartition des données dans loadedData
             if (!loadedData["history"] && loadedData["history"].Count != 0)
             {
                 for (int i = 0; i < loadedData["history"].Count; i++)
                 {
-                    GameObject boardTab = GameObject.Find("board"+(i+1));
+                    GameObject boardTab = GameObject.Find("board" + (i + 1));
                     boardTab.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = " " + history[i, 0];
                     boardTab.transform.GetChild(7).GetComponent<TextMeshProUGUI>().text = " " + history[i, 1];
                     boardTab.transform.GetChild(8).GetComponent<TextMeshProUGUI>().text = " " + history[i, 2];
@@ -88,9 +88,7 @@ public class LeaderboardManager : MonoBehaviour
             }
         }
     }
-
-    // Méthode de tri du tableau des scores
-    public void triLeaderboard(string type)
+    public void triLeaderboard(string type)// Méthode de tri du tableau des scores
     {
         Transform g;
         var loadedData = JSON.Parse(File.ReadAllText(filePath));
@@ -133,7 +131,6 @@ public class LeaderboardManager : MonoBehaviour
             updateLeaderboard();
         }
     }
-
     // Objet utilisé pour trier le leaderboard
     class Array2DSort : IComparer<int>
     {
@@ -142,7 +139,7 @@ public class LeaderboardManager : MonoBehaviour
         int _sortIndex;
 
         protected string[,] SortArray { get { return _sortArray; } }
-        
+
         public Array2DSort(string[,] theArray, int sortIndex)
         {
             _sortArray = theArray;
@@ -165,7 +162,7 @@ public class LeaderboardManager : MonoBehaviour
             }
             return result;
         }
-        
+
         public virtual int Compare(int x, int y)
         {
             if (_sortIndex < 0) return 0;
@@ -175,33 +172,35 @@ public class LeaderboardManager : MonoBehaviour
         // Méthode qui permet de mettre les différentes règles de tri
         protected int CompareStrings(int x, int y, int col)
         {
-            
             int res = 0;
             res = _sortArray[x, col].CompareTo(_sortArray[y, col]);
-            if (col == 0) // Cas où on check la difficulté
-            {
-                if(_sortArray[x, col] == _sortArray[y, col])
-                {
-                    if (_sortArray[x, col + 1] == _sortArray[y, col + 1]) res = _sortArray[x, col + 2].CompareTo(_sortArray[y, col + 2]);
-                    else res = _sortArray[x, col + 1].CompareTo(_sortArray[y, col + 1]);
-                } else
-                {
-                    if (_sortArray[x, col] == "Facile" && _sortArray[y, col] == "Difficile") res = -1;
-                    if (_sortArray[x, col] == "Difficile" && _sortArray[y, col] == "Facile") res = 1;
-                    if (_sortArray[x, col] == "Facile" && _sortArray[y, col] == "Intermédiaire") res = -1;
-                    if (_sortArray[x, col] == "Intermédiaire" && _sortArray[y, col] == "Facile") res = 1;
-                    if (_sortArray[x, col] == "Intermédiaire" && _sortArray[y, col] == "Difficile") res = -1;
-                    if (_sortArray[x, col] == "Difficile" && _sortArray[y, col] == "Intermédiaire") res = 1;
-                }
-            }
-            if (col == 2) // Cas où on check le timer
-            {
-                string[] temp = Regex.Split(_sortArray[x, col], ":");
-                string[] temp2 = Regex.Split(_sortArray[y, col], ":");
-                res = int.Parse(temp[0]).CompareTo(int.Parse(temp2[0]));
-                if(res == 0) res = int.Parse(temp[1]).CompareTo(int.Parse(temp2[1]));
-            }
             return res;
         }
+    }
+    public void ajoutDonneesLeaderboard(string nom, string classement, string nbManche, int score)//Permet d'ajouter les données passées en paramètre dans un fichier .JSON pour le leaderboard du poker
+    {
+        Poker p = GameObject.Find("Poker").GetComponent<Poker>();
+        if (File.Exists(filePath))
+        {
+            var loadedData = JSON.Parse(File.ReadAllText(filePath)); // Répartition des données dans loadedData
+            if (loadedData["history"] || loadedData["history"].Count == 0)
+            {
+                string res = "{\n\t//Historique des games de Sudoku\n\t\"history\": [\n\t\t[ \"" + nom + "\", \"" + classement + "\", \"" + nbManche + "\", \"" + score.ToString() + "\" ]\n\t]\n}";
+                File.WriteAllText(filePath, res);
+            }
+            else
+            {
+                int line_to_edit = 3 + loadedData["history"].Count;
+                string newText = (",\n\t\t[ \"" + nom + "\", \"" + classement + "\", \"" + nbManche + "\", \"" + score.ToString() + "\" ]");
+                lineChanger(newText, filePath, line_to_edit);
+            }
+        }
+        else Debug.Log("Fichier " + filePath + " introuvable");
+    }
+    static void lineChanger(string newText, string fileName, int line_to_edit)//Permet d'éditer une ligne particulière du fichier .JSON
+    {
+        string[] arrLine = File.ReadAllLines(fileName);
+        arrLine[line_to_edit - 1] = arrLine[line_to_edit - 1] + newText;
+        File.WriteAllLines(fileName, arrLine);
     }
 }

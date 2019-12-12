@@ -25,6 +25,7 @@ public class Poker : MonoBehaviour
     public GameObject panel;//GameObject permettant de bloquer toutes interactions
     public GameObject text;//Texte d'affichage du/des gagnant(s)
     public string nomDuGagnant;//Stocke le nom du gagnant de la partie
+    public GameObject Gagnant;//Objet représentant le gagnant de la partie
 
     // Start is called before the first frame update
     void Start()
@@ -321,6 +322,7 @@ public class Poker : MonoBehaviour
     }
     public void nouvelleManche()//Permet de passer à la manche suivante s'il reste plus d'un joueur. Sinon, appelle la fonction finDeJeu
     {
+        print("Partie 1");
         List<Joueur> list = quiGagne();
         int joueursRestant = 0;
         bool b = true;
@@ -329,14 +331,17 @@ public class Poker : MonoBehaviour
         {
             if (g.GetComponent<Joueur>().getBourse() > 0)
             {
+                print("Partie 2");
                 g.GetComponent<Joueur>().aPasse = false;
                 g.GetComponent<Joueur>().aJoue = false;
                 g.GetComponent<Joueur>().nbManche++;
                 joueursRestant++;
                 nomDuGagnant = g.GetComponent<Joueur>().nom;
+                Gagnant = g;
             }
             else g.GetComponent<Joueur>().aPasse = true;
         }
+        print("Partie 3");
         if (joueursRestant > 1)
         {
             Poker.miseManche = 0;
@@ -353,13 +358,14 @@ public class Poker : MonoBehaviour
         }
         else
         {
+            print("Partie 4");
             StartCoroutine(affichageGagnant(list, b,true));
         }
     }
     public void finDeJeu()//Mets fin à la partie et enregistre les scores et statistiques dans un fichiers .JSON pour le leaderboard du poker
     {
         triClasssement();
-        int nbMancheTotal = GameObject.Find(nomDuGagnant).GetComponent<Joueur>().nbManche;
+        int nbMancheTotal = Gagnant.GetComponent<Joueur>().nbManche;
         for(int i = 0; i < nbJoueurs; i++)
         {
             Joueur j = joueurs[i].GetComponent<Joueur>();

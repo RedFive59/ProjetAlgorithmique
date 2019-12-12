@@ -49,8 +49,8 @@ public class MenuScript : MonoBehaviour
             var loadedDataS = JSON.Parse(File.ReadAllText(filePathSudoku));
             var loadedDataB = JSON.Parse(File.ReadAllText(filePathBingo));
             var loadedDataP = JSON.Parse(File.ReadAllText(filePathPoker));
-            taille = loadedDataS["history"].Count + loadedDataB["history"].Count + loadedDataP["history"].Count - 3;
-            history = new string[taille+3, 2];
+            taille = loadedDataS["history"].Count + loadedDataB["history"].Count + loadedDataP["history"].Count;
+            history = new string[taille, 2];
             numBoard = 0;
         }
     }
@@ -264,7 +264,7 @@ public class MenuScript : MonoBehaviour
         var loadedDataS = JSON.Parse(File.ReadAllText(filePathSudoku));
         var loadedDataB = JSON.Parse(File.ReadAllText(filePathBingo));
         var loadedDataP = JSON.Parse(File.ReadAllText(filePathPoker));
-        for (int i = 0; i < taille+3; i++)
+        for (int i = 0; i < taille; i++)
         {
             GameObject boardTab = GameObject.Find("board" + (i + 1));
             boardTab.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = history[i, 0];
@@ -281,18 +281,12 @@ public class MenuScript : MonoBehaviour
         var loadedDataP = JSON.Parse(File.ReadAllText(filePathPoker));
         if (taille != 0)
         {
-            for (int i = 0; i < taille + 3; i++)
+            for (int i = 0; i < taille; i++)
             {
                 GameObject boardTab = GameObject.Find("board" + (i + 1));
                 history[i, 0] = boardTab.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text;
                 history[i, 1] = boardTab.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text;
             }
-            /*
-            for(int i = 0; i < taille + 3; i++)
-            {
-                Debug.Log("History[" + i + "] = [" + history[i, 0] + "," + history[i, 1] + "]");
-            }
-            */
             Array2DSort comparer = null;
             switch (type)
             {
@@ -312,7 +306,7 @@ public class MenuScript : MonoBehaviour
             }
             g.rotation = Quaternion.Euler(0, 0, 180);
             string[,] sortedData = comparer.ToSortedArray(); //Tri
-            for (int i = 0; i < taille + 3; i++)
+            for (int i = 0; i < taille; i++)
             {
                 history[i, 0] = sortedData[i, 0];
                 history[i, 1] = sortedData[i, 1];

@@ -5,22 +5,6 @@ using UnityEngine;
 public class Hitbox : MonoBehaviour
 {
     bool dessus = false;//Booléen indiquant si la souris est sur l'objet
-
-    FlipCard flipper;
-    Carte modele;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    void Awake()
-    {
-        modele = this.GetComponent<Carte>();
-        flipper = this.GetComponent<FlipCard>();
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -29,37 +13,27 @@ public class Hitbox : MonoBehaviour
             select();
         } 
     }
-
-    void OnMouseEnter()
-    {
-        GestionSons.Instance.SonFlip();
-    }
-
-    private void select()
+    private void select()//Permet de retourner les cartes si le curseur se pose sur les cartes de la main.
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            //GameObject tile = GameObject.Find(hit.transform.gameObject.name);
-            if (this.name == hit.transform.gameObject.name)
-            {
-                if (!dessus) //!dessus
+            if(this.name == hit.transform.gameObject.name){
+                if (!dessus)
                 {
-                    flipper.flipCard(modele.cardBack, modele.cardFace);
-                    //print("Flip " + hit.transform.gameObject.name);
+                    gameObject.GetComponent<SpriteRenderer>().sprite = gameObject.GetComponent<Carte>().cardFace;
                     dessus = true;
                 }
-            }
+            }   
         }
-        //else
-        //{
-            if (dessus) //dessus //Input.GetKeyDown(KeyCode.DownArrow)
+        else
+        {
+            if (dessus)
             {
-                flipper.flipCard(modele.cardFace, modele.cardBack);
-                //print("Flip inverse " + this.name);
+                gameObject.GetComponent<SpriteRenderer>().sprite = gameObject.GetComponent<Carte>().cardBack;
                 dessus = false;
             }
-        //}
+        }
     }
 }

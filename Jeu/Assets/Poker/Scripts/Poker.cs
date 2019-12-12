@@ -259,7 +259,11 @@ public class Poker : MonoBehaviour
         List<GameObject> joueursManche = new List<GameObject>();
         foreach(GameObject g in joueurs)
         {
-            if (!g.GetComponent<Joueur>().aPasse) joueursManche.Add(g);
+            if (!g.GetComponent<Joueur>().aPasse)
+            {
+                joueursManche.Add(g);
+                g.GetComponent<Joueur>().determinaisonCombinaison();
+            }
             
         }
         Combinaison c = joueursManche[0].GetComponent<Joueur>().combinaison;
@@ -503,7 +507,8 @@ public class Poker : MonoBehaviour
         string gagnant = "";
         for (int i=0; i < j.Count; i++)
         {
-            if(i == j.Count - 1)
+            foreach(Carte c in j[i].l) print(c);
+            if (i == j.Count - 1)
             {
                 gagnant = gagnant + j[i].nom;
             }

@@ -17,7 +17,7 @@ public class Affichage : MonoBehaviour
     {
         updateAffichage();
     }
-    public void updateAffichage()//Regroupe les différentes fonctions d'update d'affichage
+    public void updateAffichage()//Gère l'affichage du jeu en regroupant les différentes fonctions d'affichage
     {
         updateAffichageMain();
         updateAffichageBourse();
@@ -67,7 +67,7 @@ public class Affichage : MonoBehaviour
             }
         }
     }
-    public void updateAffichageBourse()//Permet l'affichage de le bourse du joueur
+    public void updateAffichageBourse()//Permet l'affichage des bourses des joueurs
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
         GameObject.Find("Bourse").GetComponent<TextMeshProUGUI>().text = p.joueurs[p.getTour()].GetComponent<Joueur>().getBourse().ToString();
@@ -76,7 +76,7 @@ public class Affichage : MonoBehaviour
             GameObject.Find("Bourse_" + (i+1) + "_" + Poker.nbJoueurs).GetComponent<TextMeshProUGUI>().text = p.joueurs[(p.getTour() + i) % p.joueurs.Count].GetComponent<Joueur>().getBourse().ToString();
         }
     }
-    public void updateAffichageMise()//Permet l'affichage de la mise du joueur
+    public void updateAffichageMise()//Permet l'affichage de la mise des joueurs
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
         GameObject.Find("Mise").GetComponent<TextMeshProUGUI>().text = "Mise : " + p.joueurs[p.getTour()].GetComponent<Joueur>().mise;
@@ -86,23 +86,16 @@ public class Affichage : MonoBehaviour
             GameObject.Find("Mise_" + (i+1) + "_" + Poker.nbJoueurs).GetComponent<TextMeshProUGUI>().text = "Mise : " + p.joueurs[(p.getTour() + i) % p.joueurs.Count].GetComponent<Joueur>().mise.ToString();
         }
     }
-    /*public void updateAffichageCombinaison()//Permet l'affichage de le combinaison du joueur du joueur
-    {
-        Poker poker = GameObject.Find("Poker").GetComponent<Poker>();
-        poker.joueursManche[poker.getTour()].GetComponent<Joueur>().determinaisonCombinaison();
-        GameObject.Find("Combinaison").GetComponent<Text>().text = poker.joueursManche[poker.getTour()].GetComponent<Joueur>().combinaison.ToString() + " de " + Joueur.max(poker.joueursManche[poker.getTour()].GetComponent<Joueur>().l).valeur.ToString();
-    }*/
-    public void updateAffichageBouton()//Permet d'afficher les bonnes valeurs pour les boutons
+    public void updateAffichageBouton()//Modifie l'affichage des boutons de manière à ce qu'ils intéragissent mieux avec l'utilisateur
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
         Slider s = GameObject.Find("Slider").GetComponent<Slider>();
         Joueur j = p.joueurs[p.getTour()].GetComponent<Joueur>();
         int x = Poker.miseManche - j.mise;
-        if (x == j.getBourse())
+        if (x >= j.getBourse())
         {
             GameObject.Find("Suivre").transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Tapis";
             GameObject.Find("Relancer").GetComponent<Button>().interactable = false;
-            //GameObject.Find("Se coucher").GetComponent<Button>().interactable = false;
         }
         else
         {
@@ -119,7 +112,7 @@ public class Affichage : MonoBehaviour
             GameObject.Find("Relancer").transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Relancer : " + (int)s.value;
         }
     }
-    public void updateAffichageNomJoueur()//Permet l'affichage du bon nom du joueur
+    public void updateAffichageNomJoueur()//Permet l'affichage du nom des joueurs
     {
         Poker p = FindObjectOfType<Poker>();
         GameObject.Find("Nom").GetComponent<TextMeshProUGUI>().text = p.joueurs[p.getTour()].GetComponent<Joueur>().nom;
@@ -128,7 +121,7 @@ public class Affichage : MonoBehaviour
             GameObject.Find("Nom_" + (i+1) + "_" + Poker.nbJoueurs).GetComponent<TextMeshProUGUI>().text = p.joueurs[(p.getTour() + i) % p.joueurs.Count].GetComponent<Joueur>().nom;
         }
     }
-    public void affichageCarteJoueur()//Permet le bon affichage des composants des joueurs en fonction du nb de joueurs
+    public void affichageCarteJoueur()//Choisie la bonne disposition de carte en fonction du nombre de joueurs
     {
         Poker p = FindObjectOfType<Poker>();
         for (int i = 0; i < 4; i++)

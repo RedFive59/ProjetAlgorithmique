@@ -13,11 +13,11 @@ public class Poker : MonoBehaviour
     public GameObject cardPrefab;//Modèle de carte à dupliquer
     public GameObject playerPrefab;//Modèle de joueur à dupliquer
     public List<GameObject> deck;//Paquet de cartes
-    public List<GameObject> joueurs;//Liste de tous less joueurs
+    public List<GameObject> joueurs;//Liste de tous les joueurs de la partie
     public static int nbJoueurs;//Nombre de joueurs dans la partie
     private int tour = 0;//Indice du joueur qui doit jouer
-    public int tourGlobal = 0;//Indique le numéro du tour (augmente de 1 à chaque fois que les les nbJoueurs ont joué une fois)
-    public List<GameObject> flop = new List<GameObject>();//Liste des cinq cartes composant le flop
+    public int tourGlobal = 0;//Indique le numéro du tour
+    public List<GameObject> flop = new List<GameObject>(5);//Liste d'un maximum de 5 cartes composant la river
     public static int BOURSEDEPART;//Bourse de départ pour les joueurs
     public static int miseManche = 0;//Mise de la manche
     public int smallBlind;//Valeur de la petite blinde
@@ -34,13 +34,7 @@ public class Poker : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         //StartCoroutine(affichageGagnant("Nicolas"));
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    private void updateInfosMenu()//Récupère les informatiions du menu pour démarrer la partie
+    private void updateInfosMenu()//Récupère les informatiions de la scène MenuPoker
     {
         GameObject gameSettings = GameObject.Find("GameSettings");
         if (gameSettings)//Paramètres du menu
@@ -99,7 +93,7 @@ public class Poker : MonoBehaviour
         randomSmallBlind();
         distribution();
     }
-    public static List<string> generatedDeck()//Renvoie une liste contenant tous les noms de cartes dans l'ordre, du tableau cardFaces
+    public static List<string> generatedDeck()//Renvoie une liste contenant tous les noms de cartes dans l'ordre du tableau "cardFaces"
     {
         List<string> newDeck = new List<string>();
         Couleur couleur = 0;
@@ -113,7 +107,7 @@ public class Poker : MonoBehaviour
         }
         return newDeck;
     }
-    public void shuffle<T>(List<T> list)//Mélange les cartes
+    public void shuffle<T>(List<T> list)//Mélange la liste de de carte "list" passée en paramètre
     {
         System.Random random = new System.Random();
         int n = list.Count;
@@ -126,7 +120,7 @@ public class Poker : MonoBehaviour
             list[n] = temp;
         }
     }
-    public void generationPaquet()//Crée les GameObjects correspondant aux cartes du deck
+    public void generationPaquet()//Génère les cartes du deck et les stocke dans l'attribut "deck"
     {
         List<string> deck = generatedDeck();
         shuffle(deck);
@@ -138,7 +132,7 @@ public class Poker : MonoBehaviour
             this.deck.Add(newCard);
         }
     }
-    public void generationJoueurs()//Crée les GameObjects correspondant aux joueurs
+    public void generationJoueurs()//Génère les joueurs de la partie et les stocke dans l'attribut "joueurs"
     {
         this.joueurs = new List<GameObject>(nbJoueurs);
         for(int i = 1; i <= nbJoueurs; i++)
@@ -219,7 +213,7 @@ public class Poker : MonoBehaviour
         }
         triBlinde();
     }
-    public void rassemblementDeck()//Rassemble toutes les cartes du jeu dans le deck
+    public void rassemblementDeck()//Rassemble toutes les cartes du jeu et les stocke dans l'attribut "deck"
     {
         foreach(GameObject g in this.joueurs)
         {
@@ -238,7 +232,7 @@ public class Poker : MonoBehaviour
         }
         this.flop.Clear();
     }
-    public void flopper(int y)//Permet de tirer y cartes du deck, de la mettre dans le flop et de l'afficher
+    public void flopper(int y)//Pioche "y" cartes aléatoires du deck afin de les dévoiler et de les stocker dans le fop
     {
         System.Random random;
         int rdm;
@@ -259,7 +253,7 @@ public class Poker : MonoBehaviour
             y--;
         }
     }
-    public List<Joueur> quiGagne()//Désigne le joueur gagnant et modifie sa bourse en conséquence
+    public List<Joueur> quiGagne()//Renvoie une liste de joueur correspondant au(x) gagnant(s) de la manche
     {
         List<GameObject> joueursManche = new List<GameObject>();
         foreach(GameObject g in joueurs)
@@ -309,7 +303,7 @@ public class Poker : MonoBehaviour
                 return victoire(gagnants);
         }
     }
-    public List<Joueur> victoire(List<Joueur> j)//Attribue au joueur j une nouvelle bourse correspondant à la somme de toutes les mises
+    public List<Joueur> victoire(List<Joueur> j)//Répartie les mises de tous les joueurs au(x) gagnant(s) et renvoie la liste contenant le(s) gagnant(s)
     {
         int x = 0;
         List<Joueur> gagnant = new List<Joueur>();
@@ -325,7 +319,7 @@ public class Poker : MonoBehaviour
         }
         return gagnant;
     }
-    public void nouvelleManche()//Gère la fin d'une manche en décidant si on relance une partie ou si le jeu s'arrête car un joueur a gagné
+    public void nouvelleManche()//Permet de passer à la manche suivante s'il reste plus d'un joueur. Sinon, appelle la fonction finDeJeu
     {
         List<Joueur> list = quiGagne();
         int joueursRestant = 0;
@@ -356,42 +350,21 @@ public class Poker : MonoBehaviour
             tour = nbJoueurs-1;
             gameObject.GetComponent<ButtonHandler>().ts();
             StartCoroutine(affichageGagnant(list,b,false));
-            /*foreach (GameObject g in this.joueurs)
-            {
-                Joueur j = g.GetComponent<Joueur>();
-                print(j.name + " Main : \n");
-                foreach (GameObject l in j.main)
-                {
-                    print(l.name + "\n");
-                }
-                print("l :\n");
-                foreach (Carte c in j.l)
-                {
-                    print(c.valeur + " de " + c.couleur);
-                }
-                print("Combinaison : " + j.combinaison + "\n");
-                j.determinaisonCombinaison();
-                print("Combinaison : " + j.combinaison + "\n");
-            }
-            foreach (GameObject l in this.flop)
-            {
-                print(l.name + "\n");
-            }*/
         }
         else
         {
             StartCoroutine(affichageGagnant(list, b,true));
         }
     }
-    public void finDeJeu()//Fonction utilisée pour mettre fin au jeu
+    public void finDeJeu()//Mets fin à la partie et enregistre les scores et statistiques dans un fichiers .JSON pour le leaderboard du poker
     {
         triClasssement();
+        int nbMancheTotal = GameObject.Find(nomDuGagnant).GetComponent<Joueur>().nbManche;
         for(int i = 0; i < nbJoueurs; i++)
         {
             Joueur j = joueurs[i].GetComponent<Joueur>();
-            int score = ((j.nbManche*10)/(6 - nbJoueurs)) * (2500/BOURSEDEPART);
+            int score = 100*(j.nbManche / nbMancheTotal);
             gameObject.GetComponent<PokerLeaderboard>().ajoutDonneesLeaderboard(j.nom,(i+1) + " / " + nbJoueurs,j.nbManche.ToString(),score);
-            print(j.nom);
         }
         SceneManager.LoadScene("Victoire");
     }
@@ -404,7 +377,7 @@ public class Poker : MonoBehaviour
         }
         return x;
     }
-    public bool toutLeMondeAJoue()//Renvoie vrai si les conditions sont remplies pour passer dévoiler une ou plusiurs cartes
+    public bool toutLeMondeAJoue()//Renvoie vrai si tous les joueurs ont joué lors de ce tour
     {
         foreach(GameObject g in joueurs)
         {
@@ -412,14 +385,14 @@ public class Poker : MonoBehaviour
         }
         return true;
     }
-    public void setJoueursAJoue(bool a)//Permet de set le booléen aJoue de tous les joueurs à une valeur a passé en paramètre
+    public void setJoueursAJoue(bool a)//Remplace la valeur du booléen "aJoué" de tous les joueurs, en même temps, par le paramètre "a".
     {
         foreach(GameObject g in joueurs)
         {
             g.GetComponent<Joueur>().aJoue = a;
         }
     }
-    public void triBlinde()//Tri le tableau de sorte à ce que le joueur ayant les blindes jouent en dernier
+    public void triBlinde()//Modifie l'ordre de passage des joueurs en mettant la petite blindes en dernière et la grosse blinde en avant dernière
     {
         GameObject tempo;
         while (!joueurs[nbJoueurs - 1].GetComponent<Joueur>().isBigBlind)
@@ -432,7 +405,7 @@ public class Poker : MonoBehaviour
             }
         }
     }
-    public void randomSmallBlind()//Détermine de manière aléatoire qui aura la petite blinde
+    public void randomSmallBlind()//Donne le jeton de petite blinde à un joueur aléatoire
     {
         System.Random random = new System.Random();
         int rdm = random.Next(nbJoueurs - 1);
@@ -443,7 +416,7 @@ public class Poker : MonoBehaviour
         tempo.isSmallBlind = false;
         tempo.isBigBlind = true;
     }
-    public void moveBlind()//Passe la blinde au joueur suivant
+    public void moveBlind()//Passe les blindes au joueur suivant
     {
         int small = 0, big = 0;
         bool c1 = true, c2 = true;
@@ -477,7 +450,7 @@ public class Poker : MonoBehaviour
             if (!c1 && !c2) break;
         }
     }
-    public IEnumerator affichageGagnant(List<Joueur> j, bool b, bool d)//Transition quand quelqu'un gagne
+    public IEnumerator affichageGagnant(List<Joueur> j, bool b, bool d)//Gère l'écran de transition indiquant quel(s) joueur(s) a(ont) gagné la manche
     {
         string comb="", gagnant = "";
         for (int i=0; i < j.Count; i++)
@@ -528,7 +501,7 @@ public class Poker : MonoBehaviour
             finDeJeu();
         }
     }
-    public void triClasssement()//Tri les joueurs dans l'ordre du gagnant au perdant
+    public void triClasssement()//Tri la liste "joueurs" en fonction du nombre de manches survécues par les joueurs. i = 0 -> 1er; i = 1 -> 2ème ...
     {
         int max;
         GameObject tempo;

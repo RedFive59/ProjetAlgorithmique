@@ -5,18 +5,12 @@ using TMPro;
 
 public class Victoire : MonoBehaviour
 {
-    public GameObject text;
+    public GameObject text;//Nom du gagnant de la partie de poker
     // Start is called before the first frame update
     void Start()
     {
         GameObject poker = GameObject.Find("Poker");
         text.GetComponent<TextMeshProUGUI>().text = "Victoire de "+ poker.GetComponent<Poker>().nomDuGagnant;
         Destroy(poker);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

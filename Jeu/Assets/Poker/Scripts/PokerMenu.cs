@@ -23,7 +23,7 @@ public class PokerMenu : MonoBehaviour
     private int nbJoueurs; // Nombre de joueurs
     private string[] listNom; // Liste des noms de joueurs
 
-    // Initialisation des objets et création des 2 inputs par défaut
+    // Start is called before the first frame update
     void Start()
     {
         nomJoueurRef = GameObject.Find("NomJoueurRef");
@@ -46,8 +46,8 @@ public class PokerMenu : MonoBehaviour
         else lancerPartie.GetComponent<Button>().interactable = true;
     }
 
-    // Méthode de création des inputs name
-    public void createInputNameField()
+    
+    public void createInputNameField()// Méthode de création des inputs name
     {
         destroyAllInputNameField();
         nomJoueurRef.SetActive(true);
@@ -63,9 +63,7 @@ public class PokerMenu : MonoBehaviour
         alerteNom.transform.position = new Vector3(6.3f, posY);
         nomJoueurRef.SetActive(false);
     }
-
-    // Méthode appelé à chaque frame pour vérifier si les noms sont bien entrés
-    public void verifInputs()
+    public void verifInputs()// Méthode appelé à chaque frame pour vérifier si les noms sont bien entrés
     {
         canLaunchGame = false;
         nbJoueurs = (int)GameObject.Find("NbJoueursSlider").GetComponent<Slider>().value;
@@ -114,9 +112,7 @@ public class PokerMenu : MonoBehaviour
             animationDone = true;
         }
     }
-
-    // Méthode qui permet de détruire tous les inputs name afin de pouvoir en recréer un certain nombre
-    private void destroyAllInputNameField()
+    private void destroyAllInputNameField()// Méthode qui permet de détruire tous les inputs name afin de pouvoir en recréer un certain nombre
     {
         int nbChild = parent.transform.childCount;
         if(nbChild > 1)
@@ -133,9 +129,7 @@ public class PokerMenu : MonoBehaviour
         alerteNom.GetComponent<TextMeshProUGUI>().text = "Chaque joueur doit comporter un nom";
         canLaunchGame = false;
     }
-
-    // Méthode qui vérifie si la mise est correcte (1)
-    public void verifMiseOnChange()
+    public void verifMiseOnChange()// Méthode qui vérifie si la mise est correcte (1)
     {
         int value;
         bool ok = int.TryParse(mise.GetComponent<TMP_InputField>().text, out value);
@@ -157,9 +151,7 @@ public class PokerMenu : MonoBehaviour
         if(!ok) mise.GetComponent<TMP_InputField>().text = "0";
         if(listNom != null && nbJoueurs != 0) updateGameSettingsObject(nbJoueurs, listNom, valeurMise());
     }
-    
-    // Méthode qui vérifie si la mise est correcte (2)
-    public void verifMiseOnEndEdit()
+    public void verifMiseOnEndEdit()// Méthode qui vérifie si la mise est correcte (2)
     {
         int value;
         bool ok = int.TryParse(mise.GetComponent<TMP_InputField>().text, out value);
@@ -180,17 +172,13 @@ public class PokerMenu : MonoBehaviour
         }
         if (listNom != null && nbJoueurs != 0) updateGameSettingsObject(nbJoueurs, listNom, valeurMise());
     }
-
-    // Méthode qui retourne la valeur de la mise
-    private int valeurMise()
+    private int valeurMise()// Méthode qui retourne la valeur de la mise entrée dans le champ d'insertion
     {
         string miseText = mise.GetComponent<TMP_InputField>().text;
         if (miseText == "") return minMise;
         else return int.Parse(miseText);
     }
-
-    // Animation de changement de texte
-    private IEnumerator updateAlerteMise(string message)
+    private IEnumerator updateAlerteMise(string message)// Animation de changement de texte
     {
         if (message != "")
         {
@@ -218,9 +206,7 @@ public class PokerMenu : MonoBehaviour
             alerteMise.SetActive(false);
         }
     }
-
-    // Animation de disparition de l'alerte liée aux noms
-    private IEnumerator disableAlerteNom()
+    private IEnumerator disableAlerteNom()// Animation de disparition de l'alerte liée aux noms
     {
         if (alerteNom.activeSelf)
         {
@@ -244,9 +230,7 @@ public class PokerMenu : MonoBehaviour
             alerteNom.SetActive(false);
         }
     }
-
-    // Méthode pour enregistrer les données entrées sur la scène dans l'objet GameSettings
-    public void updateGameSettingsObject(int nbJoueurs, string[] listNom, int miseMax)
+    public void updateGameSettingsObject(int nbJoueurs, string[] listNom, int miseMax)// Méthode pour enregistrer les données entrées sur la scène dans l'objet GameSettings
     {
         gameSettings.GetComponent<PokerValue>().nbJoueurs = nbJoueurs;
         gameSettings.GetComponent<PokerValue>().bourse = miseMax;
@@ -295,15 +279,11 @@ public class PokerMenu : MonoBehaviour
             }
         }
     }
-
-    // Méthode pour supprimer l'objet contenant le choix de la difficulté en cas de retour au menu
-    public void destroySaveObject()
+    public void destroySaveObject()// Méthode pour supprimer l'objet contenant le choix de la difficulté en cas de retour au menu
     {
         Destroy(gameSettings);
     }
-
-    // Méthode qui permet de changer la position du leaderboard sur la place afin de le faire apparaître et disparaître
-    public void switchLeaderboard()
+    public void switchLeaderboard()// Méthode qui permet de changer la position du leaderboard sur la place afin de le faire apparaître et disparaître
     {
         int posDepart = 425, posFin = 0;
         GameObject Leaderboard = GameObject.Find("AffichageLeaderboard");

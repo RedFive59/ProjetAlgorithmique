@@ -17,7 +17,7 @@ public class PokerLeaderboard : MonoBehaviour
     private string[,] history; // Grille de strings dans lesquelles les données du leaderboard sont placés
     private int nombreColonnes;
 
-    // Méthode appelé au lancement de la scène SudokuMenu
+    // Start is called before the first frame update
     void Start()
     {
         nombreColonnes = 3; // Nombre de colonnes de votre leaderboard
@@ -33,9 +33,7 @@ public class PokerLeaderboard : MonoBehaviour
         }
         else Debug.LogError("Chargement de " + filePath + " impossible");
     }
-
-    // Méthode qui permet l'ajout dans le tableau des scores de toutes les parties précédement jouées
-    private void updateLeaderboard()
+    private void updateLeaderboard()// Méthode qui permet l'ajout dans le tableau des scores de toutes les parties précédement jouées
     {
         if (boardRef)
         {
@@ -90,9 +88,7 @@ public class PokerLeaderboard : MonoBehaviour
             }
         }
     }
-
-    // Méthode de tri du tableau des scores
-    public void triLeaderboard(string type)
+    public void triLeaderboard(string type)// Méthode de tri du tableau des scores
     {
         Transform g;
         var loadedData = JSON.Parse(File.ReadAllText(filePath));
@@ -135,7 +131,6 @@ public class PokerLeaderboard : MonoBehaviour
             updateLeaderboard();
         }
     }
-
     // Objet utilisé pour trier le leaderboard
     class Array2DSort : IComparer<int>
     {
@@ -182,7 +177,7 @@ public class PokerLeaderboard : MonoBehaviour
             return res;
         }
     }
-    public void ajoutDonneesLeaderboard(string nom, string classement, string nbManche, int score)
+    public void ajoutDonneesLeaderboard(string nom, string classement, string nbManche, int score)//Permet d'ajouter les données passées en paramètre dans un fichier .JSON pour le leaderboard du poker
     {
         Poker p = GameObject.Find("Poker").GetComponent<Poker>();
         if (File.Exists(filePath))
@@ -202,7 +197,7 @@ public class PokerLeaderboard : MonoBehaviour
         }
         else Debug.Log("Fichier " + filePath + " introuvable");
     }
-    static void lineChanger(string newText, string fileName, int line_to_edit)
+    static void lineChanger(string newText, string fileName, int line_to_edit)//Permet d'éditer une ligne particulière du fichier .JSON
     {
         string[] arrLine = File.ReadAllLines(fileName);
         arrLine[line_to_edit - 1] = arrLine[line_to_edit - 1] + newText;

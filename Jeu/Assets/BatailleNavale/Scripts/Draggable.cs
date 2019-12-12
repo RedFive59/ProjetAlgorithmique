@@ -135,19 +135,19 @@ public class Draggable : MonoBehaviour
 
     private int getTaille()
     {
-        if (this.gameObject.name == "Torpilleur0")
+        if (this.gameObject.name == "Torpilleur 0")
         {
             return 2;
         }
-        if ((this.gameObject.name == "ContreTorpilleur1")||(this.gameObject.name == "SousMarin2"))
+        if ((this.gameObject.name == "ContreTorpilleur 1")||(this.gameObject.name == "SousMarin 2"))
         {
             return 3;
         }
-        if (this.gameObject.name == "Croiseur3")
+        if (this.gameObject.name == "Croiseur 3")
         {
             return 4;
         }
-        if (this.gameObject.name == "PorteAvion4")
+        if (this.gameObject.name == "PorteAvion 4")
         {
             return 5;
         }

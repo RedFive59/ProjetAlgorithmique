@@ -17,6 +17,27 @@ public class GameNavale : MonoBehaviour
     void Start()
     {
         VM = GameObject.FindObjectOfType<VisualManager>();
+
+        GameObject Text = new GameObject("TextSlider1");
+        Text.AddComponent<Text>().text = "Changement Joueur";
+        Text.GetComponent<Text>().fontSize = 6;
+        Text.transform.SetParent(GameObject.Find("Slider1").transform,false);
+        Text.GetComponent<Text>().color = Color.black;
+        Text.GetComponent<Text>().fontStyle = FontStyle.Bold;
+        Text.GetComponent<Text>().font = (Font)Resources.GetBuiltinResource<Font>("Arial.ttf");
+        Text.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
+
+        GameObject Text2 = new GameObject("TextSlider2");
+        Text2.AddComponent<Text>().text = "Changement Joueur";
+        Text2.GetComponent<Text>().fontSize = 6;
+        Text2.transform.SetParent(GameObject.Find("Slider2").transform, false);
+        Text2.GetComponent<Text>().color = Color.black;
+        Text2.GetComponent<Text>().fontStyle = FontStyle.Bold;
+        Text2.GetComponent<Text>().font = (Font)Resources.GetBuiltinResource<Font>("Arial.ttf");
+        Text2.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
+
+
+
         Cvs = new CanvasGenerator("CanvasJEU", new Vector3(0, 0, 0), new Vector2(0, 0), RenderMode.WorldSpace, null, 10, "UILayer", this.gameObject);
 
         Cvs.addPanel("MarkerInstru1", new Vector3(-3, 40.1f, 0), new Vector2(4, 1), new Color32(192, 72, 73, 255));

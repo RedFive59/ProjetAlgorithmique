@@ -40,11 +40,6 @@ public class Ship
         return G;
     }
 
-    public string getName()
-    {
-        return namex;
-    }
-
     public void updateG()
     {
         pos = Sp.transform.position;

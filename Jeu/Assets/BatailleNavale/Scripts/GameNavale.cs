@@ -12,6 +12,7 @@ public class GameNavale : MonoBehaviour
     GameObject Slider1;
     GameObject Slider2;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,9 +69,10 @@ public class GameNavale : MonoBehaviour
         {
             GameObject.Find("Menu").transform.position = new Vector3(-50, -50, 0);
             GameObject.Find("Menu2").transform.position = new Vector3(-50, -50, 0);
+            GameObject.Find("AudioHolder").GetComponent<AudioSource>().mute = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.F1))
+        if ((Input.GetKeyDown(KeyCode.F1))&&(VM.magValue()>0))
         {
 
             for (int i = 0; i < 2; i++)

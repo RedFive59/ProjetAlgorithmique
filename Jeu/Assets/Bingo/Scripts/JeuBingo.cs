@@ -118,7 +118,7 @@ public class JeuBingo : MonoBehaviour
         menuEndGame(this.ObjectMenuGagne, i);
         if (i == 8)
             this.score = 0;
-        updateScore();
+        updateScore(i);
         if (this.score < 0)
             this.score = 0;
         this.score = (this.score * 100) / 140;
@@ -150,11 +150,14 @@ public class JeuBingo : MonoBehaviour
     }
 
     //Ajoute le nouveau score
-    private void updateScore()
+    private void updateScore(int i)
     {
-        if (this.score < -140)
-            this.score = -140;
-        this.score += (this.modeJeu + 5) * 20 / this.nbgrilles;
+        if(i != 8)
+        {
+            if (this.score < -140)
+                this.score = -140;
+            this.score += (this.modeJeu + 5) * 20 / this.nbgrilles;
+        }
 
         PlayerStats.Score = this.score;
         GameObject score = GameObject.Find("Score");

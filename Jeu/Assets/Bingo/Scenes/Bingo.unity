@@ -2736,7 +2736,7 @@ GameObject:
   m_Component:
   - component: {fileID: 404488165}
   m_Layer: 0
-  m_Name: GridManager 4
+  m_Name: GridManager 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2754,7 +2754,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1209000521}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &413760421
 GameObject:
@@ -3682,9 +3682,9 @@ RectTransform:
   m_Father: {fileID: 942429780}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &599668700
@@ -3854,7 +3854,7 @@ GameObject:
   m_Component:
   - component: {fileID: 625307973}
   m_Layer: 0
-  m_Name: GridManager 3
+  m_Name: GridManager 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3872,7 +3872,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1209000521}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &629709713
 GameObject:
@@ -6755,9 +6755,9 @@ Transform:
   m_Children:
   - {fileID: 42402139}
   - {fileID: 1731976456}
+  - {fileID: 404488165}
   - {fileID: 1620876072}
   - {fileID: 625307973}
-  - {fileID: 404488165}
   - {fileID: 669222982}
   m_Father: {fileID: 1531168676}
   m_RootOrder: 2
@@ -8062,7 +8062,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1620876072}
   m_Layer: 0
-  m_Name: GridManager 2
+  m_Name: GridManager 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8080,7 +8080,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1209000521}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1657729364
 GameObject:
